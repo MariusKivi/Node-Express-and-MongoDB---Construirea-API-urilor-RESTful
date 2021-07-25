@@ -1,33 +1,40 @@
 /* ================================================================================
     SISTEMUL  MODULELOR  IN  NODE:
-   MODULELE   IN  'NODE'  ('MAIN  MODULE')
+    INCARCAREA  MODULULUI  'LOGGER.JS'  IN  'APP.JS'
  ==================================================================================*/
 
 /*
-        NB!
-            A NU SE UTILIZA
-                =>  DEFINIREA 'VARIABILELOR' & 'FUNCTIILOR' 
-                    -> 'GLOBALA', PT. A NU FI 'SUPRASCRISE' DIN 'GRESEALA'
-                    -> DIN ALTE 'FISIERE'.
+   (#) TOOL-UL 'JSHINT'
+           => PERMITE 'SCANAREA' CODULUI 'JS' PT. 'ERORI'
+   
 
-        (#) FIECARE 'FISIER' AL LUI 'NODE'
-                => ESTE CONSIDERAT CA FIIND UN 'MODUL'.
-        
-        (#) (3) 'VARIABILELE' & 'FUNCTIILE' EXISTENTE INTR-UN 'FISIER'
-                => 'APARTIN' DOAR DE 'FISIERUL' RESPECTIV
-                => ADICA SUNT 'PRIVATE',
-                => PT. A LE UTILIZA IN 'AFARA  FISIERULUI'
-                => TREBUIES 'EXPORTATE' EXPLICIT
-                => SI FACUTE 'PUBLICE'.
-        
-        (#) FIECARE 'APLICATIE NODE'
-                => CONTINE '1 FISIER PRINCIPAL' ('MAIN MODULE')
-                    -> 'APP.JS'
-
+       RULAM 'COMANDA' IN 'TERMINAL':
+           jshint app.js
 */
 
 
 // ================================================================================
-// (1) AFISAREA 'MODULULUI PRINCIPAL'
+// (#) PRIN FUNC. 'REQUIRE()' (IN 'NODE')
 // ================================================================================
-console.log(module);
+// var logger = require('./logger');
+const log = require('./logger');
+
+// logger = 1;
+
+
+// ================================================================================
+// (#) AFISARE:
+// ================================================================================
+// console.log(logger);
+
+
+// ================================================================================
+// (#) APELAREA  OBIECTULUI 'LOGGER'
+// ================================================================================
+// logger.log('Va Saluta Marius!');
+
+
+// ================================================================================
+// (#) APELAREA  FUNCTIEI 'LOGGER'
+// ================================================================================
+log('Va Saluta Marius!');
