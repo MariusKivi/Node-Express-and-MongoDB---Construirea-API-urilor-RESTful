@@ -1,0 +1,17 @@
+
+
+	INSTALARE  GLOBALA   --   NPM   VERSIUNEA  @5.5.1 
+
+DESCHIDEM TERMINALUL SI RULAM COMANDA
+
+____________________________________________________________
+
+	npm i -g npm@5.5.1
+____________________________________________________________
+	>> 'i' = abrevierea 'install'
+	>> 'g' = abrevierea  'global'
+
+
+
+
+
