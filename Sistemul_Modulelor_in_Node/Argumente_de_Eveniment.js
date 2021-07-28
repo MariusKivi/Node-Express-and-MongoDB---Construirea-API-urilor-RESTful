@@ -27,8 +27,8 @@ const emitter = new EventEmitter();
 // ================================================================================
 // emitter.addListener();
 
-// emitter.on('jurnalMesaje', function(eventArgs) {
-emitter.on('jurnalMesaje', (eventArgs) => {
+// emitter.on('mesajInregistrat', function(eventArgs) {
+emitter.on('mesajInregistrat', (eventArgs) => {
     console.log('Listener (Ascultator) Apelat!', eventArgs);
 });
 
@@ -40,7 +40,7 @@ emitter.on('jurnalMesaje', (eventArgs) => {
 //     (PT. RIDICAREA/CREAREA UNUI 'EVENIMENT')
 // 'EMIT' (EMITE) = A SCOATE UN ZGOMOT, A SEMNALA , A PRODUCE O SEMNALIZARE
 // ================================================================================
-emitter.emit('jurnalMesaje', { id: 1, url: 'http://' });
+emitter.emit('mesajInregistrat', { id: 1, url: 'http://' });
 
 
 
