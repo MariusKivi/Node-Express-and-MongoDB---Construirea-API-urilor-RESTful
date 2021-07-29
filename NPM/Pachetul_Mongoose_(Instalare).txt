@@ -1,0 +1,18 @@
+
+
+	PACHETULUI 'MONGOOSE' (INSTALARE) 
+
+
+RULAM COMANDA IN TERMINAL:
+________________________________________________________
+	npm i mongoose
+________________________________________________________
+	>> 'i' = abreviere 'install'
+
+
+
+
+
+
+
+
