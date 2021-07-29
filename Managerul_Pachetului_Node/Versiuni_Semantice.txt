@@ -1,0 +1,105 @@
+
+	(7) VERSIUNI  SEMANTICE  ('^VER_MAJORA.VER_MINORA.VER_PATCH' / 'VER_MAJORA.X')
+	   
+
+
+
+   (*) VERSIUNILE SEMANTICE
+	=> SE MAI NUMESC SI 'SemVer'
+	
+
+
+FISIERUL 'PACKAGE.JSON':
+___________________________________________________________
+	"dependencies": {
+            "mongoose": "^5.13.3",
+            "underscore": "^1.13.1"
+    	}
+___________________________________________________________
+
+
+
+   (*) IN 'VERSIUNILE SEMANTICE'--> VERSIUNILE 'PACHETELOR          NODE' --> AU '3 COMPONENTE' - EX. NR. "^5.13.3":
+
+	(1) VERSIUNEA 'MAJORA' (nr. "5")
+	       => UTIL. PT. ADAUGAREA DE 'CARACTERISTICI'
+	       => CE NU DISTRUG 'APLICATIA' EXISTENTA
+  		  <= VERSIUNEA 'MAJORA' ESTE 'CRESCUTA'.
+		  => EX. "^6.0.0"
+		 
+
+	(2) VERSIUNEA 'MINORA' (nr. "13")
+	       => UTIL. PT. ADAUGAREA DE 'CARACTERISTICI'
+	       => CE NU DISTRUG 'API'-UL.
+  		  <= VERSIUNEA 'MINORA' ESTE CRESCUTA
+		  => EX. "^5.14.0"
+		  => "0" -> PT. CA IN ACEA VERSIUNE 
+		     ->'NU A FOST' INCA 'GASITA' O 'EROARE'.
+
+
+	(3) VERSIUNEA 'BUCATI/PATCH' (nr. "3") 
+	       => UTIL. PT. FIXAREA ERORILOR.
+		  <= DUPA 'FIXAREA ERORILOR' 
+		  <= VERSIUNEA 'PATCH'-ULUI ESTE CRESCUTA
+		  => EX. "^5.13.4"
+
+
+
+
+ (*) 'VERSIUNILE SEMANTICE' POT FI 'SPECIFICATE':
+
+	(A) PRIN '^'/ 'CARACTERUL DE OMISIEUNE'/
+	         'CARET CHARACTER'  ("^5.13.3") 
+	    === SINTAXA ALTERNATIVA: "5.x" 
+
+
+	    => SPECIFICA LUI 'NPM' CA 
+		-> NE INTERESEAZA 'ORICE VERSIUNE' 
+		-> ATAT  TIMP CAT - VERSIUNEA 'MAJORA'
+		-> ESTE CEA  'SPECIFICATA' "^5.13.3"
+
+		-> ACCEPTAND 'VERSIUNI MINORE' MAI NOI 		      		   PRECUN "^5.14.0"
+
+		-> SAU 'VERSIUNI PATCH' MAI NOI 		   		   PRECUN "^5.13.4"
+
+
+
+
+	(B) PRIN '~'/ 'TILDA' ("~1.8.3") 
+	    === SINTAXA ALTERNATIVA: "1.8.x" 
+
+
+	     => SPECIFICA LUI 'NPM' CA 
+	         -> SUNTEM INTERESATI 'ORICE VERSIUNE' 
+	         -> ATAT  TIMP CAT VERSIUNEA 'MAJORA' ESTE "1"
+	         -> IAR VERSIUNEA 'MINORA' ESTE "8"
+	         -> ADICA "1.8"
+		
+
+
+
+	(C) PRIN 'VERSIUNEA EXACTA' FARA '~' SAU '^''
+
+
+	    => SPECIFICA LUI 'NPM' CA 
+
+	         -> SUNTEM INTERESATI 'DOAR' DE 'VERSIUNE' SPECIFICATA "5.13.3".
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
