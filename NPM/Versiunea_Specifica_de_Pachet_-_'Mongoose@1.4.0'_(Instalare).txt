@@ -1,0 +1,55 @@
+
+
+	Instalarea Versiunei Specifice de Pachet - 'Mongoose@1.4.0' 
+
+
+RULAM COMANDA IN TERMINAL:
+________________________________________________________
+	npm i mongoose@1.4.0
+________________________________________________________
+	>> 'i' = abreviere 'install'
+
+ AFISARE IN TERMINAL:
+________________________________________________________
++ mongoose@1.4.0
+added 1 package, removed 34 packages and updated 1 package in 5.317s
+________________________________________________________
+
+
+
+ AFISARE IN 'NODE_MODULES/MONGOOSE/PACKAGE.JSON':
+________________________________________________________
+
+"version": "1.4.0"
+________________________________________________________
+
+
+
+
+
+
+	(#) Revedem Lista Dependentelor Pachetului:
+
+RULAM COMANDA IN TERMINAL:
+________________________________________________________
+	npm list --depth=0
+________________________________________________________
+	
+
+AFISARE IN TERMINAL:
+________________________________________________________
+Managerul_Pachetului_Node@1.0.0 C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\NPM
++-- mongoose@1.4.0
+`-- underscore@1.13.1
+________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
