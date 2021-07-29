@@ -1,0 +1,112 @@
+
+
+	Actualizarea  Pachetelor Locale
+
+
+
+
+ (#) Pentru a Afla:
+	=> 'Ce Pachete au fost Actualizate' & 
+	=> 'Care sunt Noile Versiuni ale Pachetelor'
+
+Rulam Comanda in Terminal:
+____________________________________________________________
+
+	npm outdated
+____________________________________________________________
+
+
+
+Afiseaza in Terminal:
+____________________________________________________________
+
+Package   Current  Wanted  Latest  Location
+mongoose   1.4.0   1.8.4   5.13.4  NPM	
+____________________________________________________________
+
+
+
+
+
+
+
+ (1) Upgradarea Pachetelor 'Minore' & 'Patch Release'
+
+
+Rulam Comanda in Terminal:
+____________________________________________________________
+
+	npm update
+____________________________________________________________
+
+
+
+
+
+ (2.1) Instalarea Verificatorului de Update-uri:
+
+
+Rulam Comanda in Terminal:
+____________________________________________________________
+
+	npm i -g npm-check-updates
+____________________________________________________________
+
+
+
+
+
+
+ (2.2) Verificare Update-urilor Pacetelor
+
+
+Rulam Comanda in Terminal:
+____________________________________________________________
+
+	npm-check-updates
+____________________________________________________________
+
+sau:
+____________________________________________________________
+
+	ncu -u
+____________________________________________________________
+
+
+
+
+
+ (3) Instalarea DEpendentelor
+
+
+Rulam Comanda in Terminal:
+____________________________________________________________
+
+	npm i
+____________________________________________________________
+
+
+
+
+
+ (#) Afisarea
+	=> 'Pachetele Actualizate' & 
+	=> 'Noile Versiuni ale Pachetelor'
+
+Rulam Comanda in Terminal:
+____________________________________________________________
+
+	ncu
+____________________________________________________________
+
+
+
+Afiseaza in Terminal:
+____________________________________________________________
+
+Package   Current  Wanted  Latest  Location
+mongoose   1.4.0   1.8.4   5.13.4  NPM	
+____________________________________________________________
+
+
+
