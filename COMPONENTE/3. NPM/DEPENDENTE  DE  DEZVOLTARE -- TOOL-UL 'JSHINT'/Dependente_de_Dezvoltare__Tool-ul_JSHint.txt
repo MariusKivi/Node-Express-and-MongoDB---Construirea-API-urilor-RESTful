@@ -1,0 +1,49 @@
+
+	Dependenta_de_Dezvoltare__Tool-ul_de_Analiza_Statica__JSHint
+
+
+   Pe langa 'Denpendentele Aplicatiei' (Mongoose, Underscore) utilizate, semai pot utiliza si 'Dependente' folosite doar in timpul 'Dezvoltarii' pe care le denumim 'Dependente de Dezvoltare' (ex. Tool-uri pentru Rularea 'Testelor de Unitate', 'Analiza Statica a Codului',  'Impachetarea Codului JS')
+
+
+   'Dependente de Dezvoltare' 
+	=> nu trebuiec aduse in 'Mediul de Productie',
+	=> acolo unde 'Implementam Aplicatia'
+
+
+
+	
+   (#) Tool-ul de 'Analiza Statica' pt. Codul JS - 'JSHint'
+
+
+	=> Acesta cauta 'Probleme Potentiale'
+	=> sau 'Erori Sintactice'.
+
+ Instalam 'Tool'-ul Rulamd Comanda in Terminal:
+____________________________________________________________
+
+	npm i jshint --save-dev
+____________________________________________________________
+
+
+Afisarea in Terminal:
+____________________________________________________________
+
++ jshint@2.13.0
+added 18 packages in 5.018s
+____________________________________________________________
+
+
+
+Afisarea in Fisierul 'Package.json' al Proiectului si al lui 'Node_Modules':
+____________________________________________________________
+
+"devDependencies": {
+    "jshint": "^2.13.0"
+  }
+____________________________________________________________
+	>> "devDependencies" ii spune lui 'Node'
+	>> ca Aceasta este  o 'Dependenta de Dezvoltare'
+	>> si ca Nu Trebuie sa Ajunga in 'Mediul de 	   Productie'
+
+
+
