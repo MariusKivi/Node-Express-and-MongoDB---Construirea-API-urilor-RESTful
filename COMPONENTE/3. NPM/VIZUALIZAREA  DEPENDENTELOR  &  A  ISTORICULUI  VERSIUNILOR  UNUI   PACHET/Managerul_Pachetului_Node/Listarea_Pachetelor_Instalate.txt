@@ -1,0 +1,109 @@
+
+	(8) LISTAREA  'PACHETELOR'  INSTALATE
+
+
+
+   Exista posibilitatea ca Versiunea Pachetului REstaura sa fie mai noua decat Versiunea specificata in Fisierul 'Package.json' al Proiectului.
+
+
+   Putem Verifica Versiunea Pachetului "mongoose": "^5.13.3" Instalat prin 2 Feluri:
+
+
+	(1) Prin Cautarea Fisierului 'Package.json' in Folderul 'Node_Modules'
+
+  	Ex.: 
+	   'node_modules/mongoose/package.json/"version": "5.13.3"'
+
+
+
+
+
+	(2.1) Prin 'Listarea Tuturor Pachetelor'
+
+
+Rulam Comanda in Terminal:
+___________________________________________________________________
+	
+	npm list
+___________________________________________________________________
+
+
+
+Afisarea:
+___________________________________________________________________
+Managerul_Pachetului_Node@1.0.0 C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\Managerul_Pachetului_Node
++-- mongoose@5.13.3
+| +-- @types/mongodb@3.6.20
+| | +-- @types/bson@4.0.4
+| | | `-- @types/node@15.14.3 deduped
+| | `-- @types/node@15.14.3 deduped
+| +-- @types/node@15.14.3
+| +-- bson@1.1.6
+| +-- kareem@2.3.2
+| +-- mongodb@3.6.10
+| | +-- bl@2.2.1
+| | | +-- readable-stream@2.3.7
+| | | | +-- core-util-is@1.0.2
+| | | | +-- inherits@2.0.4
+| | | | +-- isarray@1.0.0
+| | | | +-- process-nextick-args@2.0.1
+| | | | +-- safe-buffer@5.1.2
+| | | | +-- string_decoder@1.1.1
+| | | | | `-- safe-buffer@5.1.2
+| | | | `-- util-deprecate@1.0.2
+| | | `-- safe-buffer@5.2.1 deduped
+| | +-- bson@1.1.6 deduped
+| | +-- denque@1.5.0
+| | +-- optional-require@1.1.0
+| | | `-- require-at@1.0.6
+| | +-- safe-buffer@5.2.1 deduped
+| | `-- saslprep@1.0.3
+| |   `-- sparse-bitfield@3.0.3
+| |     `-- memory-pager@1.5.0
+| +-- mongoose-legacy-pluralize@1.0.2
+| +-- mpath@0.8.3
+| +-- mquery@3.2.5
+| | +-- bluebird@3.5.1
+| | +-- debug@3.1.0
+| | | `-- ms@2.0.0
+| | +-- regexp-clone@1.0.0 deduped
+| | +-- safe-buffer@5.1.2
+| | `-- sliced@1.0.1 deduped
+| +-- ms@2.1.2
+| +-- regexp-clone@1.0.0
+| +-- safe-buffer@5.2.1
+| +-- sift@13.5.2
+| `-- sliced@1.0.1
+`-- underscore@1.13.1
+___________________________________________________________________
+
+
+
+
+
+	(2.2) Prin 'Listarea nu in Adancime' doar a 'Dependentelor Aplicatiei' nostru
+
+
+Rulam Comanda in Terminal:
+___________________________________________________________________
+	
+	npm list --depth=0
+___________________________________________________________________
+
+
+
+Afisarea:
+___________________________________________________________________
+
+Managerul_Pachetului_Node@1.0.0 C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\Managerul_Pachetului_Node
++-- mongoose@5.13.3
+`-- underscore@1.13.1
+___________________________________________________________________
+
+
+
+
+
+
+
+

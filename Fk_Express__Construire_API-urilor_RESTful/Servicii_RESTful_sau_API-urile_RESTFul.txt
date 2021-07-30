@@ -1,0 +1,187 @@
+
+
+	Servicii RESTful sau API-urile RESTful
+
+
+
+
+ 'REST' (REpresentational State Transfer)
+	=> este o 'Conventie' 
+	=> pt. Construirea 'Serviciilor HTTP'
+
+ Folosim Principiile 'Protocolului HTTP' pentru a Asigura  Suport pentru:
+	=> a 'Crea'/'Create',
+	=> a 'Citi'/'Read',
+	=> a 'Upgrada'/'Update',
+	=> a 'Sterge'/'Delete' Datele.
+
+
+ * Aceste 'Operatiuni' 
+	-> poarta Denumirea 
+	-> de 'Operatiuni CRUD'
+
+
+
+ Arhitectura 'Client-Server':
+
+    (1) 'API'-ul = este 'Clientul' sau 'Frontend'-ul
+
+
+    (2) Care Comunica cu 'Serverul' sau 'Backend'-ul
+	     => pentru a 'Prelua' sau a 'Trimite'-'Date'.
+
+
+  (1-2) 'Comunicarea' se Realizeaza prin Protocolul 'HTTP'
+	
+	=> 'Clientul'-> Trimite o 'Cerere HTTP'-> catre 'Server'
+
+
+
+(3) Metodele 'HTTP' Standard:
+     >> 'GET' = pt. 'Preluarea Datelor',
+     >> 'POST' = pt. 'Crearea Datelor',
+     >> 'PUT' = pt. 'Upgradarea Datelor',
+     >> 'DELETE' = pt. 'Stergerea Datelor'.
+
+
+
+
+Ecemplu:
+
+  - Avem o Companie 'Biblioteca de Filme'
+  - Care 'Inchirieaza File'
+  - Aceasta are o 'Aplicatie Client' 
+  - Care Gestioneaza 'Lista de Clienti'
+
+  - Serviciile sunt Expuse pe 'Server' pe 'Punctul Final': 
+____________________________________________________________
+	
+	http://www.bibliotecadefilme.ro/api/clienti
+____________________________________________________________
+
+	=> 'Clientul'->Trimite 'Cereri HTTP' 
+	=> Pentru a 'Comunica' cu 'Serviciile' respective.
+
+
+
+
+
+
+     (A1) Pentru a 'Prelua'-> 'Lista Tuturor Clientilor':
+
+	   => Trimitem 'Request'-ul -> o Cerere 'HTTP' la 'Adresa':
+___________________________________________________________
+	
+	GET/api/clienti
+____________________________________________________________
+
+
+	   => 'Serverul' va Trimite ca 'Raspuns'-> o 'Matrice' de Obiecte 'Clienti': 
+___________________________________________________________
+	
+[
+	{id: 1, name: ''},
+	{id: 2, name: ''},
+	...
+]
+____________________________________________________________
+
+
+
+
+
+
+
+    (A2) Pentru a 'Prelua'-> '1 Singur Client':
+
+	   => Trebuie sa Includem 'ID'-ul 'Clientului' in 'Request'
+___________________________________________________________
+	
+	GET/api/clienti/1
+____________________________________________________________
+
+
+
+   => iar 'Serverul' va 'Raspunde'-> cu Obiectul 'Client': 
+___________________________________________________________
+	
+	{id: 1, name: ''}	
+____________________________________________________________
+
+
+
+
+
+    (B) Pentru a 'Crea'-> '1 Client':
+
+	=> Trebuie sa Trimiten o Cerere 'POST'catre 'Clienti' in 'Request'
+        => trebuie sa Includem Obiectul 'Client' in Corpul 'Request'-ului: 
+___________________________________________________________
+	
+	POST/api/clienti
+
+	{name: ''}
+____________________________________________________________
+
+
+
+   => iar 'Serverul' va 'Prelua Obiectul'-> si va Crea 'Client': 
+___________________________________________________________
+	
+	{id: 1, name: ''}	
+____________________________________________________________
+
+
+
+
+   (C) Pentru a 'Upgrada'-> '1 Singur Client':
+
+	=> trebuie sa Includem Obiectul 'Client' in Corpul 'Request'-ului: 
+___________________________________________________________
+	
+	PUT/api/clienti/1
+
+	{name: ''}
+____________________________________________________________
+
+
+
+   => iar 'Serverul' va 'Upgrada'-> 'Client' cu 'ID'-ul dat
+___________________________________________________________
+	
+	{id: 1, name: ''}	
+____________________________________________________________
+
+
+
+
+   (D) Pentru a 'Sterge'-> '1 Singur Client':
+
+      => aici Nu Trebuie sa Includem Obiectul 'Client' in Corpul 'Request'-ului: 
+___________________________________________________________
+	
+	DELETE/api/clienti/1	
+____________________________________________________________
+
+
+
+
+
+
+
+
+(4) Conventiile 'RESTful' sunt:
+____________________________________________________________
+
+	>> GET/api/clienti
+	>> GET/api/clienti/1
+
+	>> POST/api/clienti
+
+	>> PUT/api/clienti/1
+	
+	>> DELETE/api/clienti/1	
+____________________________________________________________
+
+
+
