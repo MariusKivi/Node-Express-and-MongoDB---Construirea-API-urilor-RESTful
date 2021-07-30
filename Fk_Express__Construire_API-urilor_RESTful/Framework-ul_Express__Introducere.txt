@@ -1,0 +1,47 @@
+
+
+	Framework-ul 'Express' - Introducere
+
+
+
+
+ (0.1) Cream Foderul "fk_express"
+___________________________________________________________
+	mkdir fk_express
+___________________________________________________________
+
+
+
+ (0.2) Intram in "fk_express"
+___________________________________________________________
+	cd fk_express
+___________________________________________________________
+
+
+
+(1) Cream Fisierul "Package.json"
+___________________________________________________________
+	npm init --yes
+___________________________________________________________
+
+
+
+
+(2) Instalam Framework-ul 'Express':
+___________________________________________________________
+	npm i express
+___________________________________________________________
+
+
+>> Afisare in Terminal:
+___________________________________________________________
+npm notice created a lockfile as package-lock.json. You should commit this file.
+npm WARN fk_express@1.0.0 No description
+npm WARN fk_express@1.0.0 No repository field.
+
++ express@4.17.1
+added 50 packages in 12.304s
+___________________________________________________________
+
+
+
