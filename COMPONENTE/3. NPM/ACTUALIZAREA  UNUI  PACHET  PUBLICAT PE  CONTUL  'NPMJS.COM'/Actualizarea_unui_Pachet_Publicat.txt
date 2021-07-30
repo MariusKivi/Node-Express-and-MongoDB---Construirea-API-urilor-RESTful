@@ -1,0 +1,56 @@
+
+	Actualizarea unui 'Pachet Publicat'
+
+
+ (1) Adaugam Functia 'inmultire()' in 'lion-lib/index.js';
+____________________________________________________________
+
+// EXPORTAREA FUNCTIEI 'INMULTIRE()':
+module.exports.inmultire = function(a, b) {
+    // SUMA NUMERELOR:
+    return a * b;
+};
+____________________________________________________________
+
+
+
+
+(2) Upgradarea Versiunei Pachetului din Terminal:
+ 
+(2.1) Upgradare Versiune 'Majora':
+____________________________________________________________
+
+	npm version major
+____________________________________________________________
+
+
+
+
+(2.2) Upgradare Versiune 'Minora':
+____________________________________________________________
+
+	npm version minor
+____________________________________________________________
+	>> O folosim pe acesata.
+	>> Se Afiseaza:  v1.1.0
+
+
+(2.2) Upgradare Versiune 'Patch':
+____________________________________________________________
+
+	npm version patch
+____________________________________________________________
+
+
+
+
+(3) Publicam 'Patch':
+____________________________________________________________
+
+	npm publish
+____________________________________________________________
+
+	>> Afisare in Terminal:  + lion-lib-060299@1.1.0
+
+
+

@@ -1,0 +1,12 @@
+{
+    "name": "lion-lib-060299",
+    "version": "1.1.0",
+    "description": "Aplicatie pentru Adunarea a 2 Numere",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "Marius Chivu",
+    "license": "ISC"
+}
