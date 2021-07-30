@@ -1,0 +1,59 @@
+
+	Lucrul_cu_Pachetele_Globale
+
+
+
+  Exista 'Pachete Node' in 'Registrul NPM' care nu sunt Specifice unei 'Aplicatii' - > acestea fiind 'Tool'-uri pentru 'Linia de Comanda' -> pe care dorim sa le putem 'Accesa' de 'Oriunde'.
+
+  (#) Pachete 'Globale':
+	(1) 'npm' (Node Package Manager)
+
+
+Comanda pentru Instalagea 'Globala' (-g) a lui 'npm':
+_________________________________________________________
+
+	npm i -g npm
+_________________________________________________________
+
+
+	(2) 'ng'  (Angular CLI) 
+	     => utilizat pentru 
+	     => 'Crearea de Noi Proiecte Angular'
+
+
+  (#) Pentru Aflarea Update-urilor Pachetelor Globale
+
+
+Rulam Comanda in Terminal:
+_________________________________________________________
+
+	npm -g outdated
+_________________________________________________________
+
+
+
+Afisarea in Terminal:
+_________________________________________________________
+
+Package      Current  Wanted  Latest  Location
+npm           5.5.1   5.10.0  7.20.3
+webpack-cli  2.0.14   2.1.5   4
+_________________________________________________________
+
+
+
+
+ (#) Pentru Dezinstalarea unui Pachetelor Globale
+
+
+Rulam Comanda in Terminal:
+_________________________________________________________
+
+	npm un -g nume_pachet
+_________________________________________________________
+
+
+
+
+
+
