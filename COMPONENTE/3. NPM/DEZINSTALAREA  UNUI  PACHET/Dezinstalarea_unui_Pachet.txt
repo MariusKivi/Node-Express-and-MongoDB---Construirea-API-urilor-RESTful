@@ -1,0 +1,43 @@
+
+	Dezinstalarea_unui_Pachet
+
+
+
+Rulam Comanda in Terminal:
+__________________________________________________________
+
+	npm uninstall mongoose
+__________________________________________________________
+
+sau cu Scurtatura:
+
+__________________________________________________________
+
+	npm un mongoose
+__________________________________________________________
+
+
+
+Afisare in Terminal:
+__________________________________________________________
+
+removed 2 packages in 2.75s
+__________________________________________________________
+
+
+
+Afisare in 'Package.json' al Proiectului si cel din 'Node_Modules':
+__________________________________________________________
+
+ "dependencies": {
+        "underscore": "^1.13.1"
+    },
+__________________________________________________________
+
+	>> Pachetul 'Mongoose' nu se mai gaseste in "dependencies".
+
+
+
+
+
+
