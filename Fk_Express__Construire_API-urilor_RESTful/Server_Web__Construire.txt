@@ -1,0 +1,118 @@
+
+	Construirea Primului 'Server Web'
+
+
+
+    * EXPRESS JS.COM -- Node.js Web Application Framework:
+      https://expressjs.com/
+
+
+    * API REFERENCES (VEZI 'METODE' & 'PROPRIETATI'):
+      https://expressjs.com/en/5x/api.html
+
+
+
+ (1) Cream Fisierul 'index.js':
+____________________________________________________________
+
+// IMPORTAREA MODULULUI 'EXPRESS'
+const express = require('express');
+
+// APELAREA FUNC. 'EXPRESS()'
+const app = express();
+
+// MET. 'GET(URL, CALLBACK_FUNC(REQ, RES))' 
+// (PT. DEFINIREA 'RUTEI')
+// FUNCTIA 'CALLBACK' MAI ESTE DEN. 'MANIPULATOR DE TRASEU/RUTE'
+app.get('/', (req, res) => {
+    // RASPUNSUL:
+    res.send('Salut Lume');
+});
+
+
+// MET. 'LISTEN(NR_PORT, CALLBACK FUNC*())' 
+// ASCULTAREA 'PORTULUI 3000':
+app.listen(3000, () => {
+    // AFISARE
+    console.log('Port de Ascultare 3000');
+});
+____________________________________________________________
+
+
+
+>> Rulam Comanda in Terminal
+____________________________________________________________
+
+	node index.js
+____________________________________________________________
+
+
+>> Afisare in Terminal
+____________________________________________________________
+
+Port de Ascultare 3000
+____________________________________________________________
+
+
+
+>> Accesarea in Browser:
+____________________________________________________________
+
+http://localhost:3000
+____________________________________________________________
+
+
+>> Afisare in Browser:
+____________________________________________________________
+
+Salut Lume
+____________________________________________________________
+
+
+
+
+
+
+
+ (2) Mai adaugam '1 Ruta' - '/api/cursuri'
+____________________________________________________________
+
+// RUTA 2: '/'
+app.get('/api/cursuri', (req, res) => {
+    // RASPUNSUL - MATRICE DE NUMERE:
+    res.send([1, 2, 3]);
+});
+____________________________________________________________
+
+
+>> Deconectam Ascultarea 'Ctrl + C'
+>> Rerulam Comanda in Terminal
+____________________________________________________________
+
+	node index.js
+____________________________________________________________
+
+
+>> Afisare in Terminal
+____________________________________________________________
+
+Port de Ascultare 3000
+____________________________________________________________
+
+
+
+>> Accesarea in Browser: 'Ruta 2'
+____________________________________________________________
+
+http://localhost:3000/api/cursuri
+____________________________________________________________
+
+
+>> Afisare in Browser:
+____________________________________________________________
+
+[1,2,3]
+____________________________________________________________
+
+
+
