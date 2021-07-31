@@ -1,0 +1,128 @@
+
+	Parametrii 'Rutei'
+
+
+
+ (1) Crearea 'Rutei 3' pentru 'Preluarea' unui 'Singur Curs'
+	=> prin Parametrul ':id'
+____________________________________________________________
+// RUTA 3 - 'PRELUAREA'  UNUI 'SINGUR CURS' - PRIN PARAMETRUL ':ID'
+app.get('/api/cursuri/:id', (req, res) => {
+    // RASPUNSUL - cu  "CITIREA PARAMETRULUI 'ID'":
+    res.send(req.params.id);
+});
+____________________________________________________________
+
+
+
+
+>> Pornim Executarea 'Aplicatiei':
+____________________________________________________________
+
+	nodemon index.js	nodemon index.js
+____________________________________________________________
+
+
+
+>> Afisarea in 'Terminal':
+____________________________________________________________
+[nodemon] 2.0.12
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,json
+[nodemon] starting `node index.js`
+Port de Ascultare 3000...________________________________
+____________________________________________________________
+
+
+
+
+>> Deschidem in 'Browser' -> 'Ruta 1' pt. '1 Curs':
+____________________________________________________________
+
+	http://localhost:3000/api/cursuri/1	
+____________________________________________________________
+
+
+
+
+>> Afisarea in 'Browse':
+____________________________________________________________
+
+1
+____________________________________________________________
+
+
+
+
+
+
+(2) Crearea 'Rutei 4' pentru 'Preluarea' a 'Mai Multor Parametri':	
+____________________________________________________________
+// RUTA 4 - 'PRELUAREA'  UNUI 'SINGUR CURS' - PRIN PARAMETRUL ':ID'
+app.get('/api/posts/:year/:month', (req, res) => {
+    // RASPUNSUL - cu  "CITIREA MAI MULTOR PARAMETRI":
+    res.send(req.params);
+});
+____________________________________________________________
+
+
+
+
+
+>> Deschidem in 'Browser' -> 'Ruta 1' pt. '1 Curs':
+____________________________________________________________
+
+	http://localhost:3000/api/posts/1978/4
+____________________________________________________________
+
+
+
+
+>> Afisarea in 'Browse':
+____________________________________________________________
+
+{"year":"1978","month":"4"}
+____________________________________________________________
+
+
+
+
+
+
+
+ (3) Crearea 'Rutei 5' cu Parametrii 'Query String'      
+	=> prin Adaugarea in 'Link'-ul Browser-ului
+	=> '?sortBy=name'
+__________________________________________________________
+// RUTA 5 - 'PRELUAREA' - PARAMETRILOR 'QUERY  STRING':
+app.get('/api/posts/:year/:month', (req, res) => {
+    // RASPUNSUL - cu  "CITIREA 'PARAMETRILOR QUERY  STRING'":
+    res.send(req.query);
+});
+____________________________________________________________
+
+
+
+>> Deschidem in 'Browser'
+____________________________________________________________
+
+	http://localhost:3000/api/posts/1978/4?sortBy=name
+____________________________________________________________
+
+
+
+
+
+
+>> Afisarea in 'Browse':
+____________________________________________________________
+
+{"sortBy":"name"}
+____________________________________________________________
+
+
+
+
+
+
