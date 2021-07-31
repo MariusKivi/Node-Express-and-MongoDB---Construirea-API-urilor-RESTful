@@ -18,7 +18,7 @@ const app = express();
 // FUNCTIA 'CALLBACK' MAI ESTE DEN. 'MANIPULATOR DE TRASEU/RUTE'
 app.get('/', (req, res) => {
     // RASPUNSUL:
-    res.send('Salut Lume');
+    res.send('Salut Lume!!!');
 });
 
 

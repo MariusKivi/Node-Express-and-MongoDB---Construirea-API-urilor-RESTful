@@ -1,0 +1,76 @@
+
+
+	Pachetul 'NodeMon' (Node Monitor)
+
+
+(1) Instalarea Globala aTool-ului de Monitorizare al lui Node:
+____________________________________________________________
+
+	npm i -g nodemon
+____________________________________________________________
+
+
+>> Executarea 'Aplicatiei' - cu 'NodeMon':
+____________________________________________________________
+
+	nodemon index.js
+____________________________________________________________
+
+
+
+>> Afisarea Executarii cu 'NodeMon':
+____________________________________________________________
+
+[nodemon] 2.0.12
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,json
+[nodemon] starting `node index.js`
+Port de Ascultare 3000
+____________________________________________________________
+
+
+
+>> Facem o Schimbare in Codul 'index.js':
+____________________________________________________________
+app.get('/', (req, res) => {
+    // RASPUNSUL:
+    res.send('Salut Lume!!!');
+});
+____________________________________________________________
+
+
+
+>> Afisarea Monitorizarii cu 'NodeMon' in Terminal:
+____________________________________________________________
+Port de Ascultare 3000
+[nodemon] restarting due to changes...
+[nodemon] starting `node index.js`
+Port de Ascultare 3000
+[nodemon] restarting due to changes...
+[nodemon] starting `node index.js`
+Port de Ascultare 3000
+____________________________________________________________
+	>> Nu mau trebuie Reexecutata Manual Aplicatia .
+
+
+
+>> Rulam in Browser:
+____________________________________________________________
+	
+	http://localhost:3000/
+____________________________________________________________
+
+
+
+
+
+>> Afisarea in Browser:
+____________________________________________________________
+
+Salut Lume!!!
+____________________________________________________________
+
+
+
+
