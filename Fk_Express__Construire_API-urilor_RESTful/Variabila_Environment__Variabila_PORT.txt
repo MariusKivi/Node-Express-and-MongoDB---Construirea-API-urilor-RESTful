@@ -1,0 +1,102 @@
+
+	Variabila 'Environment' - Variabila 'PORT'
+
+
+
+ >> Pebtru 'Mediul de Gazduire' al 'Alicatiei' 
+    => Nu se poate Seta un 'Port' cu Valoare 'Fixa' (3000),  
+    => 'Portul' fiind 'Alocat Dinamic' de catre 'Mediul de Gazduire'
+    => de aceea utilizam 'Variabila Mediului'.
+
+
+ >> In 'Aplicatiile Node' sau 'Mediul de Gazduire'
+	=> avem 'Variabila Mediului' - denumita 'PORT'
+
+ >> 'Variabila Mediului':
+	=> este practic o 'Variabila'
+	=> ce este 'Parte a Mediului' in care 'Ruleaza Procesul',
+	=> 'Valoarea' sa este Setata in 'Afara  Aplicatiei'.
+
+
+>> In 'Aplicatie' trebuie sa 'Citim'
+	=> Valoarea 'Variabilei Mediului': 'Variabila PORT',
+	=> folosind Obiectul Global 'process &
+	=> Proprietatea '.env' 
+	=> cu Numele 'Variabilei Mediului': 'PORT'.
+
+
+
+  (1) In Fisierul 'index.js' -> Adaugam 'Variabila Environment':
+____________________________________________________________
+// VARIABILA 'ENVIRONMENT' - 'PORT'  SAu  PORTUL '3000':
+// (IN OBIECTUL GLOBAL 'PROCESS', IN PROP. 'ENV')
+const port = process.env.PORT || 3000;
+
+
+// MET. 'LISTEN(NR_PORT, CALLBACK FUNC*())' 
+// ASCULTAREA 'VARIABILEI ENVIRONMENT':
+app.listen(port, () => {
+    // 'TEMPLATE  STRING' (PRIN UTIL. 'BACKTICK')
+    console.log(`Port de Ascultare ${port}...`);
+});
+____________________________________________________________
+
+
+
+
+>> Rulare 'Aplicatia' in Terminal:
+____________________________________________________________
+
+	nodemon index.js
+____________________________________________________________
+
+
+
+
+>> Afisare in Terminal:
+____________________________________________________________
+[nodemon] restarting due to changes...
+[nodemon] starting `node index.js`
+[nodemon] restarting due to changes...
+Port de Ascultare 3000...
+[nodemon] starting `node index.js`
+Port de Ascultare 3000...
+____________________________________________________________
+
+	>> Oprim Monitorizarea 'Ctrl + Shift + C'
+
+
+
+
+
+
+ (2) Setarea 'Variabilei Environment' din CMD-ul Windows':
+____________________________________________________________
+
+	set PORT=5000
+____________________________________________________________
+
+
+
+>> Rulam 'Aplicatia' in CMD-ul Windows:
+____________________________________________________________
+
+	nodemon index.js
+____________________________________________________________
+
+
+
+
+>> Afisare in CMD-ul Windows:
+____________________________________________________________
+[nodemon] 2.0.12
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,json
+[nodemon] starting `node index.js`
+Port de Ascultare 5000...
+____________________________________________________________
+
+
+
+

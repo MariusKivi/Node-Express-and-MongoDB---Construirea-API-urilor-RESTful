@@ -29,9 +29,14 @@ app.get('/api/cursuri', (req, res) => {
 });
 
 
+// VARIABILA 'ENVIRONMENT' - 'PORT'  SAu  PORTUL '3000':
+// (IN OBIECTUL GLOBAL 'PROCESS', IN PROP. 'ENV')
+const port = process.env.PORT || 3000;
+
+
 // MET. 'LISTEN(NR_PORT, CALLBACK FUNC*())' 
-// ASCULTAREA 'PORTULUI 3000':
-app.listen(3000, () => {
-    // AFISARE
-    console.log('Port de Ascultare 3000');
+// ASCULTAREA 'VARIABILEI ENVIRONMENT':
+app.listen(port, () => {
+    // 'TEMPLATE  STRING' (PRIN UTIL. 'BACKTICK')
+    console.log(`Port de Ascultare ${port}...`);
 });
