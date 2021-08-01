@@ -1,0 +1,50 @@
+
+
+	HTTP POST Request
+
+
+
+  (#) 'HTTP POST Request'
+	  => este utilizat in 'Crearea de Date Noi'. 
+
+>> Adaugam sub Obiectul 'app'
+	=> Parsarea Obiectului 'json'
+	=> care in Mod Implicit este 'Dezactivat':
+
+____________________________________________________________
+
+// ACTIVARE 'PARSAREA' OBIECTULUI 'JSON' PT. CORPUL 'REQUEST'-ULUI  [IMPLICIT = 'DEZACTIVAT']:
+app.use(express.json());
+____________________________________________________________
+
+
+
+ >> Cream 'HTTP POST Request'
+	=> pt. Crearea & Adaugarea de Date noi in 'Matrice':
+____________________________________________________________
+// RUTA 2.1: '/API/CURSURI'
+// MET. 'POST(URL, CALLBACK_FUNC(REQ, RES))' 
+app.post('/api/cursuri', (req, res) => {
+    // OBIECTUL 'CURS':
+    const curs = {
+        // CREARE 'OBIECT NOU' = 'CURS':
+        id: cursuri.length + 1,
+
+        // CITIREA OBIECTULUI 'CURS' DIN 'CORPUL REQUEST'-ULUI:
+        nume: req.body.nume
+    };
+
+
+
+    // ADAUGAM OBIECTUL 'CURS' -> IN MATRICEA 'CURSURI':
+    cursuri.push(curs);
+
+    // RETURNAREA 'OBIECTULUI  CREAT' IN 'CORPUL RESPONSE':
+    res.send(curs);
+});
+
+____________________________________________________________
+
+
+
+
