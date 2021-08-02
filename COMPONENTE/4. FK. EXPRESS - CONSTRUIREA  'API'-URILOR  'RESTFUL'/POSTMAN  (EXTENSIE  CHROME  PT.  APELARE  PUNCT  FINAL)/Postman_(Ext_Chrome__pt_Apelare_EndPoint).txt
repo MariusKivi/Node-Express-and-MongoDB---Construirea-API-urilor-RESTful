@@ -1,0 +1,81 @@
+
+
+   'Postman'(Extensia Chrome pentru ApelareA Punctelor Finale)
+
+
+
+Link:
+____________________________________________________________
+https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en
+____________________________________________________________
+
+	>> Instalam Extensia si o Deschidem.
+
+
+(1) Crean o Noua Cerere 'HTTP Request':
+
+	>> Clic pe Bara de Meniu 'Tab-ul Dropdown' - 'GET' 
+		=> Selectam Tipul Request-ului 'POST'
+
+
+	>> In Campul 'Enter Eequest URL' introducem: 
+____________________________________________________________
+	http://localhost:3000/api/cursuri
+____________________________________________________________
+
+
+
+
+(2) Setam 'Body-ul Request-ului':
+
+	>> Selectam din 'Lista Orizontala' 
+		=> 'raw' 
+		=> 'json' 
+
+	>> Iar aici Puneam 'Obiectul JSON' 
+		=> in 'Corpul/Body Request'-ului 
+
+____________________________________________________________
+{
+	"nume": "Curs Nou"
+}
+____________________________________________________________
+
+
+	>> Clic 'Send'
+	>> mai jos se afiseaza 'id'-ul  &
+	>> 'Status': '200' - 'Request manipulat cu succes'
+
+
+
+
+ (3) Executam Link-ul in Browser:
+____________________________________________________________
+
+	http://localhost:3000/api/cursuri
+____________________________________________________________
+
+
+
+
+
+
+ >> Afisarea in Browser:
+____________________________________________________________
+
+[{"id":1,"nume":"Curs 1"},
+ {"id":2,"nume":"Curs 2"},
+ {"id":3,"nume":"Curs 3"},
+ {"id":4,"nume":"Curs Nou"},
+ {"id":5,"nume":"Curs Nou"},
+ {"id":6,"nume":"Curs Nou"}]
+____________________________________________________________
+
+	<< de cate ori apasam Butonul 'Send' din 'Postman'
+	>> se Adauga un Nou Obiect in Matrice
+
+
+
+
+
+
