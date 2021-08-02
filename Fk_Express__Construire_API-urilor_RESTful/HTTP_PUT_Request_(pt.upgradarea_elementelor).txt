@@ -1,0 +1,211 @@
+
+	HTTP PUT Request pentru 'Upgradarea Elementelor'
+
+
+
+
+ (1) Cream Metoda 'put()' pentru Upgradarea elementelor:
+
+____________________________________________________________
+// RUTA 3: '/API/CURSURI/:ID'
+// MET. 'PUT(URL, CALLBACK_FUNC(REQ, RES))' 
+app.put('/api/cursuri/:id', (req, res) => {
+
+    // LOGICA: CAUTAM 'CURSUL'
+    // PRELUAREA OBIECTULUI 'CURS' - PRIN APELAREA MET. 'FIND(FUNCTIA_SAGEATA)':
+    const curs = cursuri.find(c => c.id === parseInt(req.params.id))
+
+    // LOGICA: DACA 'CURSUL NU EXISTA' -> RETURNAM '404' (RESURSA NU A FOST GASITA)
+    // DACA 'NU EXISTA CURSUL' PT. UN 'ID' DAT:
+    if (!curs)
+        res.status(404).send('Oiectul nu a fost gasit!');
+
+
+    // LOGICA: VALIDARE CURS
+
+    // DEF. 'SCHEMEI' = 'OBIECT':
+    const schema = {
+        nume: Joi.string().min(3).required()
+    };
+
+    // APELAREA MET. 'VALIDATE()':
+    const rezultat = Joi.validate(req.body, schema);
+
+
+    // LOGICA:  DACA 'CURSUL ESTE INVALID' -> RETURNAM '400' (CERERE ERONATA)
+    // VERIFICAREA VALOAREI 'REZULTAT' -> A PROP. 'ERROR'
+    if (rezultat.error) {
+        // RETURNAM 'EROAREA CU STATREA - 400' CATRE 'CLIENT':
+        // res.status(400).send(rezultat.error);
+        res.status(400).send(rezultat.error.details[0].message);
+        return;
+    }
+
+    // LOGICA: UPDGRADARE CURS:
+    curs.nume = req.body.nume;
+
+
+    // LOGICA: RETURNARE 'CURSULUI UPGRADAT' CLIENTULUI:
+    res.send(curs);
+});
+____________________________________________________________
+
+
+
+(2) Cream Functia 'validareCurs()'
+	=> in care Mutam 'Schema'
+	=> si 'Apelarea Metodei validate()'
+____________________________________________________________
+
+function validareCurs(curs) {
+    // LOGICA: VALIDARE CURS
+    // DEF. 'SCHEMEI' = 'OBIECT':
+    const schema = {
+        nume: Joi.string().min(3).required()
+    };
+
+    // RETURNAREA - APELAREA MET. 'VALIDATE()':
+    return Joi.validate(curs, schema);
+}
+____________________________________________________________
+
+
+
+
+
+(3) Reutilizam Functia 'validareCurs()' 
+	=> in Metoda 'put()'
+	=> Refabricam :
+____________________________________________________________
+    // APELAREA FUNC. 'VALIDARECURS'
+    const rezultat = validareCurs(req.body);
+____________________________________________________________
+	>> O putem inlocui cu 'Destructurarea Obiectelor'
+
+
+
+
+ (4) "Destructurarea Obiectelor" (in Metoda 'put()')
+      >> In care se Utilizeaza '{}' -> la Declararea 'Variabilelor' sau 'Constantelor',
+      >> in care se Adauga Proprietatea Obictului Targeta:
+____________________________________________________________
+
+    // DESTRUCTURAREA OBIECTELOR - APELAREA FUNC. 'VALIDARECURS'
+    const { error } = validareCurs(req.body);
+
+
+    // VERIFICAREA VALOAREI 'REZULTAT' -> A PROP. 'ERROR'
+    if (error) {
+        // RETURNAM 'EROAREA CU STATREA - 400' CATRE 'CLIENT':
+        // res.status(400).send(rezultat.error);
+        res.status(400).send(error.details[0].message);
+        return;
+    }
+____________________________________________________________
+
+
+
+
+ (5) Inlocuim in Metoda 'post()' 
+	=> 'Schema ' 
+	=> cu "Destructurarea Obiectelor"
+	=> creat anterior.
+
+
+
+
+
+(6) Setam in 'Postman':
+	>> Selectam Req-uest-ul 'PUT'
+	>> Adaugam URL: http://localhost:3000/api/cursuri/1
+	>> pastram 'body', 'raw' & 'JSON'
+	> Setam Obiectul:
+____________________________________________________________
+{
+	"nume": "Curs Upgradat"
+}____________________________________________________________
+
+	>> Clic Butonul 'Send'
+
+
+
+
+
+
+
+
+ >> Afisarea in 'Postnab':
+____________________________________________________________
+
+{
+    "id": 1,
+    "nume": "Curs Upgradat"
+}
+____________________________________________________________
+
+
+
+ >> Accesam in Browser:
+____________________________________________________________
+	http://localhost:3000/api/cursuri
+____________________________________________________________
+
+
+
+
+ >> Afisare in Browser:
+____________________________________________________________
+
+[
+ 	{"id":1,"nume":"Curs Upgradat"},
+ 	{"id":2,"nume":"Curs 2"},  
+ 	{"id":3,"nume":"Curs 3"}
+]
+____________________________________________________________
+
+
+
+
+ >> Daca inseram in URL-ul Postman 
+	=> un 'ID Invalid' pentru Upgradare:
+____________________________________________________________
+	
+	http://localhost:3000/api/cursuri/5
+____________________________________________________________
+
+
+
+
+ > Afisarea va fi:
+____________________________________________________________
+
+Oiectul nu a fost gasit!
+____________________________________________________________
+	=> Statusul '404'.
+
+
+
+
+
+
+ >> Daca inseram in Obiect Gol Postman 
+	=> un 'ID Valid' pentru Upgradare:
+____________________________________________________________
+	
+{}
+____________________________________________________________
+
+
+
+
+ > Afisarea va fi:
+____________________________________________________________
+
+"nume" is required
+____________________________________________________________
+	=> Statusul '400'.
+
+
+
+
+
