@@ -1,0 +1,263 @@
+
+
+	Validarea Input-urilor prin Pachetul 'joi'
+
+
+
+
+ (1) Cream Logica de Validare a Input-urilor in Metoda "post()":
+____________________________________________________________
+// RUTA 2.1: '/API/CURSURI'
+// MET. 'POST(URL, CALLBACK_FUNC(REQ, RES))' 
+app.post('/api/cursuri', (req, res) => {
+
+    // LOGICA DE VALIDARE A 'INPUT'-URILOR:
+    // DACA NU EXISTA PROP. 'REQ.BODY.NUME' SAU ESTE 'MAI MICA DE 3':
+    if (!req.body.nume || !req.body.nume.length < 3) {
+        // RETURNAM 'EROAREA CU STATREA - 400' CATRE 'CLIENT' & TRIMITEM UN 'MESAJ':
+        res.status(400).send('Numele este obligatoriu și trebuie să aibă minimum 3 caractere.');
+        return;
+    }
+
+
+    // OBIECTUL 'CURS':
+    const curs = {
+        // CREARE 'OBIECT NOU' = 'CURS':
+        id: cursuri.length + 1,
+
+        // CITIREA OBIECTULUI 'CURS' DIN 'CORPUL REQUEST'-ULUI:
+        nume: req.body.nume
+    };
+
+
+
+    // ADAUGAM OBIECTUL 'CURS' -> IN MATRICEA 'CURSURI':
+    cursuri.push(curs);
+
+    // RETURNAREA 'OBIECTULUI  CREAT' IN 'CORPUL RESPONSE':
+    res.send(curs);
+});
+____________________________________________________________
+
+
+	>>  Inlocuirea 'Logici de Validare' --> cu 'Joi':
+
+
+
+
+  (2) Utilizarea Pachetului 'Node' - 'Joi' 
+	=> pentru 'Validarea Input-urilor':
+____________________________________________________________
+
+	https://www.npmjs.com/package/joi
+____________________________________________________________
+
+
+
+  (2.1) Instalarea Pachetului 'joi'
+	>> Rulam Comanda in Terminal:
+____________________________________________________________
+
+	npm i joi
+____________________________________________________________
+
+
+
+(2.2) Instalarea Pachetului 'joi' Versiunea '13.1.0'
+	>> Rulam Comanda in Terminal:
+____________________________________________________________
+
+	npm i joi@13.1.0
+____________________________________________________________
+
+
+
+  >> Afisarea in Terminal:
+____________________________________________________________
+npm WARN fk_express@1.0.0 No description
+npm WARN fk_express@1.0.0 No repository field.
+
++ joi@13.1.0
+added 5 packages, removed 5 packages and updated 1 package in 3.876s
+____________________________________________________________
+
+
+
+
+
+
+(3.1) Importam Pachetul 'joi' -> in Fisierul 'index.js'
+___________________________________________________________
+
+	const Joi = require('joi');
+____________________________________________________________
+
+
+
+
+
+(3.2.1) Cu 'joi'
+	=> trebuie mai intai Definita 'Schema'
+
+	>> 'Schema' -> defineste 'Forma Obiectelor'
+		=> ce 'Proprietati' avem in 'alte Obiecte',
+		=> de ce 'Tip' sunt 'Proprietatile',
+		=> avem 'email', avem 'string',
+		=> care este 'Numarul Maxim sau Minim de Caractere',
+		=> avem 'Numere', in cce 'Marja'.
+
+
+
+(3.2.2) Crearea 'Schemei' & Apelam Metoda 'validate()' & Afisarea Rezultatului in Consola:
+
+___________________________________________________________
+
+    // DEF. 'SCHEMEI' = 'OBIECT':
+    const schema = {
+        nume: Joi.string().min(3).required()
+    };
+
+    // APELAREA MET. 'VALIDATE()':
+    const rezultat = Joi.validate(req.body, schema);
+
+    // AFISAREA REZULTATULUI:
+    console.log(rezultat);		
+____________________________________________________________
+
+    
+
+
+ (3.3) Pornim Monitorizarea Fisierului 'index.js'
+	=> din Terminal:
+____________________________________________________________
+
+	nodemon index.js
+____________________________________________________________
+	>> Afisare: Port de Ascultare 3000...
+	
+
+
+(3.4) In 'Postman' 
+	-> Cream un 'Curs Nou' 
+	-> Apasand Butonul 'Send'.
+____________________________________________________________
+{ 
+  error: null,
+  value: { nume: 'Curs Nou' },
+  then: [Function: then],
+  catch: [Function: catch] 
+}
+____________________________________________________________
+
+	>> Obiectul 'rezultat' are 2 Proproetati:
+	     => 'error' & 'value'
+
+
+
+(4)  Cream 'Verificarea' valoarei 'rezultat'
+	=> in locul 'Logici de Validare':
+__________________________________________________________
+if (rezultat.error) {
+        // RETURNAM 'EROAREA CU STATREA - 400' CATRE 'CLIENT':
+        res.status(400).send(rezultat.error);
+        return;
+    }
+____________________________________________________________
+	=> Stergem Afisarea: console.log(rezultat);
+
+
+
+(5.1) In 'Postman' daca Trimitem un Obiect Gol:
+____________________________________________________________
+
+{ }
+____________________________________________________________
+
+
+
+
+(5.2) Primim Obiectul cu Proprietatile:
+____________________________________________________________
+{
+    "isJoi": true,
+    "name": "ValidationError",
+    "details": [
+        {
+            "message": "\"nume\" is required",
+            "path": [
+                "nume"
+            ],
+            "type": "any.required",
+            "context": {
+                "key": "nume",
+                "label": "nume"
+            }
+        }
+    ],
+    "_object": {}
+}
+____________________________________________________________
+	=> Acest 'Obiect' este prea 'Complex',
+	=> Trebuie 'Simplificat'.
+
+
+
+
+
+
+
+(6.1)  Modificam 'Verificarea' valoarei 'rezultat'
+	
+__________________________________________________________
+  if (rezultat.error) {
+        // RETURNAM 'EROAREA CU STATREA - 400' CATRE 'CLIENT':
+        // res.status(400).send(rezultat.error);
+        res.status(400).send(rezultat.error.details[0].message);
+        return;
+    }
+____________________________________________________________
+	=> Stergem Afisarea: console.log(rezultat);
+
+
+
+(6.2) In 'Postman' daca Trimitem un Obiect Gol:
+____________________________________________________________
+
+{ }
+____________________________________________________________
+
+
+
+
+(6.3) Primim Mesajul in 'Postman':
+____________________________________________________________
+
+"nume" is required
+____________________________________________________________
+
+
+
+
+
+
+
+
+ (7.1) In 'Postman' daca Setam o Prop. cu 1 Caracter:
+____________________________________________________________
+
+{
+  "nume": "1"
+}
+____________________________________________________________
+	=> Clic 'Send'
+
+
+
+(7.2) Primim un Mesaj Diferit in 'Postman':
+____________________________________________________________
+
+"nume" length must be at least 3 characters long
+____________________________________________________________
+
+
+
