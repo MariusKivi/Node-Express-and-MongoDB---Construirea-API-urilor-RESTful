@@ -1,0 +1,100 @@
+
+	HTTP DELETE Request (pt. Stergerea Elementelor)
+
+
+
+
+ (1) Cream Metoda 'delete()' cu 'Logica':
+    => 'Cautam Element' dupa un'ID' dat,
+    => Daca 'Elementul Cautat' Nu Exista - Returnam Eeroarea '404'
+    => Daca 'Elementul Cautat' Exista - il 'Stergem'
+    => Returnam 'Acelasi Eelement'
+______________________________________________________
+/ RUTA 4: '/API/CURSURI/:ID'
+// MET. 'DELETE(URL, CALLBACK_FUNC(REQ, RES))' 
+app.delete('/api/cursuri/:id', (req, res) => {
+
+    // LOGICA '1.1': 'CAUTAM ELEMENTUL' DUPA UN 'ID' DAT
+    // PRELUAREA OBIECTULUI 'CURS' - PRIN APELAREA MET. 'FIND(FUNCTIA_SAGEATA)':
+    const curs = cursuri.find(c => c.id === parseInt(req.params.id))
+
+    // LOGICA '1.2': DACA 'ELEMENTUL CAUTAT' NU EXISTA - RETURNAM EROAREA '404'
+    // DACA 'NU EXISTA CURSUL' PT. UN 'ID' DAT:
+    if (!curs)
+        res.status(404).send('Oiectul nu a fost gasit!');
+
+
+    // LOGICA '2.1': DACA 'ELEMENTUL CAUTAT' EXISTA - IL 'STERGEM'
+    // GASIREA 'INDEX'-ULUI 'CURSULUI' -> IN mATRICEAA 'CURSURI'
+    const index = cursuri.indexOf(curs);
+
+    // UTILIZAREA METODEI 'SPLICE()'  (PT. 'ELIMINAREA' UNUI 'OBIECT' DIN 'MATRICE')
+    cursuri.splice(index, 1);
+
+
+    // LOGICA '2.2': RETURNAM 'RASPUNSULUI' CATRE 'CLIENT'
+    return .send(curs);
+
+});
+______________________________________________________
+
+
+
+
+
+ (2.1) Pornima 'Ascultarea Portului' - pr Fisierul 'index.js':
+	 	http://localhost:3000/api/cursuri/10
+______________________________________________________
+
+	nodemon index.js
+______________________________________________________
+	>> Afisare: Port de Ascultare 3000...
+
+
+
+
+
+(2.2) In 'Postman'
+	>> Selectam 'Requestul DLETE',
+	>> Adaugam un 'ID' Inexistent:
+	 	http://localhost:3000/api/cursuri/10
+______________________________________________________
+
+Oiectul nu a fost gasit!
+______________________________________________________
+	>> Eroarea 404.
+
+
+
+
+(2.3) In 'Postman'
+	>> Selectam 'Requestul DLETE',
+	>> Adaugam un 'ID' Existent pt. a-l Sterge:
+	 	http://localhost:3000/api/cursuri/1
+______________________________________________________
+{
+    "id": 1,
+    "nume": "Curs 1"
+}
+______________________________________________________
+	>> Statusul '200'	
+
+
+
+
+
+ (2.4) Afisarea in Browser:
+	>> http://localhost:3000/api/cursuri
+______________________________________________________
+
+[
+ {"id":2,"nume":"Curs 2"},
+ {"id":3,"nume":"Curs 3"}
+]
+______________________________________________________
+	> Cursul 1 - a fost Eliminat din Matrice.
+
+
+
+
+

@@ -1,0 +1,285 @@
+
+
+	Remedierea unei Erori
+
+
+
+ (1.1) In Metoda 'put()' 
+	=> in Manipularea Erorei,
+	=> daca Cursul Nu exista ,
+	=> se Returneaza Eroarea 404 clientului.
+	<= dar trebuie 'Iesit' din aceazta Conditie
+	=> pentru a nu se Executa Codul urmator:
+______________________________________________________
+app.put('/api/cursuri/:id', (req, res) => {
+
+    // LOGICA: CAUTAM 'CURSUL'
+    // PRELUAREA OBIECTULUI 'CURS' - PRIN APELAREA MET. 'FIND(FUNCTIA_SAGEATA)':
+    const curs = cursuri.find(c => c.id === parseInt(req.params.id))
+
+    // LOGICA: DACA 'CURSUL NU EXISTA' -> RETURNAM '404' (RESURSA NU A FOST GASITA)
+    // DACA 'NU EXISTA CURSUL' PT. UN 'ID' DAT:
+    if (!curs)
+        res.status(404).send('Oiectul nu a fost gasit!');
+
+    // APELAREA FUNC. 'VALIDARECURS'
+    // const rezultat = validareCurs(req.body);
+
+    // DESTRUCTURAREA OBIECTELOR - APELAREA FUNC. 'VALIDARECURS'
+    const { error } = validareCurs(req.body);
+
+    // LOGICA:  DACA 'CURSUL ESTE INVALID' -> RETURNAM '400' (CERERE ERONATA)
+    // VERIFICAREA VALOAREI 'REZULTAT' -> A PROP. 'ERROR'
+    if (error) {
+        // RETURNAM 'EROAREA CU STATREA - 400' CATRE 'CLIENT':
+        // res.status(400).send(rezultat.error);
+        res.status(400).send(error.details[0].message);
+        return;
+    }
+
+    // LOGICA: UPDGRADARE CURS:
+    curs.nume = req.body.nume;
+
+    // LOGICA: RETURNARE 'CURSULUI UPGRADAT' CLIENTULUI:
+    res.send(curs);
+});
+______________________________________________________
+
+
+
+
+
+ (1.2) Fixarea Bug-ului
+	=> Adaugamd Keyword-ul 'return'
+	=> in fata 'Manipulari Erorilor':
+______________________________________________________
+
+app.put('/api/cursuri/:id', (req, res) => {
+
+    // LOGICA: CAUTAM 'CURSUL'
+    // PRELUAREA OBIECTULUI 'CURS' - PRIN APELAREA MET. 'FIND(FUNCTIA_SAGEATA)':
+    const curs = cursuri.find(c => c.id === parseInt(req.params.id))
+
+    // LOGICA: DACA 'CURSUL NU EXISTA' -> RETURNAM '404' (RESURSA NU A FOST GASITA)
+    // DACA 'NU EXISTA CURSUL' PT. UN 'ID' DAT:
+    if (!curs)
+        return res.status(404).send('Oiectul nu a fost gasit!');
+
+
+    // APELAREA FUNC. 'VALIDARECURS'
+    // const rezultat = validareCurs(req.body);
+
+    // DESTRUCTURAREA OBIECTELOR - APELAREA FUNC. 'VALIDARECURS'
+    const { error } = validareCurs(req.body);
+
+    // LOGICA:  DACA 'CURSUL ESTE INVALID' -> RETURNAM '400' (CERERE ERONATA)
+    // VERIFICAREA VALOAREI 'REZULTAT' -> A PROP. 'ERROR'
+    if (error)
+    //  RETURNAM 'EROAREA CU STATREA - 400' CATRE 'CLIENT':
+        return res.status(400).send(error.details[0].message);
+
+    // LOGICA: UPDGRADARE CURS:
+    curs.nume = req.body.nume;
+
+    // LOGICA: RETURNARE 'CURSULUI UPGRADAT' CLIENTULUI:
+    res.send(curs);
+});
+______________________________________________________
+
+
+
+
+
+
+(2.1) In Metoda 'delete()' 
+	=> avem aceeasi problema
+	=> in 'Manipularea Erorei':
+______________________________________________________
+app.delete('/api/cursuri/:id', (req, res) => {
+
+    // LOGICA '1.1': 'CAUTAM ELEMENTUL' DUPA UN 'ID' DAT
+    // PRELUAREA OBIECTULUI 'CURS' - PRIN APELAREA MET. 'FIND(FUNCTIA_SAGEATA)':
+    const curs = cursuri.find(c => c.id === parseInt(req.params.id))
+
+    // LOGICA '1.2': DACA 'ELEMENTUL CAUTAT' NU EXISTA - RETURNAM EROAREA '404'
+    // DACA 'NU EXISTA CURSUL' PT. UN 'ID' DAT:
+    if (!curs)
+        res.status(404).send('Oiectul nu a fost gasit!');
+
+
+    // LOGICA '2.1': DACA 'ELEMENTUL CAUTAT' EXISTA - IL 'STERGEM'
+    // GASIREA 'INDEX'-ULUI 'CURSULUI' -> IN mATRICEAA 'CURSURI'
+    const index = cursuri.indexOf(curs);
+
+    // UTILIZAREA METODEI 'SPLICE()'  (PT. 'ELIMINAREA' UNUI 'OBIECT' DIN 'MATRICE')
+    cursuri.splice(index, 1);
+
+
+    // LOGICA '2.2': RETURNAM 'RASPUNSULUI' CATRE 'CLIENT'
+    res.send(curs);
+
+});
+______________________________________________________
+
+
+
+
+
+(2.2) Fixarea Bug-ului
+	=> Adaugamd Keyword-ul 'return'
+	=> in fata 'Manipulari Erorilor':
+______________________________________________________
+app.delete('/api/cursuri/:id', (req, res) => {
+
+    // LOGICA '1.1': 'CAUTAM ELEMENTUL' DUPA UN 'ID' DAT
+    // PRELUAREA OBIECTULUI 'CURS' - PRIN APELAREA MET. 'FIND(FUNCTIA_SAGEATA)':
+    const curs = cursuri.find(c => c.id === parseInt(req.params.id))
+
+    // LOGICA '1.2': DACA 'ELEMENTUL CAUTAT' NU EXISTA - RETURNAM EROAREA '404'
+    // DACA 'NU EXISTA CURSUL' PT. UN 'ID' DAT:
+    if (!curs)
+        return res.status(404).send('Oiectul nu a fost gasit!');
+
+
+    // LOGICA '2.1': DACA 'ELEMENTUL CAUTAT' EXISTA - IL 'STERGEM'
+    // GASIREA 'INDEX'-ULUI 'CURSULUI' -> IN mATRICEAA 'CURSURI'
+    const index = cursuri.indexOf(curs);
+
+    // UTILIZAREA METODEI 'SPLICE()'  (PT. 'ELIMINAREA' UNUI 'OBIECT' DIN 'MATRICE')
+    cursuri.splice(index, 1);
+
+
+    // LOGICA '2.2': RETURNAM 'RASPUNSULUI' CATRE 'CLIENT'
+    res.send(curs);
+
+});
+______________________________________________________
+
+
+
+
+
+
+
+(3.1) In Metoda 'get()' 
+	=> avem aceeasi problema
+	=> in 'Manipularea Erorei':
+______________________________________________________
+app.get('/api/cursuri/:id', (req, res) => {
+    // PRELUAREA OBIECTULUI 'CURS' - PRIN APELAREA MET. 'FIND(FUNCTIA_SAGEATA)':
+    const curs = cursuri.find(c => c.id === parseInt(req.params.id))
+
+    // DACA 'NU EXISTA CURSUL' PT. UN 'ID' DAT:
+    if (!curs)
+        res.status(404).send('Oiectul nu a fost gasit!');
+    res.send(curs);
+});
+______________________________________________________
+
+
+
+
+
+
+(3.2) Fixarea Bug-ului
+	=> Adaugamd Keyword-ul 'return'
+	=> in fata 'Manipulari Erorilor':
+______________________________________________________
+app.get('/api/cursuri/:id', (req, res) => {
+    // PRELUAREA OBIECTULUI 'CURS' - PRIN APELAREA MET. 'FIND(FUNCTIA_SAGEATA)':
+    const curs = cursuri.find(c => c.id === parseInt(req.params.id))
+
+    // DACA 'NU EXISTA CURSUL' PT. UN 'ID' DAT:
+    if (!curs)
+        return res.status(404).send('Oiectul nu a fost gasit!');
+    res.send(curs);
+});
+______________________________________________________
+
+
+
+
+
+
+(4.1) In Metoda 'post()' 
+	=> avem aceeasi problema
+	=> in 'Manipularea Erorei':
+______________________________________________________
+
+app.post('/api/cursuri', (req, res) => {
+
+    // DESTRUCTURAREA OBIECTELOR - APELAREA FUNC. 'VALIDARECURS'
+    const { error } = validareCurs(req.body);
+
+    // LOGICA:  DACA 'CURSUL ESTE INVALID' -> RETURNAM '400' (CERERE ERONATA)
+    // VERIFICAREA VALOAREI 'REZULTAT' -> A PROP. 'ERROR'
+    if (error) {
+        // RETURNAM 'EROAREA CU STATREA - 400' CATRE 'CLIENT':
+        // res.status(400).send(rezultat.error);
+        res.status(400).send(error.details[0].message);
+        return;
+    }
+
+
+    // OBIECTUL 'CURS':
+    const curs = {
+        // CREARE 'OBIECT NOU' = 'CURS':
+        id: cursuri.length + 1,
+
+        // CITIREA OBIECTULUI 'CURS' DIN 'CORPUL REQUEST'-ULUI:
+        nume: req.body.nume
+    };
+
+
+    // ADAUGAM OBIECTUL 'CURS' -> IN MATRICEA 'CURSURI':
+    cursuri.push(curs);
+
+    // RETURNAREA 'OBIECTULUI  CREAT' IN 'CORPUL RESPONSE':
+    res.send(curs);
+});
+______________________________________________________
+
+
+
+
+
+
+
+
+(4.2) Fixarea Bug-ului
+	=> Adaugamd Keyword-ul 'return'
+	=> in fata 'Manipulari Erorilor':
+______________________________________________________
+app.post('/api/cursuri', (req, res) => {
+
+    // DESTRUCTURAREA OBIECTELOR - APELAREA FUNC. 'VALIDARECURS'
+    const { error } = validareCurs(req.body);
+
+    // LOGICA:  DACA 'CURSUL ESTE INVALID' -> RETURNAM '400' (CERERE ERONATA)
+    // VERIFICAREA VALOAREI 'REZULTAT' -> A PROP. 'ERROR'
+    if (error)
+    //  RETURNAM 'EROAREA CU STATREA - 400' CATRE 'CLIENT':
+        return res.status(400).send(error.details[0].message);
+
+
+    // OBIECTUL 'CURS':
+    const curs = {
+        // CREARE 'OBIECT NOU' = 'CURS':
+        id: cursuri.length + 1,
+
+        // CITIREA OBIECTULUI 'CURS' DIN 'CORPUL REQUEST'-ULUI:
+        nume: req.body.nume
+    };
+
+
+    // ADAUGAM OBIECTUL 'CURS' -> IN MATRICEA 'CURSURI':
+    cursuri.push(curs);
+
+    // RETURNAREA 'OBIECTULUI  CREAT' IN 'CORPUL RESPONSE':
+    res.send(curs);
+});
+______________________________________________________
+
+
+
+
