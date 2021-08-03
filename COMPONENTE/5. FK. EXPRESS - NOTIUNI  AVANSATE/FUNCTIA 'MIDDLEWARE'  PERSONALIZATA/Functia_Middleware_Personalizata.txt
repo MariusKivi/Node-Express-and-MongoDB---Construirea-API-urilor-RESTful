@@ -1,0 +1,191 @@
+
+	Functia_Middleware_Personalizata
+
+
+
+ (1.1)  Crearea 'Functiei Middleware Personalizate'
+	=> pt. 'Conectare'
+	=> Fara Functia 'nezt()' 
+	=> se va Afisa:
+______________________________________________________
+
+app.use(function(req, res, next) {
+    console.log('Conectare...');
+    
+});
+______________________________________________________
+
+
+
+
+ >> Posnim Ascultarea Fisierului 'index.js':
+______________________________________________________
+
+	nodemon index.js
+______________________________________________________
+	>>Afisare:  Port de Ascultare 3000...
+
+
+
+>> Deschidem 'Postman'
+	>> Selectam 'GET Request',
+	>> URL: http://localhost:3000/api/cursuri
+	>> Clc Butonul 'Send'
+	<< Nu Primim nici un Raspuns.
+	>> Dar in 'Terminal':
+______________________________________________________
+
+Port de Ascultare 3000...
+Conectare...	
+______________________________________________________	
+	=> aceasta indica faptul ca
+	=>'Middleware'-ul a fost 'Executat cu Succes'.
+
+	=> Insa, intrucat Nu am 'Trecut Controlul'
+	=> catre 'Urmatoarea Functie Middleware'
+	=> pt. a Termina 'Ciclul de Raspuns',
+	=> 'Cererea'/'Request'-ul nostru s-a Incheiat.
+
+
+
+ (1.2)  Crearea 'Functiei Middleware Personalizate'
+	=> pt. 'Conectare':
+______________________________________________________
+
+app.use(function(req, res, next) {
+    console.log('Conectare...');
+
+
+    // APELAM FUNC. 'NEXT()' 
+    // (PT. A 'TRECE CONTROLUL' -> CATRE URMATOAREA 'FUNC. MIDDLEWER' IN 'CONDUCTA'
+    next();
+});
+______________________________________________________
+
+
+
+
+
+
+ (2)  Crearea 'Functiei Middleware Personalizate'
+	=> pt. 'Realizarea Autentificarii':
+______________________________________________________
+app.use(function(req, res, next) {
+    console.log('Autentificare...');
+
+
+    // APELAM FUNC. 'NEXT()' 
+    // (PT. A 'TRECE CONTROLUL' -> CATRE URMATOAREA 'FUNC. MIDDLEWER' IN 'CONDUCTA'
+    next();
+});
+______________________________________________________
+
+
+
+
+
+ >> Redeschidem 'Postman'
+	>> Selectam 'GET Request',
+	>> URL: http://localhost:3000/api/cursuri
+	>> Clc Butonul 'Send'
+	<< Nu Primim nici un Raspuns.
+	>> Dar in 'Terminal':
+______________________________________________________
+
+Port de Ascultare 3000...
+Conectare...
+Autentificare...	
+______________________________________________________	
+
+
+
+NB!
+	>> Functiile 'Middleware'
+	>> Sunt Apelate pe Rand	 in Ordinea Crearii.	
+
+
+
+
+
+
+
+(3) Pentru a avea un 'Cod Curat' -> Mutam Aceste Functii 'Middlerware' 
+	=> in Fisiere /Module Separare
+
+	=> Cream Fisierul 'conectare.js'
+	=> Cream Fisierul 'autentificare.js'
+
+	=> si Plasam Functiile in Ele.
+
+
+
+
+
+ (3.1) Creare Fisier/Modul 'conectare.js':
+______________________________________________________
+
+// (1) CTREARE  FUNCTIE 'CONECTARE'
+function conectare(req, res, next) {
+    console.log('Conectare...');
+
+
+    // APELAM FUNC. 'NEXT()' 
+    // (PT. A 'TRECE CONTROLUL' -> CATRE URMATOAREA 'FUNC. MIDDLEWER' IN 'CONDUCTA'
+    next();
+}
+
+
+
+// (2) EXPORTAM  FUNCTIE 'CONECTARE'
+module.exports = conectare;
+______________________________________________________
+
+
+
+
+
+
+
+
+ (3.2) Creare Fisier/Modul 'autentificare.js':
+______________________________________________________
+function(req, res, next) {
+    console.log('Autentificare...');
+
+
+    // APELAM FUNC. 'NEXT()' 
+    // (PT. A 'TRECE CONTROLUL' -> CATRE URMATOAREA 'FUNC. MIDDLEWER' IN 'CONDUCTA'
+    next();
+}
+
+
+
+// (2) EXPORTAM  FUNCTIE 'AUTENTIFICARE()'
+module.exports = autentificare;
+
+______________________________________________________
+
+
+
+
+
+ (3.3.1) Importam in Fisier/Modul 'index.js':
+______________________________________________________
+
+const conectare = require('./conectare');
+const autentificare = require('./autentificare');
+______________________________________________________
+
+
+
+
+
+ (3.3.2) Uilizam 'Functiei Middleware Personalizate' :
+______________________________________________________
+
+app.use(conectare);
+app.use(autentificare);
+______________________________________________________
+
+
+
