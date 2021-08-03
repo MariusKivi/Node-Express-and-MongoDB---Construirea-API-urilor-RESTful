@@ -1,0 +1,79 @@
+
+
+	Conceptul de 'Middleware' sau 'Functia Middleware'
+
+
+
+
+ (0) 'Functia Middleware'
+	=> este practic o Functie , 
+	=> care 'Preia' un Obiect 'Cerut' si
+	=> fie Returneaza un Raspuns catre Client,
+	=> sau 'Transfera Controlul' Catre o Alta 'Functie Middleware'.
+
+
+
+
+ (NB!) In 'Express' 
+	   -> Toate Finctiile de 'Manipulare a Rutei'
+	   -> sunt 'Functii Middleware'.
+
+
+
+
+ (1) Deja am Vazaut Exemple de 'Funtie Middlewaare':
+
+       (1.1) Finctia de 'Manipulare a Rutei':
+______________________________________________________
+
+app.get('/', (req, res) => {
+    // RASPUNSUL:
+    res.send('Salut Lume!!!');
+});
+______________________________________________________
+
+
+
+
+    	(1.2) Un alt Exemplu 
+		=> Cand 'Apelam' Metoda 'express.json()':
+______________________________________________________
+
+	// ACTIVARE 'PARSARE' A OBIECTULUI 'JSON':
+	app.use(express.json());
+______________________________________________________
+
+	=> Aceasta Metoda 
+	=> Returnand o Functie 'Middleware'.
+
+  >> Treaba acesei Functii 'Middleware' 
+	=> este sa Citeasca Cererea/Request-ul
+	=> iar daca in 'Corpul Cererii' exista un 'Obiect JSON'
+ 	=> va 'Parsa Corpul Cerereri'
+	=> intr-un 'Obiect JSON'
+	=> si va Seta 'Proprietatea'- 'req.body'
+	<= aceasta se intampla in 'Runtime'.
+
+
+
+
+
+ (NB) In Implementarea Noastra
+	=> am utilizat 'Conducta de Procesare a Cereri' ('Request Processing Pipeline')
+	=> cu '2 Functii Middleware':
+
+______________________________________________________
+
+ Request    Middleware1'     'Middleware2'  Response
+--------->   json()    ----->   route()    --------->  
+______________________________________________________
+
+
+
+
+
+ (2) Express -> include Functii 'Midelware Predefinite' 
+	=> insa permite deasemenea Crearea de Functii 'Midelware Personalizate'.
+
+
+
