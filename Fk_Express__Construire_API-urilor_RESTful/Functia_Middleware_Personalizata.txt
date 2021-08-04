@@ -1,5 +1,5 @@
 
-	Functia_Middleware_Personalizata
+	Functia 'Middleware' Personalizata
 
 
 
@@ -149,7 +149,7 @@ ______________________________________________________
 
  (3.2) Creare Fisier/Modul 'autentificare.js':
 ______________________________________________________
-function(req, res, next) {
+function autentificare(req, res, next) {
     console.log('Autentificare...');
 
 
