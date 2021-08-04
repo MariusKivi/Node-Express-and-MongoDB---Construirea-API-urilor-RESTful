@@ -2,7 +2,7 @@
 //  (1) CTREARE  FUNCTIE 'AUTENTIFICARE()'
 //  (PARAM. 'NEXT' = REFERINTA CATRE 'MIDDLEWARE-UL URMATOR' IN 'CONDUCTA')
 // ============================================================================
-function(req, res, next) {
+function autentificare(req, res, next) {
     console.log('Autentificare...');
 
 
