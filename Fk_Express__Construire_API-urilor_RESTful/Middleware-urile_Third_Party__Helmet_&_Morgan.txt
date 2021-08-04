@@ -1,0 +1,187 @@
+
+
+	Middleware-urile 'Third Party' - 'Helmet' & 'Morgan' in Framework-ul 'Expres'
+
+
+
+______________________________________________________
+
+ https://expressjs.com/en/resources/middleware.html
+______________________________________________________
+
+
+
+ (1) Middleware-ul Considerat 'Cea Mai Buna Practica' - este 'Helmet':
+
+	=> care Ajută la 'Securizarea Aplicațiilor' 
+	=> prin 'Setarea' - 'Header-elor HTTP'.
+______________________________________________________
+
+ https://github.com/helmetjs/helmet
+______________________________________________________
+
+
+
+
+
+
+ (1.1) Instalarea Middleware-ului 'Helmet':
+______________________________________________________
+
+ 	npm i helmet
+______________________________________________________
+
+
+
+
+ >> Afisarea in Terminal:
+______________________________________________________
+npm WARN fk_express@1.0.0 No description
+npm WARN fk_express@1.0.0 No repository field.
+
++ helmet@4.6.0
+added 1 package in 4.712s
+______________________________________________________
+
+
+
+
+
+
+ (1.2) Importam Middleware-ul 'Helmet'
+	=> in Fisierul 'index.js':
+______________________________________________________
+
+ 	const helmet = require('helmet');	
+______________________________________________________
+
+
+
+
+
+
+ (1.3) Apelarea/Utilizarea  Middleware-ul 'Helmet':	
+______________________________________________________
+
+  	app.use(helmet());	
+______________________________________________________
+
+
+
+
+
+
+
+
+
+
+(2) Middleware-ul 'Morgan':
+	=> pt. 'Înregistrarea Solicitărilor HTTP'
+	=> Prim 'Morgan' -> fiecare 'Cerere' 
+	   -> de pe de pe 'Server' 
+	   -> va fi 'Blocata': 	
+______________________________________________________
+ 	http://expressjs.com/en/resources/middleware/morgan.html
+______________________________________________________
+
+
+
+
+
+(2.1) Instalarea Middleware-ului 'Morgan':
+______________________________________________________
+
+ 	npm i morgan
+______________________________________________________
+
+
+
+
+ >> Afisarea in Terminal:
+______________________________________________________
+npm WARN fk_express@1.0.0 No description
+npm WARN fk_express@1.0.0 No repository field.
+
++ morgan@1.10.0
+added 4 packages in 2.922s
+______________________________________________________
+
+
+
+
+
+ (2.2) Importam Middleware-ul 'Morgan'
+	=> in Fisierul 'index.js':
+______________________________________________________
+
+ 	const morgan = require('morgan');	
+______________________________________________________
+
+
+
+
+
+
+ (2.3) Apelarea/Utilizarea  Middleware-ul 'Helmet'
+	=> cu Optiunea 'tiny':	
+______________________________________________________
+
+	app.use(morgan('tiny'));
+______________________________________________________
+
+
+
+
+
+
+ >> Pornim 'Ascultarea' - 'index.js':
+______________________________________________________
+
+	nodemon index.js
+______________________________________________________
+
+  => Afisare: Port de Ascultare 3000...
+
+
+
+
+
+ >> Setam in'Postman'
+	=> 'GET Request',
+	=> URL: http://localhost:3000/api/cursuri
+
+
+ >> Afisarea in 'Postman':
+______________________________________________________
+[
+    {
+        "id": 1,
+        "nume": "Curs 1"
+    },
+    {
+        "id": 2,
+        "nume": "Curs 2"
+    },
+    {
+        "id": 3,
+        "nume": "Curs 3"
+    }
+]	
+______________________________________________________
+
+ 
+
+ >> Afisarea in Terminal:
+______________________________________________________
+Port de Ascultare 3000...
+Inregistrare...
+GET /api/cursuri 200 76 - 28.195 ms
+______________________________________________________
+
+	=> a trimis  o Cerere 'HTTP'
+	=> catre Punctul Final 'Cursuri'
+	=> Rezultatul este '200' - adica 'cu Succes'
+	=> si Timpul de Razouns la Cerere '28.195 ms'
+
+
+

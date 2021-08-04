@@ -1,9 +1,9 @@
 // ============================================================================
-// (1) CTREARE  FUNCTIE 'CONECTARE'
+// (1) CTREARE  FUNCTIE 'INREGISTRARE'
 //  (PARAM. 'NEXT' = REFERINTA CATRE 'MIDDLEWARE-UL URMATOR' IN 'CONDUCTA')
 // ============================================================================
-function conectare(req, res, next) {
-    console.log('Conectare...');
+function inregistrare(req, res, next) {
+    console.log('Inregistrare...');
 
 
     // APELAM FUNC. 'NEXT()' 
@@ -15,4 +15,4 @@ function conectare(req, res, next) {
 // ============================================================================
 // (2) EXPORTAM  FUNCTIE 'CONECTARE'
 // ============================================================================
-module.exports = conectare;
+module.exports = inregistrare;
