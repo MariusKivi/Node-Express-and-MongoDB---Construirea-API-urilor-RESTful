@@ -1,0 +1,111 @@
+
+
+		'Mediul de Rulare' al 'Aplicatiei' -- 'Dezvoltare' & 'Productie'
+
+
+
+
+  (1) 'Activarea Cereri HTTP' pentru 'Inregistrarea' doar in 'Mediul de Dezvoltare', nu in 'Mediul de Productie'
+	=> utilizam Obiectul 'process'
+	=> cu Proprietatea 'env'
+	=> ce ne da 'Variabila Mediului'
+	=> si utilizam 'Variabila Standrd' numita 'NODE_ENV'
+	=> care Returneaza 'Mediul' pentru 'Aplicatia Node':
+
+______________________________________________________________
+
+// DEFINIM 'TEMPLATE STRING' (PRIN CARACTERUL 'BACKTICK')
+console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+______________________________________________________________
+
+
+
+
+
+(2) Un alt Mod de a Obtine a 'Mediului Curent' este
+	=> prin Obiectul 'app'
+	=> si Metoda 'get()'
+	=> daca Variabila 'env' Nu este Setatra
+	<= va Returna in Mod Implicit 'Mediul de Dezvoltare'
+
+______________________________________________________________
+// DEFINIM 'TEMPLATE STRING' (PRIN CARACTERUL 'BACKTICK')
+console.log(`app: ${app.get('env')}`);
+______________________________________________________________
+
+
+
+
+>> Afisarea in Terminal:
+______________________________________________________________
+NODE_ENV: undefined
+app: development
+Port de Ascultare 3000...
+______________________________________________________________
+	=> Variabila Globala 'NODE_ENV' = este 'undefine'
+
+
+
+
+
+
+
+
+  (3) 'Activarea' Middlewre-ului 'Morgan' pt. 'Mediul de Dezvoltare'
+	=> Stergem 'Activarile' facute 'Anterior':
+______________________________________________________________
+if (app.get('env') === 'development') {
+    
+    //  UTILIZAREA / APELAREA 'MIDDLEWARE'-ULUI (BUILT-IN) - 'MORGAN('OPT)'
+    app.use(morgan('tiny'));
+
+    // AFISARE IN CONSOLA:
+    console.log('Morgan aActivat...');
+}
+______________________________________________________________
+
+
+
+
+
+ >> Afisarea in Terminal:
+______________________________________________________________
+Morgan Activat...
+Port de Ascultare 3000...
+______________________________________________________________
+
+
+
+
+
+
+
+
+ (4) Setarea 'Variabilei Globale a Mediul' pt. 'Productie'
+     => Oprim in Terminal 'Ascultarea Portului'
+     => Rulam Comanda in 'Windows PowerShell':
+______________________________________________________________
+
+	$env:NODE_ENV="production"
+______________________________________________________________
+  
+
+
+ >> Respornim Ascultarea Portului:
+______________________________________________________________
+
+	nodemon index.js
+______________________________________________________________
+
+
+
+
+
+>> Afisarea in Terminal:
+______________________________________________________________
+
+Port de Ascultare 3000...
+______________________________________________________________
+  => Vedem ca 'Morgan' nu mai este 'Activat'.
+
+
