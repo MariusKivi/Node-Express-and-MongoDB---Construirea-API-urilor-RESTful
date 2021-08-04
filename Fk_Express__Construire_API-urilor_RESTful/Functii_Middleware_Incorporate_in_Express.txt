@@ -1,0 +1,141 @@
+
+
+	Functii 'Middleware' Incorporate in 'Express'
+
+
+ In Expres avem mai multe Functii 'Meaddleware' Incorporate:
+  >> Ex. Obiectul 'express.json'
+
+
+
+ (1.1) Functia 'Middleware Incorporata' - 'express.urlencoded()'
+_____________________________________________________________________
+
+	app.use(express.urlencoded());
+_____________________________________________________________________
+	>> Ceea ce Preluam in Rezultat este Func. 'Middleware'.
+	>> Aceasta 'Trece Cererile de Intrare' 
+	>> cu Sarcini Utile Codificate prin URL (URL Encoded Payloads)
+
+	>> Care este un 'Request' (o Cerere) cu un Corp:	  ___________________________________________________________________
+	 
+	key=value&key=value 
+_____________________________________________________________________
+
+
+
+
+
+ >> Deschidem 'Postman'
+	=> Trimitem 'POST Request',
+	=> pe URL:  http://localhost:3000/api/cursuri,
+	=> Selectam 'Body'
+	=> Selectam 'x-www-form-url-encoded'
+	=> Inseram in Campul 'key': nume
+	=> Inseram in Campul 'value': Cursul Meu
+	=> Apasam Butonul 'Send':
+
+ >> Afisarea in 'Postman':
+___________________________________________________________________
+	 
+{
+    "id": 5,
+    "nume": "Cursul Meu"
+}
+_____________________________________________________________________
+
+	=> Am Creat cu Succes un 'Curs Nou' pe 'Server'.
+	=> Functia Middleware a putut 'Citi Request'-ul 
+	=> cu Sarciai Utile Codificata prin URL 
+	   (URL Encoded Payloads)
+
+
+
+
+
+
+ >> Afisarea in Terminal:
+___________________________________________________________________
+	 
+body-parser deprecated undefined extended: provide extended option index.js:41:17
+Port de Ascultare 3000...
+Conectare...
+Autentificare...
+Conectare...
+Autentificare...
+_____________________________________________________________________
+
+  >> Avertizarea: 'body-parser deprecated undefined extended: provide extended option '
+
+  >> Ne Specifica -> ca trebuie:
+	   => sa 'Trecem' un 'Obiect' in Functia 'Middelware'
+	   => si sa Setam 'Extentia' ca fiind 'Adevarata':
+
+
+
+
+
+ (1.2) Fixarea 'Avertizari' Afisate in 'Terminal'  
+	=> in Functia 'Middleware Incorporata': 
+_____________________________________________________________________
+
+  app.use(express.urlencoded({ extend: true }));
+_____________________________________________________________________
+   => prin aceasta Putem 'Trece' - 'Matrici' & 'Obiecte Complexe'
+   => folosind 'Formatul de Codare URL'.
+
+
+
+
+
+
+
+
+
+ (2) Functia 'Middleware Incorporata' - 'express.static()'
+	=> utilizat pentru a Servi Fisierele 'Statice':
+_____________________________________________________________________
+
+app.use(express.static('public'));
+_____________________________________________________________________
+  >> 'public' - este 'Folder'-ul 
+  >> in care Plasam Toate 'Asset'-urile Statice'
+  >> precum 'css', 'img'
+
+
+
+
+
+
+ (3) Cream Folder-ul 'public' in 'Proiect'
+	=> in care Cream Fisierul 'readme.txt':
+___________________________________________________________________
+Acesta este Fisierul 'readme.txt'.
+___________________________________________________________________
+
+
+
+
+
+ >> Deschidem Browser-ul pe Adresa:
+___________________________________________________________________
+	 
+	http://localhost:3000/readme.txt
+_____________________________________________________________________
+
+
+
+
+
+ >> Afisarea in Browser:
+___________________________________________________________________
+	 
+Acesta este Fisierul 'readme.txt'.
+_____________________________________________________________________
+
+
+
+
+
+
+
