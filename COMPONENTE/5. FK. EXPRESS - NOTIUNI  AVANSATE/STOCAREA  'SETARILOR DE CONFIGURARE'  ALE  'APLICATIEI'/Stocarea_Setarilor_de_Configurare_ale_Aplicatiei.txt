@@ -1,0 +1,285 @@
+
+	Stocarea 'Setarilor de Configurare' ale 'Aplicatiei' & 'Suprascrierea' lor pentru fiecare 'Mediu al Aplicatiei'
+
+
+
+
+
+ (0.1) Pachetul 'Node' 
+	=> Cel Mai Popular
+	=> pentru 'Managementul Configuratiei'
+	=> este 'RC':	
+------------------------------------------------------
+	https://www.npmjs.com/package/rc
+------------------------------------------------------
+
+
+
+ (0.2) Pachetul 'Node' 
+	=> Recomandat
+	=> pentru 'Gestionarea Configuratiei'
+	=> este 'CONFIG':	
+------------------------------------------------------
+	https://www.npmjs.com/package/config
+------------------------------------------------------
+
+
+
+
+
+ (1.0) Instalarea Pachetului/Modulului 'config':
+
+
+   >> Rulam Comanda in Terminal:
+_____________________________________________________
+
+	npm i config
+_____________________________________________________
+
+
+
+
+   >> Afisarea in Terminal:
+_____________________________________________________
+npm WARN fk_express@1.0.0 No description
+npm WARN fk_express@1.0.0 No repository field.
+
++ config@3.3.6
+added 3 packages in 4.589s
+_____________________________________________________
+
+
+
+
+
+
+ (1.1) Cream Folder-ul 'config' in Proiect.
+	=> in care Cream Fisierul 'default.json'
+
+
+  In care Crearea Obiectului 'JSON'
+	=> pt. Definirea 'Setarilor de Configurare'
+	=> in Fisierul 'default.json':
+_____________________________________________________
+
+{
+    "nume": "Aplicatiea Mea Express"
+}
+_____________________________________________________
+
+
+
+
+
+
+ (1.2) Cream Fisierul 'development.json' 
+	=> in Folder-ul 'config'
+	=> in care putem Defini 'Setarile' 
+	=> Specifice 'Mediului de Dezvoltare'
+	=> iar aici putem 'Suprascrie Setarea Default' 
+
+	=> si Adauga 'Proprietati Suplimentare'
+	=> ce pot fi 'Complexe'
+	=> si in care putem 'Stoca  Informatii'
+	=> despre 'Serviciile de Mail':
+_____________________________________________________
+
+{
+    "nume": "Aplicatiea Mea Express in Mediul de Dezvoltare",
+    "mail": {
+        "server-de-mail-pentru-dezvoltare"
+    }
+}
+_____________________________________________________
+
+
+
+
+
+
+
+
+ (1.3) Cream Fisierul 'production.json' 
+	=> in Folder-ul 'config'
+	=> Copiem & Modificam Fisierul Anterior:
+_____________________________________________________
+
+{
+    "nume": "Aplicatiea Mea Express in Mediul de Productie",
+    "mail": {
+        "server-de-mail-pentru-productie"
+    }
+}
+_____________________________________________________
+
+
+
+
+
+ (2.1) Importam Modulul Instalat Anterior 'config'
+	=> in Fisierul 'index.js':
+_____________________________________________________
+
+const config = require('config');
+_____________________________________________________
+
+
+
+
+
+
+ (2.2) Utilizam 'Configurare'
+	=> Afisand Proprietatile de Configurare:
+_____________________________________________________
+
+//  AFISARE - MET. 'CONGIG.GET('NUMELE_PROP_DE_CONFIG')':
+console.log('Nume Aplicatie:' + config.get('nume'));
+console.log('Server de Mail:' + config.get('mail.host'));
+_____________________________________________________
+
+
+
+
+  (3.1) Setarea 'Variabilei Globale' pt. 'Mediul Development'
+     	=> Rulam Comanda in 'Windows PowerShell':
+______________________________________________________________
+
+	$env:NODE_ENV="development"
+______________________________________________________________
+  
+
+
+ >> Pornim Aplicatia:
+______________________________________________________________
+
+	nodemon index.js
+______________________________________________________________
+
+
+
+
+
+ >> Afisarea in Terminal:
+______________________________________________________________
+Nume Aplicatie:Aplicatiea Mea Express in Mediul de Dezvoltare
+Server de Mail:server-de-mail-pentru-dezvoltare
+Morgan Activat...
+Port de Ascultare 3000..
+______________________________________________________________
+  => Vedem ca 'Aplicatia' Ruleaza in 'Modul de Dezvoltare'.
+
+
+
+
+
+
+
+
+
+  (3.2) Setarea 'Variabilei Globale' pt. 'Mediul Production'
+     	 => Rulam Comanda in 'Windows PowerShell':
+______________________________________________________________
+
+	$env:NODE_ENV="production"
+______________________________________________________________
+  
+
+
+ >> Pornim Aplicatia:
+______________________________________________________________
+
+	nodemon index.js
+______________________________________________________________
+
+
+
+
+
+ >> Afisarea in Terminal:
+______________________________________________________________
+Nume Aplicatie:Aplicatiea Mea Express in Mediul de Productie
+Server de Mail:server-de-mail-pentru-productie
+Port de Ascultare 3000...
+______________________________________________________________
+  => Vedem ca 'Aplicatia' Ruleaza in 'Modul de Productie'.
+
+
+
+
+
+ NB!
+______________________________________________________________
+    A nu se Stoca 'Secretele Aplicatiel' in 'Fisierele de Configurare', precum:
+	=> Parola Bazei de Date,
+	=> Serverul de Mail.
+______________________________________________________________
+
+
+
+
+
+  (4.1) Setarea 'Variabilei Globale de Mediu' pt. Stocarea Paroleli' unui 'Server de Mail':
+     	 => Rulam Comanda in 'Windows PowerShell':
+______________________________________________________________
+
+	$env:app_parola="1234"
+______________________________________________________________
+  
+
+
+
+
+(4.2) Cream Fisierul 'custom-environment-variables.json' 
+	=> in Folder-ul 'config'
+	=> in care Defini 'Harta Setarilor de Configurare' 
+	=> pentru 'Variabilele Globale ale Mediului'.
+
+	=> Copiem & Modificam 'Continutul' Fisierului 'development.json':
+_____________________________________________________
+{
+    "mail": {
+        "parola": "app_parola"
+    }
+}
+_____________________________________________________
+
+
+
+
+
+
+
+ (4.3) Utilizam 'Configurare'
+	=> Afisand Proprietatea de Configurare 'mail.parola':
+______________________________________________________________
+
+console.log('Parola de Mail: ' + config.get('mail.parola'));
+______________________________________________________________
+
+
+
+
+
+ >> Pornim Aplicatia:
+______________________________________________________________
+
+	nodemon index.js
+______________________________________________________________
+
+
+
+
+
+ >> Afisarea in Terminal:
+______________________________________________________________
+Nume Aplicatie: Aplicatiea Mea Express in Mediul de Productie
+Server de Mail: server-de-mail-pentru-productie
+Parola de Mail: 1234
+Port de Ascultare 3000...
+______________________________________________________________
+  => Vedem 'Parola de Mail' 
+  => Setata din 'Variabila Mediului'
+  => nu dintr-un Fisier de Configurare.
+
+
+
