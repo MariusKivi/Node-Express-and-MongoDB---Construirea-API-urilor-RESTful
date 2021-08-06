@@ -1,0 +1,164 @@
+
+	Template Engines
+	(Motoare de Modelare)
+
+
+
+
+
+   Pana in prezent am Returnat 'JSON' in 'Punctele Finale' 
+
+   >> Se poate de asemenea Returna 'HTML' catre 'Client' --> iar pentru aceasta vom Utiliza 'Motoare de Modelare)'.
+
+
+
+  Cele Mai 'Populare Template Engines' (Motoare de Modelare) pentru 'Express' sunt:
+	1) 'Pug'
+	2) 'Mustache'
+	3) 'EJS'
+
+
+  >> Fiecare 'Template Engine' are o 'Sintaxa' Diferita pentru 'Generarea HTML-ului Dinamic' si Returnare sa catre 'Client'.
+
+
+
+
+
+  (1) Utilizarea 'Template Engine'-ului 'Pug' pentru 'Generarea HTML-ului Dinamic' si Returnare sa catre 'Client' '' 
+---------------------------------------------------------------------
+	https://www.npmjs.com/package/pug
+---------------------------------------------------------------------
+
+
+
+
+  (1.1) Instalarea 'Template'-ului 'Pug':
+_____________________________________________________________________
+
+	npm i pug	_____________________________________________________________________
+
+
+
+
+
+  >> Afisarea in Terminal:
+_____________________________________________________________________
+
+npm WARN fk_express@1.0.0 No description
+npm WARN fk_express@1.0.0 No repository field.
+
++ pug@3.0.2
+added 42 packages in 9.149s
+_____________________________________________________________________
+
+
+
+
+
+
+  (1.2) Setam si Incarcam Modulul 'pung' in 'index.js'
+_____________________________________________________________________
+// (SET-1) SETAREA 'TEMPLATE/VIEW  ENGINE' PT. 'APLICATIE'
+// -----------------------------------------------------------------
+// METODA 'SET('NUME_PROP', 'NUMELE_tEMPLATE_ENGINE')'
+// (>> EXPRES VA 'INCARCA INTERN' MODULUL 'PUG' & NU TREBUIE 'IMPORTAT' PRIN'REQUIRE')
+app.set('view engine', 'pug');
+
+
+//----------------------------------------------------------------- 
+// (SET-2) SETARE PT. 'SUPRASCRIEREA' TRECERI CATRE UN 'TEMPLATE' PT. 'APLICATIE'
+// -----------------------------------------------------------------
+// METODA 'SET('NUME_PROP', 'VALOAREA_ESTE_LOCUL_IN_CARE_STOCAM_TEMPLETE-UL')'
+app.set('views', './views');
+_____________________________________________________________________
+
+
+
+
+
+
+ (2.1) Cream Folder-ul 'views' & Fisierul 'index.pug':
+_____________________________________________________________________
+html 
+    head 
+        title= titlu 
+    body
+        h1= mesaj   
+_____________________________________________________________________
+	=> vedem Sintaxa Formatului '.pug'
+
+
+
+
+
+
+(2.2) Inlocuim Metoda 'send()' pentru Trimitere a Mesajului catre Client in 'index.js'
+_____________________________________________________________________
+app.get('/', (req, res) => {
+    // RASPUNSUL:
+    res.send('Salut Lume!!!');
+});
+_____________________________________________________________________
+
+      => cu Metoda 'render()':
+_____________________________________________________________________
+app.get('/', (req, res) => {
+    // RASPUNSUL - PRIN 'PUG TEMPLATE ENGINE':
+    // MET. 'RENDER('NUMELE_FISIERULUI.PUG_TEMPLATE', {VAPORI_ALE_PARAMS_DIN_TEMPLATE})'
+    res.render('index', { titlu: 'Aplicatia Mea Express', mesaj: 'Va saluta Marius!' });
+});
+________________________________________________________________
+
+
+
+
+
+ (3.1) Setarea 'Variabilei Globale de Mediu' pt. Stocarea Paroleli' unui 'Server de Mail':
+     	 => Rulam Comanda in 'Windows PowerShell':
+______________________________________________________________
+
+	$env:app_parola="1234"
+______________________________________________________________
+  
+
+
+  (3.2) Pornim Aplicatia:
+_____________________________________________________________________
+
+	nodemon index.js
+_____________________________________________________________________
+
+
+
+
+  >> Afisarea in Terminal:
+_____________________________________________________________________
+Nume Aplicatie: Aplicatiea Mea Express in Mediul de Dezvoltare
+Server de Mail: server-de-mail-pentru-dezvoltare
+Parola de Mail: 1234
+Morgan Activat...
+Port de Ascultare 3000...
+_____________________________________________________________________
+
+
+
+
+
+
+
+  (3.3) Deschidem Link-ul in Browser:
+---------------------------------------------------------------------------------------------
+	http://localhost:3000
+---------------------------------------------------------------------------------------------
+
+
+
+  >> Afisarea in Browser:
+_____________________________________________________________________
+Va saluta Marius!
+_____________________________________________________________________
+
+
+
+
+

@@ -1,0 +1,1 @@
+Acesta este Fisierul 'readme.txt'.
