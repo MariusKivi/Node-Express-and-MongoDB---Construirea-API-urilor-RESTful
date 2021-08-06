@@ -1,0 +1,282 @@
+
+	Pachetul 'Debug' pentru 'Depanarea Aplicatiei'
+
+
+
+
+  (0) Pachetul 'Debug' - Reprezinta o Cale Mai Buna de a Afisa Mesaje in Scopul Depanarii.
+
+	=> prin care vom putea Ilocui 
+	=> Instructiuniile 'console.log()'
+	=> dim Codul Aplicatiei 
+	=> cu Apelarea Functiei 'debug()'
+	=> iar apoi Putem Utiliza  'Variabila Mediului'
+	=> pentru a 'Activa' sau 'Dezactiva' Depanarea
+	=> putand astfel 'Determina' si ceea ce Dori sa se 'Afisexe'
+-----------------------------------------------------
+	https://www.npmjs.com/package/debug
+-----------------------------------------------------
+
+
+
+
+ (1.1) Instalarea Pachetului 'debug';
+	=> Rulam Comanda in Terminal:
+______________________________________________________
+	
+	npm i debug
+______________________________________________________
+
+
+
+
+  >> Afisarea in Terminal
+______________________________________________________
+npm WARN fk_express@1.0.0 No description
+npm WARN fk_express@1.0.0 No repository field.
+
++ debug@4.3.2
+added 10 packages and updated 2 packages in 2.643s
+______________________________________________________
+
+
+
+
+
+ (1.2) Incarcarea Pachetului 'debug' in 'index.js'
+______________________________________________________
+
+// (DEP.1) DEPANAREA 'LA PORNIURE':
+const depanareLaPornire = require('debug')('app:pornire');
+
+// (DEP.2) 'MESAJE DE DEPANARE' -> LEGATE DE 'BAZA DE DATE'
+const depanareDB = require('debug')('app:DB');
+____________________________________________________
+	=> Functia '('app:DB')' -> va Returna 'Functia de Depanare'
+
+
+
+
+
+
+ (1.3) Utilizam Pachetul 'Debag' in Afisarea:
+______________________________________________________
+
+if (app.get('env') === 'development') {
+
+    //  UTILIZAREA / APELAREA 'MIDDLEWARE'-ULUI (BUILT-IN) - 'MORGAN('OPT)'
+    app.use(morgan('tiny'));
+
+    // AFISARE IN CONSOLA:
+    // console.log('Morgan Activat...');
+
+    // AFISAREA  PRIN PACHETUL 'DEBUG'
+    depanareLaPornire('Morgan Activat...');
+}
+______________________________________________________
+
+
+
+
+
+ (1.4) Crearea Bazei de Date cu Informatii despre Depanare
+______________________________________________________
+// UTILIZAREA -  'MESAJELOR  DE  DEPANARI' -> LEGATE DE 'BAZA DE DATE'
+depanareDB('Conectat la Baza de Date')
+______________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+ 
+  (2.1) Setarea 'Variabilei Globale a Mediului'
+     	 => Rulam Comanda in 'Windows PowerShell':
+______________________________________________________________
+
+	$env:DEBUG="app:pornire"
+______________________________________________________________
+  
+
+
+ >> Pornim Aplicatia:
+______________________________________________________________
+
+	nodemon index.js
+______________________________________________________________
+
+
+
+
+
+ >> Afisarea in Terminal:
+______________________________________________________________
+[nodemon] 2.0.12
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,json
+[nodemon] starting `node index.js`
+  app:pornire Morgan Activat... +0ms
+Port de Ascultare 3000...
+______________________________________________________________
+  => Vedem Informatia de Depanare.
+
+
+
+
+ (2.2) Setarea 'Variabilei Globale a Mediului' - 'Goala'
+     	 => Rulam Comanda in 'Windows PowerShell':
+______________________________________________________________
+
+	$env:DEBUG=""
+______________________________________________________________
+  
+
+
+ >> Pornim Aplicatia:
+______________________________________________________________
+
+	nodemon index.js
+______________________________________________________________
+
+
+
+
+
+ >> Afisarea in Terminal:
+______________________________________________________________
+Port de Ascultare 3000...
+______________________________________________________________
+  => Nu se mai Afiseaza  Mesajulde Depanare.
+
+
+
+
+
+
+
+ (2.3) Setarea 'Variabilei Globale a Mediului' - pentru mai multe  'Nume de Spatii'
+     	 => Rulam Comanda in 'Windows PowerShell':
+______________________________________________________________
+
+	$env:DEBUG="app:pornire, app:DB"
+______________________________________________________________
+  
+
+  >> sau prin 'Toate Spatiile de Nume' prin Caracterul '*':
+______________________________________________________________
+
+	$env:DEBUG="app:*"
+______________________________________________________________
+  
+
+
+
+ >> Pornim Aplicatia:
+______________________________________________________________
+
+	nodemon index.js
+______________________________________________________________
+
+
+
+
+
+ >> Afisarea in Terminal:
+______________________________________________________________
+app:pornire Morgan Activat... +0ms
+app:DB Conectat la Baza de Date +0ms
+Port de Ascultare 3000...
+______________________________________________________________
+  => Afisarea ambelor Mesaje de Depanare.
+
+
+
+
+
+
+
+ (2.4) Setarea 'Variabilei Globale a Mediului' & 'Pornim Aplicatia' in 'Timpul Rularii Ap;icatiei'
+     	 => Rulam Comanda in 'Windows PowerShell':
+______________________________________________________________
+
+	$env:DEBUG="app:DB"; nodemon index.js 
+______________________________________________________________
+  
+
+
+ >> Afisarea in Terminal:
+______________________________________________________________
+  app:DB Conectat la Baza de Date +0ms
+Port de Ascultare 3000...
+______________________________________________________________
+  => Setarea & Afisarea Mesajului de Depanare.
+
+
+
+
+
+
+
+
+
+
+ (3) Simplificam Codul:
+	=> Nu Avem 'Baza de Date' in acelasi fisier
+______________________________________________________
+// depanareDB('Conectat la Baza de Date')
+______________________________________________________
+
+
+	=> Stergem FImportul cu functia 'depanareDB'
+______________________________________________________
+/// const depanareDB = require('debug')('app:DB');
+______________________________________________________
+
+
+
+
+	=> Redenumim in 'Import'  Func. 'depanareLaPornire' in 'debug' 
+______________________________________________________
+const debug = require('debug')('app:debug');
+______________________________________________________
+
+
+
+
+	=> Redenumim in 'Utilizare'  Func. 'depanareLaPornire' in 'debug' 
+______________________________________________________
+// AFISAREA  PRIN PACHETUL 'DEBUG'
+debug('Morgan Activat...');
+______________________________________________________
+
+
+ => Rulam Comanda in 'Windows PowerShell':
+______________________________________________________________
+
+	$env:DEBUG="app:debug"; nodemon index.js 
+______________________________________________________________
+  
+
+
+
+
+  >> Afisarea in Terminal
+______________________________________________________
+[nodemon] 2.0.12
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,json
+[nodemon] starting `node index.js`
+  app:debug Morgan Activat... +0ms
+Port de Ascultare 3000...
+______________________________________________________
+
+
+
