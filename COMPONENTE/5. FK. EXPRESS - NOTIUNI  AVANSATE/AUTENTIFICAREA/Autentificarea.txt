@@ -1,0 +1,21 @@
+
+
+	Autentificarea
+
+
+
+
+
+  'Autentificarea' 
+	=> este in afara scopului 'Express',
+	=> intrucat 'Express' este un 'Framework' minim & usor, neavand o opinie asupra Autentificarii'.
+
+
+
+  
+  (NB!) Vom studia mai tarziu in 2 Sectiuni 'Autentificarea' & 'Autorizarea'
+	=> in care vom vedea cum putem Securiza 'EndPoins'/'Punctele Finale' ale 'API'-urilor.
+
+
+
+
