@@ -1,0 +1,34 @@
+
+	Integrarea 'Bazei de Date'
+
+
+
+  'Baze de Date' ce pot fi 'Integrate' cu 'Node' & 'Expres':
+-----------------------------------------------------------
+https://expressjs.com/en/guide/database-ntegration.html
+-----------------------------------------------------------
+
+
+	>> Cassandra
+	>> Couchbase
+	>> CouchDB
+	>> LevelDB
+	>> MySQL
+	>> MongoDB
+	>> Neo4j
+	>> Oracle
+	>> PostgreSQL
+	>> Redis
+	>> SQL Server
+	>> SQLite
+	>> Elasticsearch
+
+
+
+  (1) Integrarea Bazei de Date 'MongoDN':
+-----------------------------------------------------------
+https://expressjs.com/en/guide/database-integration.html#mongodb
+-----------------------------------------------------------
+
+
+
