@@ -1,0 +1,91 @@
+
+
+	Rezolvarea Problemei 'Callback' ('Functia Inversa') prin Tehnica de 'Inlocuire' a  Functiei 'Anonime' cu Functia 'Denumita'
+
+
+
+
+  >> Functia 'Anonima':
+_____________________________________________________________________
+
+ (commits) => {
+       // INLOCUIRE A FUNCTIEI 'ANONIME' CU FUNCTIA 'NUMITA'
+  }
+_____________________________________________________________________
+	=> Functia Nu are un Nume,
+	=> Inlocuim  aceste Functii Anonime 
+	=> cu Functii 'Denumite'
+
+
+
+
+(1.1) Crean Functia 'Denumita' - 'displayCommits':
+_____________________________________________________________________
+
+function displayCommits(commits) {
+    console.log(commits);
+}
+_____________________________________________________________________
+	=> Functia are un 'Nume'
+
+
+
+(1.2) Inlocuirea  Functiei 'Anonime' cu Functia 'Denumita':
+_____________________________________________________________________
+
+// INLOCUIRE A FUNCTIEI 'ANONIME' CU FUNCTIA 'NUMITA'
+getCommits(depozit, displayCommits)
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+(2.1) Crean Functia 'Denumita' - 'getCommits':
+_____________________________________________________________________
+
+function getCommits(depozite) {
+    getCommits(depozit, displayCommits);
+}
+_____________________________________________________________________
+	=> Functia are un 'Nume'
+
+
+
+(2.2) Inlocuirea  Functiei 'Anonime' cu Functia 'Denumita':
+_____________________________________________________________________
+
+ getRepositories(user.gitHubUsername, getCommits);
+_____________________________________________________________________
+
+
+
+
+
+
+(3.1) Crean Functia 'Denumita' - 'getRepositories':
+_____________________________________________________________________
+
+function getRepositories(user) {
+    getRepositories(user.gitHubUsername, getCommits);
+}
+_____________________________________________________________________
+	=> Functia are un 'Nume'
+
+
+
+(3.2) Inlocuirea  Functiei 'Anonime' cu Functia 'Denumita':
+_____________________________________________________________________
+
+getUser(1, getRepositories);
+_____________________________________________________________________	
+	
+
+	>< O Varianta mai buna o reprezinta utilizarea 'Promisiuniilor'
+
+
+
+
