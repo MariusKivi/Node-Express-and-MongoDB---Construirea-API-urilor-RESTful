@@ -1,0 +1,108 @@
+
+
+	Inlocuirea 'Callback'/'Apelari Inverse' cu 'Promises'/'Promisiuni'
+
+
+
+
+
+  (1) Moduficam Functia 'getUser()' pt. Returnarea 'Crearii Promisiunii':
+_____________________________________________________________________
+
+
+// ==============================================================
+// (4.1) FUNC. 'GETUSER(ID)'
+// ==============================================================
+function getUser(id) {
+
+    // RETURNAREA 'FUNCTIEI CONSTRUCTOR' A 'PROMISIUNII':
+    return new Promise((rezolvare, respingere) => {
+
+        // EX. DE 'FUNCTIE  ASINCRON / FARA BLOCARE'
+        // FUNCTIA 'SETTIMEOUT( ()=>{}, TIMP_DE_ASTEPTARE)'
+        setTimeout(() => {
+            // AFISARE:
+            console.log('Citirea unui Utilizator din Baza de Date...');
+
+            // 'REZOLVARE()' CU 'OBIECTUL' - 'USER':
+            rezolvare({ id: id, gitHubUsername: 'marius' });
+        }, 2000);
+    });
+
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ 
+  (2) Moduficam Functia 'getRepositories()' pt. Returnarea 'Crearii Promisiunii':
+_____________________________________________________________________
+
+
+// ========================================================================
+// (4.2) FUNC. 'ASINCRONA' - 'GETREPOSITORIES(USERNAME)' 
+//       (PT. 'PRELUAREA DEPOZITELOR' & RETURNAREA CA 'REZULTAT')
+// ========================================================================
+function getRepositories(username) {
+
+    // RETURNAREA 'FUNCTIEI CONSTRUCTOR' A 'PROMISIUNII':
+    return new Promise((rezolvare, respingere) => {
+
+        // FUNCTIA 'SETTIMEOUT( ()=>{}, TIMP_DE_ASTEPTARE)'
+        setTimeout(() => {
+            // AFISARE:
+            console.log('Apelarea API-ului GitHun...');
+
+            // 'REZOLVARE()' CU 'MATRICEA' - 'USER':
+            rezolvare(['depozit1', 'depozit2', 'depozit3']);
+
+        }, 2000);
+    });
+}
+
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (3) Moduficam Functia 'getCommits()' pt. Returnarea 'Crearii Promisiunii':
+_____________________________________________________________________
+
+
+// ========================================================================
+// (4.3) FUNC. 'ASINCRONA' - 'GETCOMMITS(USERNAME)' 
+//       (PT. 'PRELUAREA DEPOZITELOR' & RETURNAREA CA 'REZULTAT')
+// ========================================================================
+function getCommits(depozit) {
+
+    // RETURNAREA 'FUNCTIEI CONSTRUCTOR' A 'PROMISIUNII':
+    return new Promise((rezolvare, respingere) => {
+
+        // FUNCTIA 'SETTIMEOUT( ()=>{}, TIMP_DE_ASTEPTARE)'
+        setTimeout(() => {
+            // AFISARE:
+            console.log('Apelarea API-ului GitHun...');
+
+            // 'REZOLVARE()' CU 'MATRICEA': - 'USER':
+            rezolvare(['commit']);
+
+        }, 2000);
+    });
+}
+_____________________________________________________________________
+
+
+	>? In urmatoarea Lectie Cream 'Consumarea Promisiunii'
+
+
+
+
+
