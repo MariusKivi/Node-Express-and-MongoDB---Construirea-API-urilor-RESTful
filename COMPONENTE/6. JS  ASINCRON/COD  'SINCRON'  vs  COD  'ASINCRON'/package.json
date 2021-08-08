@@ -1,0 +1,12 @@
+{
+    "name": "JS Asincron",
+    "version": "1.0.0",
+    "description": "Reimprospatarea Cunostintelor despre Asincronizari in Javascript",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "Marius Chivu",
+    "license": "ISC"
+}
