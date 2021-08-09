@@ -1,0 +1,127 @@
+
+
+	Consumarea Promisiuniilor (din 'index.js')
+
+
+
+--------------------------------------------------------------
+ <> 'Promisiunile' au '2 Metode':
+       (1) Metoda 'catch()' => pt. 'Prinderea  Erorilor'.         
+       (2) Metoda 'then()' => pt. a 'Prelua un  Rezultat' al unei Operatii 'Asincrone'.          
+--------------------------------------------------------------
+
+
+
+
+  (1.1) Cream 'Consumarea Promisiunii':
+_____________________________________________________________________
+console.log('Inainte');
+
+
+// (4.1.2) APELARE' A FUNC. 'GETUSER(ID)'
+//         (FUNC. RETURNEAZA O 'PROMISIUNE')
+const p = getUser(1);
+
+
+
+// (4.1.3) CONSUMAREA  'promisiunii' PRIN: 
+//         MET. 'THEN()' - PT. 'PRELUAREA REZULTATULUI'  OP. 'ASINCRON' &
+//         MET. 'CATCH()' - 'PRINDEREA  ERORILOR' 
+p.then(user => console.log(user));
+
+
+console.log('Dupa');
+_____________________________________________________________________
+
+
+
+
+
+  (1.2) Executam 'index.js':
+_____________________________________________________________________
+
+	node index.js
+_____________________________________________________________________
+
+
+
+  >> Afisarea in Terminal:
+_____________________________________________________________________
+
+Inainte
+Dupa
+Citirea unui Utilizator din Baza de Date...
+{ id: 1, gitHubUsername: 'marius' }
+_____________________________________________________________________
+
+
+
+
+
+
+  (2.1) Simplifican 'Consumul Promisiunii':
+_____________________________________________________________________
+
+// (1.1) 'ASINCRONE'l
+// ==============================================================
+console.log('Inainte');
+
+
+// ==============================================================
+// (1.2) APELAREA FUNC. 'ASINCRONE' - 'GETUSER(ID, FUNCTION(USER)( OBT_ACCESUL_ASUPRA_USERULUI_DIN_DB))':
+// ==============================================================
+getUser(1, (user) => {
+
+    // AELAREA FUNC. 'ASINCRONE' - 'GETREPOSITORIES()':
+    getRepositories(user.gitHubUsername, (depozite) => {
+
+        // FUNC. 'GETCOMMITS(ELEMENT, FUNC_INVERSA)':
+        getCommits(depozite[0], (commits) => {
+            console.log(commits);
+        })
+    });
+});
+
+
+
+
+// ==============================================================
+// (4.1.2)  CONSUMAREA  'PROMISIUNII' PRIN:  APELARE' A FUNC. 'GETUSER(ID)' &
+// MET. 'THEN()' - PT. 'PRELUAREA REZULTATULUI'  OP. 'ASINCRON' &
+// MET. 'CATCH()' - 'PRINDEREA  ERORILOR' 
+// ==============================================================
+getUser(1)
+    .then(user => getRepositories(user.gitHubUsername))
+    .then(depozite => getCommits(depozite[0]))
+    .then(connits => console.log('Comite: ', commits))
+    .catch(err => console.log('Eroare: ', err.mesaj));
+
+
+console.log('Dupa');
+_____________________________________________________________________
+
+
+
+
+ (2.2) Executam 'index.js':
+_____________________________________________________________________
+
+	node index.js
+_____________________________________________________________________
+
+
+  >> Afisarea in Terminal:
+_____________________________________________________________________
+
+Inainte
+Dupa
+Citirea unui Utilizator din Baza de Date...
+Citirea unui Utilizator din Baza de Date...
+Apelarea API-ului GitHun...
+Apelarea API-ului GitHun...
+Eroare:  commits is not defined
+_____________________________________________________________________
+
+
+
+
