@@ -1,0 +1,157 @@
+
+
+	Crearea 'Promisiuniilor' deja 'Rezolvate'
+
+
+
+
+  <> Cream Fisierul "promisiune-api.js"
+
+
+
+
+  (1.1) Cream 'Promisiunea' si o 'Consumam':
+_____________________________________________________________________
+
+
+// ========================================================================================
+//  (1) CREAREA 'PROMISIUNII CE PREIA DEJA REZULTATUL'
+// APELAREA CLASEI 'PROMISE' & A MET. STATICE 'RESOLVE()'
+// (CARE  RETURNEAZA O 'PROMISIUNE  DEJA  REZOLVATA'):
+// ========================================================================================
+const p = Promise.resolve({ id: 1 });
+
+
+// ========================================================================================
+// (2) CONSUMAREA 'PROMISIUNII':
+//     MET. 'THEN()' - PT. 'PRELUAREA REZULTATULUI'  OP. 'ASINCRON' &
+//     MET. 'CATCH()' -  'PRINDEREA  ERORILOR' 
+// ========================================================================================
+p.then(result => console.log(result));
+_____________________________________________________________________
+
+
+
+
+
+  (1.2) Executam Fisierul 'promisiune-api.js':
+_____________________________________________________________________
+	
+	node promisiune-api.js
+
+_____________________________________________________________________
+
+
+
+  >> Afisarea in Terminal:
+_____________________________________________________________________
+
+{ id: 1 }
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  (2.1) Crearea & Consumarea 'Promisiunii deja Respinse':
+_____________________________________________________________________
+
+// ========================================================================================
+// (2.1) CREAREA 'PROMISIUNII DEJA RESPINSE'
+// APELAREA CLASEI 'PROMISE' & A MET. STATICE 'RESOLVE()'
+// (CARE  RETURNEAZA O 'PROMISIUNE  DEJA  REZOLVATA'):
+// ========================================================================================
+const p2 = Promise.reject(new Error('Motivul respingerii ...'));
+
+
+// ========================================================================================
+// (2.2) CONSUMAREA 'PROMISIUNII':
+// ========================================================================================
+p2.catch(error => console.log(error));
+_____________________________________________________________________
+
+
+
+  (2.2) Executam Fisierul 'promisiune-api.js':
+_____________________________________________________________________
+	
+	node promisiune-api.js
+
+_____________________________________________________________________
+
+
+
+  >> Afisarea in Terminal:
+_____________________________________________________________________
+{ id: 1 }
+Error: Motivul respingerii ...
+    at Object.<anonymous> (C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\JS_Asincron\promisiune-api.js:32:27)
+    at Module._compile (module.js:635:30)
+    at Object.Module._extensions..js (module.js:646:10)
+    at Module.load (module.js:554:32)
+    at tryModuleLoad (module.js:497:12)
+    at Function.Module._load (module.js:489:3)
+    at Function.Module.runMain (module.js:676:10)
+    at startup (bootstrap_node.js:187:16)
+    at bootstrap_node.js:608:3
+_____________________________________________________________________
+
+
+
+
+
+
+ (3.1) Crearea & Consumarea 'Promisiunii deja Respinse' fara 'Stiva de Apeluri':
+_____________________________________________________________________
+
+
+// ========================================================================================
+// (2.1) CREAREA 'PROMISIUNII DEJA RESPINSE'
+// APELAREA CLASEI 'PROMISE' & A MET. STATICE 'RESOLVE()'
+// (CARE  RETURNEAZA O 'PROMISIUNE  DEJA  REZOLVATA'):
+// ========================================================================================
+// const p2 = Promise.reject(new Error('Motivul respingerii ...'));
+
+// FARA 'STIVA  DE  APELURI':
+const p2 = Promise.reject('Motivul respingerii ...');
+
+
+// ========================================================================================
+// (2.2) CONSUMAREA 'PROMISIUNII':
+// ========================================================================================
+p2.catch(error => console.log(error));
+_____________________________________________________________________
+
+
+
+
+  (3.2) Executam Fisierul 'promisiune-api.js':
+_____________________________________________________________________
+	
+	node promisiune-api.js
+_____________________________________________________________________
+
+
+
+
+  >> Afisarea in Terminal:
+_____________________________________________________________________
+Motivul respingerii ...
+_____________________________________________________________________
+
+
+
+
