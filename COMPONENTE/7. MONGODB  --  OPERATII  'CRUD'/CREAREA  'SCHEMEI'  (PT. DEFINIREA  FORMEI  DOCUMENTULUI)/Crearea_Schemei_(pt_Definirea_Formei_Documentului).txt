@@ -1,0 +1,59 @@
+
+	Crearea 'Schemei'
+	(pt Definirea 'Formei Documentului')
+
+
+ 
+
+
+ NB!
+____________________________________________________________________
+ <> 'Colectia 'in 'MongoDB' = 'Tabelul' din 'RDBMS'
+
+ <> 'Documentul' in 'MongoDB' = 'Randul' din 'RDBMS'
+
+ <> 'Documentul':
+	=> este un 'Container' de "Perechi 'Cheie':'Valoare'"
+
+
+ <> Pachetul 'Mongopse' contine 'Schema':
+	=> pe care o utilizam 
+	=> pt. a Defini 'Forma Documentului (Randului)'
+	=> dintr-o 'Colectie' ('Tabel') - 'MongoDB'
+	=> adica 'Proprietatile' existente in 'Document'
+
+  <>  'Tipul de Date' al 'Schemei':
+	 (1) 'String'
+	 (2) 'Number'
+	 (3) 'Date'
+	 (4) 'Buffer'
+	 (5) 'Boolean'
+	 (6) 'ObjectID'
+	 (7) 'Array'
+____________________________________________________________________
+
+
+
+
+
+
+(1.1) Crearea 'Schemei':
+____________________________________________________________________
+
+// CREAREA 'SCHEMEI' - 'SCHEMACURS' 
+// (PRIN PK 'MONGOOSE' & CLASA 'Schema()'):
+const schemaCurs = new mongoose.Schema({
+    nume: String,
+    autor: String,
+    tags: [String],
+    data: { type: Date, default: Date.now },
+    estePublicat: Boolean
+});
+____________________________________________________________________
+
+
+
+
+
+
+
