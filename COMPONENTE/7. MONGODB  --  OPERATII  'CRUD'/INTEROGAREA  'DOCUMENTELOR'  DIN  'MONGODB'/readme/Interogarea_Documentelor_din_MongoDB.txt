@@ -1,0 +1,133 @@
+
+	Interogarea 'Documentelor' din 'MongoDB'
+
+
+
+ (1.1) Cream Functia Asincron de Preluare a 'Documentelor' din 'MongoDB':
+______________________________________________________________
+// ==============================================================
+// (6.1) PRELUAREA 'DOCUMENTELOR' DIN BAZA DE DATE 'MONGODB'
+// PRIN FUNC. ASINCRONE 'GETCURSURI()' 
+// ==============================================================
+async function getCursuri() {
+
+    // METODA 'FIND()' -> RETURNEAZA OBIECTUL 'DOCUMENT QUERY' (CARE ESTE CA O 'PROMISIUNE'):
+    // PRELUAREA 'TUTUROR DOCUMENTELOR' DIN BAZA DE DATE:
+    const cursuri = await Curs.find();
+
+    // AFISARE:
+    console.log(cursuri);
+}
+
+
+// (6.2) APELAREA FUNCTIEI:
+getCursuri();
+______________________________________________________________
+
+
+
+
+
+
+ (1.2) Executam 'index.js':
+______________________________________________________________
+
+	node index.js
+______________________________________________________________
+
+
+
+
+ >> Afisarea in Terninal:
+______________________________________________________________
+
+[ 
+  { tags: [ 'node', 'backend' ],
+    data: 2021-08-10T14:24:41.648Z,
+    _id: 61128c2912ee283b4c0e6b67,
+    nume: 'Curs Node.js',
+    autor: 'Marius Chivu',
+    estePublicat: true,
+    __v: 0 },
+  { tags: [ 'angular', 'backend' ],
+    data: 2021-08-10T14:26:16.353Z,
+    _id: 61128c88f159e13cfc4deb62,
+    nume: 'Curs Angular',
+    autor: 'Marius Chivu',
+    estePublicat: true,
+    __v: 0 } 
+]
+______________________________________________________________
+	=> Documentul poate fi 'Filtrat'
+	=> poate fi 'Sortat',
+	=> putem 'Seta o Limita a Nr. de Documente Returnate'
+	=> putem 'Selecta Proprietati Specifice' din 'Document'.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ (2.1) 'Filtrarea Preluari Datelor' din 'MongoDB':
+______________________________________________________________
+
+// ==============================================================
+// (6.1) PRELUAREA 'DOCUMENTELOR' DIN BAZA DE DATE 'MONGODB'
+// PRIN FUNC. ASINCRONE 'GETCURSURI()' 
+// ==============================================================
+async function getCursuri() {
+
+    // METODA 'FIND(FILTRU)' -> RETURNEAZA OBIECTUL 'DOCUMENT QUERY' (CARE ESTE CA O 'PROMISIUNE'):
+    // PRELUAREA 'TUTUROR DOCUMENTELOR' DIN BAZA DE DATE:
+    const cursuri = await Curs
+        .find({ autor: 'Marius Chivu', estePublicat: true })
+        .limit(10)
+        .sort({ nume: 1 })
+        .select({ nume: 1, tags: 1 });
+
+    // AFISARE:
+    console.log(cursuri);
+}
+
+
+// (6.2) APELAREA FUNCTIEI:
+getCursuri();
+______________________________________________________________
+	=> '1' = indica 'Ordinea Crescatoare'
+	=> '-1' = indica 'Ordinea Descrescatoare'
+
+
+(2.2) Executam 'index.js':
+______________________________________________________________
+
+	node index.js
+______________________________________________________________
+
+
+
+ >> Afisarea in Terminal:
+______________________________________________________________
+Conectat la MongoDB ...
+[ { tags: [ 'angular', 'backend' ],
+    _id: 61128c88f159e13cfc4deb62,
+    nume: 'Curs Angular' }, 
+  { tags: [ 'node', 'backend' ],
+    _id: 61128c2912ee283b4c0e6b67,
+    nume: 'Curs Node.js' } ]
+______________________________________________________________
+
+
+
+
+
+
