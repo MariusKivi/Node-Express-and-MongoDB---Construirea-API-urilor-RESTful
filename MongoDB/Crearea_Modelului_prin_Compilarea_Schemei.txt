@@ -1,0 +1,28 @@
+
+	Crearea 'Modelului' prin Compilarea 'Schemei'
+
+
+
+
+  (#) Cream 'Modelului' 
+	=> prin Compilarea 'Schemei'
+	=> pentru Obtinerea Clasei 'Curs':
+______________________________________________________________
+// (3.1) CREAREA 'MODELULUI' PRIN COMPILAREA 'SCHEMEI'  
+// CE OFERA CLASA 'CURS'
+// MET. 'MODEL(COLECTIA, SCHENA_CE_DEF_FORMA_DOC_COLECTIEI)' A OBIECTULUI 'MONGOOSE'
+const Curs = mongoose.model('Curs', schemaCurs);
+
+
+// (3.2) CREAREA OBIECTULUI (INSTANTA A CLASEI):
+const curs = new Curs({
+    nume: 'Curs Node.js',
+    autor: 'Marius Chivu',
+    tags: ['Node', 'Backend'],
+    estePublicat: true
+});
+______________________________________________________________
+
+
+
+
