@@ -1,0 +1,120 @@
+
+
+	Salvarea unui 'Document' in 'Baza de Date'
+
+
+
+
+  (1.1) Salvarea Obiectului 'Curs' in 'Baza de Date'
+______________________________________________________________
+// ==============================================================
+// (5.1) CREAREA FUNC. ASINCRONE 'CREARECURS()' 
+// CONSUMAREA  PRIN  FUNCTIA DECORATA CU 'ASYNC' SI
+// PRIN 'RESCRIEREA PROMISIUNII' 
+// PRIN ABORDAREA 'ASINCRONIZARE  SI  ASTEPTARE'  ('ASYNC  AND  ARAIT')
+// ==============================================================
+async function creareCurs() {
+
+    // (3.2) CREAREA OBIECTULUI 'CURS' (INSTANTA A CLASEI):
+    const curs = new Curs({
+        nume: 'Curs Node.js',
+        autor: 'Marius Chivu',
+        tags: ['node', 'backend'],
+        estePublicat: true
+    });
+
+
+
+    // (4.1) SALVAREA OBIECTULUI 'CURS' IN 'BAZA DE DATE'
+    // PRIN MET. 'SAVE()' -> CARE  RETURNEAZA O 'PROMISIUNE':
+    // 'OPERATII  ASINCRONE & ASTEPTARE'
+    const rezultat = await curs.save();
+
+
+    // (4.2) AFISARE  'REZULTAT':
+    console.log(rezultat);
+}
+
+
+
+// (5.2) APELAREA FUNCTIEI:
+creareCurs();
+
+______________________________________________________________
+
+
+
+
+ (1.2) Rulam Comanda:
+______________________________________________________________
+
+	node index.js
+______________________________________________________________
+
+
+
+
+  >> Afisarea in Terminal:
+______________________________________________________________
+
+Conectat la MongoDB ...
+{ tags: [ 'Node', 'Backend' ],
+  data: 2021-08-10T14:10:31.621Z,
+  _id: 611288d79bd6613a006667e6,
+  nume: 'Curs Node.js',
+  autor: 'Marius Chivu',
+  estePublicat: true,
+  __v: 0 }
+______________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  (2.1) Modificam Obiectul 'curs':
+______________________________________________________________
+ // (3.2) CREAREA OBIECTULUI 'CURS' (INSTANTA A CLASEI):
+    const curs = new Curs({
+        nume: 'Curs Angular',
+        autor: 'Marius Chivu',
+        tags: ['angular', 'backend'],
+        estePublicat: true
+    });
+______________________________________________________________
+
+
+
+
+
+ (2.2) Re-rulam Comanda:
+______________________________________________________________
+
+	node index.js
+______________________________________________________________
+
+
+
+
+  >> Afisarea in Terminal
+______________________________________________________________
+
+Conectat la MongoDB ...
+{ tags: [ 'angular', 'backend' ],
+  data: 2021-08-10T14:26:16.353Z,
+  _id: 61128c88f159e13cfc4deb62,
+  nume: 'Curs Angular',
+  autor: 'Marius Chivu',
+  estePublicat: true,
+  __v: 0 }
+______________________________________________________________
+
+
