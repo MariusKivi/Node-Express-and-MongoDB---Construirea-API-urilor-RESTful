@@ -1,0 +1,127 @@
+
+	Conectarea la ''MongoDB' prin Pachetul 'Mongoose'
+
+
+
+ NB!
+--------------------------------------------------------------
+<> 'MongoDB' este o 'Baza de Date  Document sau Non-SQL'
+
+	=> Nu contine Conceptele de: 'Tabele', 'Schema', 'Views', 'Inregistrari', 'Coloane'.  
+	=> Stocarea se Realizeaza prin Obiectul 'SJON' in 'MongoDB'. 
+
+
+
+
+ <> 'PROMISIUNIILE' AU 2 METODE:
+            (1) MET. 'THEN()' => 
+		PT. A 'PRELUA  UN  REZULTAT' AL UNEI OP. 'ASINCRON' 
+
+            (2) MET. 'CATCH()' => 
+		PT. 'PRINDEREA  ERORILOR'          
+--------------------------------------------------------------
+
+
+
+
+
+  (1) Cream un Nou Proiect
+	=> Instalam 'package.json':
+________________________________________________________
+
+	npm init --yes
+________________________________________________________
+
+
+
+
+
+  (2.1) Instalarea Pachetului Node 'Mangoose'
+	=> care Utilizeaza  un 'API Simplu'
+	=> pentru a 'Lucra' cu 'Baza de Date MongoDB'
+________________________________________________________
+
+	npm i mongoose
+________________________________________________________
+
+
+
+
+  >> Afisarea in Terminal:
+________________________________________________________
+npm notice created a lockfile as package-lock.json. You should commit this file.
+npm WARN MongoDB@1.0.0 No repository field.
+
++ mongoose@5.13.6
+added 34 packages in 32.315s
+________________________________________________________
+
+
+
+
+(2.2) Instalarea Pachetului Node 'Mangoose'
+	=> Versiunea '5.0.1':	
+________________________________________________________
+
+	npm i mongoose@5.0.1
+________________________________________________________
+
+
+
+
+  >> Afisarea in Terminal:
+________________________________________________________
++ mongoose@5.0.1
+added 8 packages, removed 22 packages and updated 11 packages in 13.669s
+________________________________________________________
+
+
+
+
+
+
+ (3.1) Cream Fisierul 'index.js':
+________________________________________________________
+
+// INCARCAREA / IMPORTAREA (PT. CONECTAREA LA 'MONGODB')
+const mongoose = require('mongoose');
+
+// OBIECTUL  ARE  MET. 'CONNECT()' 
+// (PT. CONECTAREA LA BAZA DE DATE 'MONGODB' - 'LOC DE JOACA')
+// METODA -> RETURNEAZA 'PROMISIUNI'
+mongoose.connect('mongodb://localhost/locdejoaca')
+    .then(() => console.log('Conectat la MongoDB ...'))
+    .catch(err => console.error('Nu s-a putut conecta la MongoDB...', err));
+________________________________________________________
+	>> Baza de Date 'locdejoaca' va fi Generata Automat 
+	>> la Prima Utilizare
+
+	>> Metoda 'Connect()' -> returneaza 'Promisiuni'
+	>> '.then()' -> pt. Indeplinirea Promisiunii
+
+
+
+
+
+
+  (3.2) Executam 'undex.js':
+________________________________________________________
+
+	nodemon index.js
+________________________________________________________
+
+
+
+  >> Afisarea in Terminal:
+________________________________________________________
+[nodemon] 2.0.12
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,json
+[nodemon] starting `node index.js`
+Conectat la MongoDB ...
+________________________________________________________
+
+
+
+
