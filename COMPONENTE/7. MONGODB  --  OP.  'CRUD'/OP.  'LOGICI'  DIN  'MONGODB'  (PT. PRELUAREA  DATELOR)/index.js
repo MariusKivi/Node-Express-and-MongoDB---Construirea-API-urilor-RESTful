@@ -5,6 +5,7 @@
            
             
             
+    NB!
     ____________________________________________________________________
     <> 'Colectia 'in 'MongoDB' = 'Tabelul' din 'RDBMS'
     
@@ -36,63 +37,23 @@
     ____________________________________________________________________
     Opreatorii ($) de 'Comparatie' din 'MongoDB':
     
-        (1) 'eq' = 'equal' (egal)
-        (2) 'ne' = 'not equal' (nu este egal)
-        (3) 'gt' = 'greater than' (mai mare ca)
-        (4) 'gte'= 'greater than or equal to' (greater than or equal to)
-        (5) 'lt' = 'less than' (mai putin de)
-        (6) 'lte' = 'less than  or  equal to'(mai mic sau egal cu)
-        (7) 'in' = 'in' (in)
-        (8) 'nin' = 'not in'(nu)
+    (1) 'eq' = 'equal' (egal)
+    (2) 'ne' = 'not equal' (nu este egal)
+    (3) 'gt' = 'greater than' (mai mare ca)
+    (4) 'gte'= 'greater than or equal to' (greater than or equal to)
+    (5) 'lt' = 'less than' (mai putin de)
+    (6) 'lte' = 'less than  or  equal to'(mai mic sau egal cu)
+    (7) 'in' = 'in' (in)
+    (8) 'nin' = 'not in'(nu)
     
     
     ____________________________________________________________________
     Opreatorii ($) 'Logici' din 'MongoDB':
     
-        (1) 'or' = 'sau' 
-        (2) 'and' = 'si' 
-    
-    
-    
-    ____________________________________________________________________
-    <> Sintaxa 'Expresiei Regulate':	
-        /caractere/
-    
-    
-    ____________________________________________________________________
-    <> Un 'Sir' care 'Incepe' cu Anumite Sir
-        => se specifica prin Caracterul '/^/' 
-            /^sir/
+    (1) 'or' = 'sau' 
+    (2) 'and' = 'si' 
 
-    ____________________________________________________________________
-    <> Un 'Sir' care se 'Termina' cu Anumit Sir
-        => se specifica prin Caracterul '/$/' 
-            /sir$/
-    
-    
-    ____________________________________________________________________
-    <> 'Sirurile' in 'MongoDB' 
-    => sunt 'Case Sensitive'.
-    
-    
-    ____________________________________________________________________
-    <> Transformarea 'Sirurilor' din 'MongoDB' 
-        => in 'Case Insensitive'
-        => se specifica prin Caracterul '/sir/i':
-            /sir/i
-
-
-    <> Un 'Sir' plasat in 'Interiorul' unui Alt Sir
-	    => se specifica prin Caracterul '.*sir.*'
-
-
-    <> Caracterele '.*' intr-o 'Expresie Regulata'
-        => specifica ca Putem Avea '0 sau Mai Multe Caractere'
-        => 'Inaintea Sirului' sau 'Dupa Sirul' dat.
 */
-
-
-
 
 // ==============================================================
 // (0) INCARCAREA / IMPORTAREA (PT. CONECTAREA LA 'MONGODB')
@@ -181,29 +142,6 @@ async function getCursuri() {
         // CU VALOAREA 'ESTE PUBLICAT' = 'ACTIVA': 
         // .find({ autor: 'Marius', estePublicat: true })
         // ________________________________________
-        //   EXPRESII REGULATE  IN  JS
-        // ________________________________________
-        // (1) PRELUAREA 'CURSURILOR' IN CARE
-        // NUMELE 'AUTOR' INCEPE (^) CU SIRUL 'MARIUS'
-        // (IN CARE TRECEM UN 'OBIECT'
-        //  IAR IN LOCUL 'STRING'-ULUI
-        //  TRECEM O 'EXPRESIE REGULARA'):
-        .find({ autor: /^Marius/ })
-        // ________________________________________
-        // (2.1) PRELUAREA 'CURSURILOR' IN CARE
-        // NUMELE 'AUTOR' SE TERMINA (/$/) CU SIRUL 'CHIVU'
-        // .find({ autor: /Chivu$/ })
-        // ________________________________________
-        // (2.2) TRANSFORMAREA SIRULUI IN 'CASE INSENSITIVE' PRIN '/SIR/i' 
-        // IN PRELUAREA 'CURSURILOR' IN CARE
-        // NUMELE 'AUTOR' SE TERMINA (/$/) CU SIRUL 'CHIVU'
-        .find({ autor: /Chivu$/i })
-        // ________________________________________
-        // (3) PRELUAREA 'CURSURILOR' IN CARE
-        // NUMELE 'AUTOR' CONTINE (/.*sir.*/) SIRUL 'MARIUS'
-        // TRANSFORMAT IN 'CASE INSENSITIVE' (/SIR/i):
-        .find({ autor: /.*Marius.*/i })
-        // ________________________________________
         //   OPERATORII DE 'COMPARATIE'
         // ________________________________________
         // (1) PRELUAREA 'TUTUROR CURSURILOR' CE AU 
@@ -220,11 +158,11 @@ async function getCursuri() {
         // ________________________________________
         // OPERATORII 'LOGICI'
         // ________________________________________
-        // .find()
+        .find()
         // UTIL. 'MATRICEI' CU '2 OBIECTE' SI CU 'FILTRARE':
-        // .or([{ autor: 'Marius' }, { estePublicat: true }])
+        .or([{ autor: 'Marius' }, { estePublicat: true }])
         // UTIL. 'MATRICEI' CU 'OBIECTE FILTRATE':
-        // .and([])
+        .and([])
         // ________________________________________
         .limit(10)
         .sort({ nume: 1 })

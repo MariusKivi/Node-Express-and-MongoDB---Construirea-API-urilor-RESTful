@@ -1,5 +1,5 @@
 
-	Operatiuni de 'Comparatie' din 'MongoDB' penttu 'Preluarea Datelor'
+	Operatori de 'Comparatie' din 'MongoDB' penttu 'Preluarea Datelor'
 
 
 
