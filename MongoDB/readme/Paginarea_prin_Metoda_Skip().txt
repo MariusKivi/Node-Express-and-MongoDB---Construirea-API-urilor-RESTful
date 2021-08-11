@@ -1,0 +1,61 @@
+
+	Paginarea prin Metoda 'skip()'
+
+
+
+
+  (<>) Crearea 'Paginari' -> prin Metoda 'skip()'
+	=> (care este asemanatoare cu metoda 'limit()'):
+_____________________________________________________________
+
+// ==============================================================
+// (6.1) PRELUAREA 'DOCUMENTELOR' DIN BAZA DE DATE 'MONGODB'
+// PRIN FUNC. ASINCRONE 'GETCURSURI()' 
+// ==============================================================
+async function getCursuri() {
+
+    // CONSTANTE:
+    // IN  REALITATE FUNCTIONEAZA ASA:  /api/cursuri?numarPagina=3&simensiunePagina=10
+    const numarPagina = 2;
+    const dimensiunePagina = 10;
+
+
+    // METODA 'FIND(FILTRU)' -> RETURNEAZA OBIECTUL 'DOCUMENT QUERY' (CARE ESTE CA O 'PROMISIUNE'):
+    // PRELUAREA 'TUTUROR DOCUMENTELOR' DIN BAZA DE DATE:
+    const cursuri = await Curs
+        // ________________________________________
+        // (1) PRELUAREA 'TUTUROR CURSURILOR' cu 
+        // 'AUTORUL' CU NUMELE 'MARIUS' &
+        // CU VALOAREA 'ESTE PUBLICAT' = 'ACTIVA': 
+        .find({ autor: 'Marius', estePublicat: true })
+
+        // ________________________________________
+        // CREAREA 'PAGINARI' PRIN MET. 'SKIP()':
+        // ________________________________________
+        .skip((numarPagina - 1) * dimensiunePagina)
+        // OBTINEM 'PAGINA DOCUMENTULUI':
+        .limit(dimensiunePagina)
+
+        // ________________________________________
+        // .limit(10)
+        .sort({ nume: 1 })
+        // .select({ nume: 1, tags: 1 });
+        // ________________________________________
+        // PRELUAREA 'NR. DE  DOCUMENTE'
+        // PRIN MET. 'COUNT()'
+        .count();
+
+    // AFISARE:
+    console.log(cursuri);
+}
+
+
+// (6.2) APELAREA FUNCTIEI:
+getCursuri();
+_____________________________________________________________
+
+
+
+
+
+

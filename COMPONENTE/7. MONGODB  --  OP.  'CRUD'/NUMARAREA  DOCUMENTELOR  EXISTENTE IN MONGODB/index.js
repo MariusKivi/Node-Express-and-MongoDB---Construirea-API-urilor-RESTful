@@ -172,12 +172,6 @@ async function creareCurs() {
 // ==============================================================
 async function getCursuri() {
 
-    // CONSTANTE:
-    // IN  REALITATE FUNCTIONEAZA ASA:  /api/cursuri?numarPagina=3&simensiunePagina=10
-    const numarPagina = 2;
-    const dimensiunePagina = 10;
-
-
     // METODA 'FIND(FILTRU)' -> RETURNEAZA OBIECTUL 'DOCUMENT QUERY' (CARE ESTE CA O 'PROMISIUNE'):
     // PRELUAREA 'TUTUROR DOCUMENTELOR' DIN BAZA DE DATE:
     const cursuri = await Curs
@@ -232,12 +226,7 @@ async function getCursuri() {
         // UTIL. 'MATRICEI' CU 'OBIECTE FILTRATE':
         // .and([])
         // ________________________________________
-        // CREAREA 'PAGINARI' PRIN MET. 'SKIP()':
-        .skip((numarPagina - 1) * dimensiunePagina)
-        // OBTINEM 'PAGINA DOCUMENTULUI':
-        .limit(dimensiunePagina)
-        // ________________________________________
-        // .limit(10)
+        .limit(10)
         .sort({ nume: 1 })
         // .select({ nume: 1, tags: 1 });
         // ________________________________________
