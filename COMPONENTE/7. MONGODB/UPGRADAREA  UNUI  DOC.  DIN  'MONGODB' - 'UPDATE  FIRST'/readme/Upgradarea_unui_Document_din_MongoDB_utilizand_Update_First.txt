@@ -1,0 +1,225 @@
+
+	Upgradarea unui 'Document' din 'MongoDB' utilizand 'Update First'
+
+
+
+
+
+ NB!
+_____________________________________________________________________
+
+Exista 2 Cai de 'Upgradare' a unui 'Document' in 'MongoDB':
+   (1) 'Query First' ('Interogarea Intai'):
+	=> Gasirea 'Documentului' dupa 'Id': 'findById()'
+	=> Modificarea si Upgradarea 'Proprietatilor Documentului'
+	=> Apelarea Metodei 'save()' pt Upgradarea in Baza de Date
+
+
+   (2) 'Update First' ('Upgradareaa Intai'):
+	=> Upgradarea 'Directa' prin Metoda 'update()'
+	=> Optional: se poate 'Prelua Upgradare'.
+
+        Operatori de Upgradare in Mongodb ($nume)
+	   https://docs.mongodb.com/manual/reference/operator/update/
+_____________________________________________________________________
+
+
+
+
+
+
+  (1.1) Cream Functia Asincron 'augradareCurs'
+_____________________________________________________________________
+
+// ==============================================================
+// (7.2) UPGRADAREA 'DOCUMENTULUI' DIN 'MONGODB' -- UTIL. 'UPDATE  FIRST'
+// PRIN FUNC. ASINCRONE 'UPGRADARECURS()' 
+// ==============================================================
+async function upgradareCurs(id) {
+
+    // UPG. DIRECTA PRIN METODA 'UPGRADE(ARG_ID, OBIECT_UPGRADAT)':
+    const rezultat = await Curs.update({ _id: id }, {
+        // OPERATORII MONGODB DE 'UPDATE' ($nume):
+        // OP. MONGODB $SET()'':
+        $set: {
+            autor: 'Marius',
+            estePublicat: false
+        }
+    });
+
+
+    // AFISARE IN CONSOLA:
+    console.log(rezultat);
+}
+
+
+
+
+// (7.3) APELAREA FUNCTIEI:
+upgradareCurs('6112885abaeb0649f0100743');
+
+_____________________________________________________________________
+
+
+
+
+
+  (1.2) Executam 'index.js':
+_____________________________________________________________________
+
+	node index.js
+_____________________________________________________________________
+
+
+
+ >> Afisare in Terminal:
+_____________________________________________________________________
+
+Conectat la MongoDB ...
+{ n: 1, nModified: 1, ok: 1 }
+_____________________________________________________________________
+
+
+
+
+
+
+
+  (2.1) Pentru a Gasi si Documentul Careeste Upgradat
+	=> utilizam Metoda 'findByIdAndUpdate':
+_____________________________________________________________________
+
+// ==============================================================
+// (7.2.2) UPGRADAREA 'DOCUMENTULUI' DIN 'MONGODB' -- UTIL. 'UPDATE  FIRST'
+// AFISAREA 'OBIECTULUI NEUPGRADAT'
+// PRIN FUNC. ASINCRONE 'UPGRADARECURS()' - MET. 'FIBDBYIDANDUPDATE()'
+// ==============================================================
+async function upgradareCurs(id) {
+
+    // GASIREA DOC. UPG. & UPGRADARE DIRECTA PRIN METODA 'UPGRADE(ARG_ID, OBIECT_UPGRADAT)':
+    const curs = await Curs.findByIdAndUpdate(id, {
+        // OPERATORII MONGODB DE 'UPDATE' ($nume):
+        // OP. MONGODB $SET()'':
+        $set: {
+            autor: 'Nicholas',
+            estePublicat: true
+        }
+    });
+
+
+    // AFISARE IN CONSOLA:
+    console.log(curs);
+}
+
+
+
+
+// (7.3) APELAREA FUNCTIEI:
+upgradareCurs('6112885abaeb0649f0100743')
+
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+  (2.2) Executam 'index.js':
+_____________________________________________________________________
+
+	node index.js
+_____________________________________________________________________
+
+
+
+ >> Afisare in Terminal:
+_____________________________________________________________________
+
+Conectat la MongoDB ...
+{ tags: [ 'Node', 'Backend' ],
+  data: 2021-08-10T14:08:26.324Z,
+  _id: 6112885abaeb0649f0100743,
+  nume: 'Curs Node.js',
+  autor: 'Marius',
+  estePublicat: false,
+  __v: 0 }
+_____________________________________________________________________
+	=> se Afiseaza Obiectul Original.
+
+
+
+
+
+
+
+ (3.1) Pentru a Gasi si Documentul Care este Upgradat	
+	=> si 'Obiectul Ubgradat'
+	=> utilizam Argumentul 2 '{new: true}':
+_____________________________________________________________________
+
+
+// ==============================================================
+// (7.2.3) UPGRADAREA 'DOCUMENTULUI' DIN 'MONGODB' -- UTIL. 'UPDATE  FIRST'
+// AFISAREA 'OBIECTULUI UPGRADAT'
+// PRIN FUNC. ASINCRONE 'UPGRADARECURS()' - MET. 'FIBDBYIDANDUPDATE()'
+// ==============================================================
+async function upgradareCurs(id) {
+
+    // GASIREA DOC. UPG. & UPGRADARE DIRECTA PRIN METODA 'UPGRADE(ARG_ID, OBIECT_UPGRADAT)'
+    // ARISAREA 'OB. UPGRADAT' IN TERMINAL:
+    const curs = await Curs.findByIdAndUpdate(id, {
+        // OPERATORII MONGODB DE 'UPDATE' ($nume):
+        // OP. MONGODB $SET()'':
+        $set: {
+            autor: 'Jeanine',
+            estePublicat: false
+        }
+
+        // ADAUGAM 'ARGUMENTUL 2' - PT. AFISAREA 'OBIECTULUI UPGRADAT'
+    }, { new: true });
+
+
+    // AFISARE IN CONSOLA:
+    console.log(curs);
+}
+
+
+
+
+// (7.3) APELAREA FUNCTIEI:
+upgradareCurs('6112885abaeb0649f0100743');
+
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+  (3.2) Executam 'index.js':
+_____________________________________________________________________
+
+	node index.js
+_____________________________________________________________________
+
+
+
+ >> Afisare in Terminal:
+_____________________________________________________________________
+
+Conectat la MongoDB ...
+{ tags: [ 'Node', 'Backend' ],
+  data: 2021-08-10T14:08:26.324Z,
+  _id: 6112885abaeb0649f0100743,
+  nume: 'Curs Node.js',
+  autor: 'Jeanine',
+  estePublicat: false,
+  __v: 0 }
+_____________________________________________________________________
+	=> se Afiseaza Obiectul Upgradat.
+
+
