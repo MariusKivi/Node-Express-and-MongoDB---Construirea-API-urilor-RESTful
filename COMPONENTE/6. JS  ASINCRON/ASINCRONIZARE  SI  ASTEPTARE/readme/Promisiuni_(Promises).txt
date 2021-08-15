@@ -1,0 +1,174 @@
+
+
+	Promisiuni (Promises)
+
+
+
+ (NB) Promisiunea 
+	  => este un 'Obiect' 
+	  => ce Contine si Furnizeaza 'Rezultatul' 
+	  => unei Operatiuni 'Asincrone'/'Fara Blocare'.
+
+
+
+   <> Obiectul poate avea '3 Stari':
+	(1) 'Asteptare'/'Pending' => la Crearea 'Promisiunii'
+	(2) 'Implinit'/'Fulfiled' => cand 'Rezultatul' este 'Gata'
+	(3) 'Respins'/'Rejected' => cand ceva este 'Gresit' in 'Executie', avand o 'Eroare'.
+
+
+
+
+
+
+  (1) Ctream Fisierul 'promisiune.js'
+_____________________________________________________________________
+
+
+// ==============================================================
+//  (1) CREAN 'OBIECTUL' - 'PROMISE' - 'P'
+// ==============================================================
+const p = new Promise((rezolva, respinge) => {
+
+    // APELAM FUNC. 'REZOLVARE(VALOARE)' A OP. 'ASINCRONE':
+    rezolva(1);
+
+    // APELAM FUNC. 'RESPINGE(VALOARE)'
+    // respinge(new Error('mesaj eroare'));
+});
+
+
+
+// ==============================================================
+//  (2) CONSUMAREA 'PROMISIUNII':
+// ==============================================================
+p.then(rezultat => console.log('Rezultat: ', rezultat));
+_____________________________________________________________________
+
+
+
+
+
+
+  (1.2) Executam 'promisiune.js':
+_____________________________________________________________________
+
+	node promisiune.js
+_____________________________________________________________________
+
+
+
+
+  >> Afisarea in Terminal:
+_____________________________________________________________________
+
+Rezultat:  1
+_____________________________________________________________________
+
+
+
+
+
+
+
+  (2.1) Inseram 'Apelarea' in Functia 'getTimeout()'
+_____________________________________________________________________
+
+const p = new Promise((rezolva, respinge) => {
+
+    // FUNCTIA 'SETTIMEOUT( ()=>{}, TIMP_DE_ASTEPTARE)'
+    setTimeout(() => {
+
+        // APELAM FUNC. 'REZOLVARE(VALOARE)' A OP. 'ASINCRONE':
+        rezolva(1);
+
+    }, 2000);
+
+
+    // APELAM FUNC. 'RESPINGE(VALOARE)'
+    // respinge(new Error('mesaj eroare'));
+});
+_____________________________________________________________________
+
+
+
+
+(2.2) Executam 'promisiune.js':
+_____________________________________________________________________
+
+	node promisiune.js
+_____________________________________________________________________
+
+
+  >> Dupa '2 secunde' se Afiseaza in Terminal:
+_____________________________________________________________________
+
+Rezultat:  1
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+  (3.1)
+_____________________________________________________________________
+
+// ==============================================================
+//  (1) 'CREAREA  PROMISIUNII' - PRIN 'OBIECTUL' = 'P'
+// ==============================================================
+const p = new Promise((rezolva, respinge) => {
+
+    // FUNCTIA 'SETTIMEOUT( ()=>{}, TIMP_DE_ASTEPTARE)'
+    setTimeout(() => {
+
+        // APELAM FUNC. 'REZOLVARE(VALOARE)' A OP. 'ASINCRONE':
+        // rezolva(1);
+
+        // APELAM FUNC. 'RESPINGE(VALOARE)'
+        respinge(new Error('Exista o eroare in executarea fisierului'));
+    }, 2000);
+
+
+});
+
+
+
+// ==============================================================
+//  (2) 'CONSUMAREA  PROMISIUNII':
+// ==============================================================
+p
+    .then(rezultat => console.log('Rezultat: ', rezultat))
+    .catch(err => console.log('Eroarea: ', err.message));
+_____________________________________________________________________
+
+
+
+
+
+
+(3.2) Executam 'promisiune.js':
+_____________________________________________________________________
+
+	node promisiune.js
+_____________________________________________________________________
+
+
+
+
+  >> Afisarea in Terminal:
+_____________________________________________________________________
+
+Eroarea:  Exista o eroare in executarea fisierului
+_____________________________________________________________________
+
+
+
+

@@ -1,0 +1,225 @@
+
+
+	Expresi Regulate in 'JavaScript'
+
+
+
+(NB) 'Expresiei Regulate':
+______________________________________________________________
+  >> Sintaxa :	
+	/pattern/
+
+
+  >> Un 'Sir' care 'Incepe' cu Anumite Sir
+	=> se specifica prin Caracterul '/^/' 
+
+  >> Un 'Sir' care se 'Termina' cu Anumit Sir
+	=> se specifica prin Caracterul '/$/' 
+
+  >> 'Sirurile' in 'MongoDB' 
+	=> sunt 'Case Sensitive'.
+
+  >> Transformarea 'Sirurilor' din 'MongoDB' 
+	=> in 'Case Insensitive'
+	=> se specifica prin Caracterul '/sir/i'.
+
+
+  >> Un 'Sir' plasat in 'Interiorul' unui Alt Sir
+	=> se specifica prin Caracterul '/.*sir.*/' 
+
+  >> Caracterele '.*' intr-o 'Expresie Regulata'
+	=> specifica ca Putem Avea '0 sau Mai Multe Caractere'
+	=> 'Inaintea Sirului' sau 'Dupa Sirul' dat.
+______________________________________________________________
+
+
+
+
+
+
+
+ (1) Preluarea 'Cursurilor' in care
+	=> Numele 'Autor' Incepe (/^sir/) cu Sirul 'Marius':
+______________________________________________________________
+// ==============================================================
+// (6.1) PRELUAREA 'DOCUMENTELOR' DIN BAZA DE DATE 'MONGODB'
+// PRIN FUNC. ASINCRONE 'GETCURSURI()' 
+// ==============================================================
+async function getCursuri() {
+
+    // METODA 'FIND(FILTRU)' -> RETURNEAZA OBIECTUL 'DOCUMENT QUERY' (CARE ESTE CA O 'PROMISIUNE'):
+    // PRELUAREA 'TUTUROR DOCUMENTELOR' DIN BAZA DE DATE:
+    const cursuri = await Curs
+        
+        // ________________________________________
+        //   EXPRESII REGULATE
+        // ________________________________________
+        // (1) PRELUAREA 'CURSURILOR' IN CARE
+        // NUMELE 'AUTOR' INCEPE (^) CU 'MARIUS'
+        // (IN CARE TRECEM UN 'OBIECT'
+        //  IAR IN LOCUL 'STRING'-ULUI
+        //  TRECEM O 'EXPRESIE REGULARA'):
+        .find({ autor: /^Marius/ })
+
+       
+        .limit(10)
+        .sort({ nume: 1 })
+        .select({ nume: 1, tags: 1 });
+
+    // AFISARE:
+    console.log(cursuri);
+}
+
+______________________________________________________________
+
+	=> Expresiile Regulate -> se plaseaza intre '/.../'
+	=> Inceperea -> se specifica prin '^'
+
+
+
+
+ (2.1) Preluarea 'Cursurilor' in care
+	=> Numele 'Autor' se Termina (/$/) cu Sirul 'Chivu':
+______________________________________________________________
+
+// ==============================================================
+// (6.1) PRELUAREA 'DOCUMENTELOR' DIN BAZA DE DATE 'MONGODB'
+// PRIN FUNC. ASINCRONE 'GETCURSURI()' 
+// ==============================================================
+async function getCursuri() {
+
+    // METODA 'FIND(FILTRU)' -> RETURNEAZA OBIECTUL 'DOCUMENT QUERY' (CARE ESTE CA O 'PROMISIUNE'):
+    // PRELUAREA 'TUTUROR DOCUMENTELOR' DIN BAZA DE DATE:
+    const cursuri = await Curs
+        
+
+        // ________________________________________
+        // (2) PRELUAREA 'CURSURILOR' IN CARE
+        // NUMELE 'AUTOR' SE TERMINA (/$/) CU SIRUL 'CHIVU'
+        .find({ autor: /Chivu$/ })
+
+       
+        // ________________________________________
+        .limit(10)
+        .sort({ nume: 1 })
+        .select({ nume: 1, tags: 1 });
+
+    // AFISARE:
+    console.log(cursuri);
+}
+______________________________________________________________
+	=> Sirul este 'Case Sensitive'
+
+
+
+
+
+
+
+
+(2.2) Transformrea Sirului in 'Case Insensitive' (/sir/i) la
+      Preluarea 'Cursurilor' in care
+	=> Numele 'Autor' se Termina (/sie/i) cu Sirul 'Chivu':
+______________________________________________________________
+
+
+// ==============================================================
+// (6.1) PRELUAREA 'DOCUMENTELOR' DIN BAZA DE DATE 'MONGODB'
+// PRIN FUNC. ASINCRONE 'GETCURSURI()' 
+// ==============================================================
+async function getCursuri() {
+
+    // METODA 'FIND(FILTRU)' -> RETURNEAZA OBIECTUL 'DOCUMENT QUERY' (CARE ESTE CA O 'PROMISIUNE'):
+    // PRELUAREA 'TUTUROR DOCUMENTELOR' DIN BAZA DE DATE:
+    const cursuri = await Curs
+ 
+        // ________________________________________
+        //   EXPRESII REGULATE
+        // ________________________________________
+        // (1) PRELUAREA 'CURSURILOR' IN CARE
+        // NUMELE 'AUTOR' INCEPE (^) CU SIRUL 'MARIUS'
+        // (IN CARE TRECEM UN 'OBIECT'
+        //  IAR IN LOCUL 'STRING'-ULUI
+        //  TRECEM O 'EXPRESIE REGULARA'):
+        .find({ autor: /^Marius/ })
+   
+
+        // ________________________________________
+        // (3) TRANSFORMAREA SIRULUI IN 'CASE INSENSITIVE' PRIN '/SIR/i' 
+        // IN PRELUAREA 'CURSURILOR' IN CARE
+        // NUMELE 'AUTOR' SE TERMINA (/$/) CU SIRUL 'CHIVU'
+        .find({ autor: /Chivu$/i })
+
+        // ________________________________________
+        .limit(10)
+        .sort({ nume: 1 })
+        .select({ nume: 1, tags: 1 });
+
+    // AFISARE:
+    console.log(cursuri);
+}
+______________________________________________________________
+
+
+
+
+
+
+
+
+
+ (3) Preluarea 'Cursurilor' in care
+	=> Numele 'Autor' Contine (/.*sir.*/) Sirul 'Marius':
+______________________________________________________________
+ 
+
+
+// ==============================================================
+// (6.1) PRELUAREA 'DOCUMENTELOR' DIN BAZA DE DATE 'MONGODB'
+// PRIN FUNC. ASINCRONE 'GETCURSURI()' 
+// ==============================================================
+async function getCursuri() {
+
+    // METODA 'FIND(FILTRU)' -> RETURNEAZA OBIECTUL 'DOCUMENT QUERY' (CARE ESTE CA O 'PROMISIUNE'):
+    // PRELUAREA 'TUTUROR DOCUMENTELOR' DIN BAZA DE DATE:
+    const cursuri = await Curs
+       
+        // ________________________________________
+        //   EXPRESII REGULATE IN JS
+        // ________________________________________
+        // (1) PRELUAREA 'CURSURILOR' IN CARE
+        // NUMELE 'AUTOR' INCEPE (^) CU SIRUL 'MARIUS'
+        // (IN CARE TRECEM UN 'OBIECT'
+        //  IAR IN LOCUL 'STRING'-ULUI
+        //  TRECEM O 'EXPRESIE REGULARA'):
+        .find({ autor: /^Marius/ })
+        // ________________________________________
+        // (2.1) PRELUAREA 'CURSURILOR' IN CARE
+        // NUMELE 'AUTOR' SE TERMINA (/$/) CU SIRUL 'CHIVU'
+        // .find({ autor: /Chivu$/ })
+        // ________________________________________
+        // (2.2) TRANSFORMAREA SIRULUI IN 'CASE INSENSITIVE' PRIN '/SIR/i' 
+        // IN PRELUAREA 'CURSURILOR' IN CARE
+        // NUMELE 'AUTOR' SE TERMINA (/$/) CU SIRUL 'CHIVU'
+        .find({ autor: /Chivu$/i })
+        // ________________________________________
+        // (3) PRELUAREA 'CURSURILOR' IN CARE
+        // NUMELE 'AUTOR' CONTINE (/.*sir.*/) SIRUL 'MARIUS'
+        // TRANSFORMAT IN 'CASE INSENSITIVE' (/SIR/i):
+        .find({ autor: /.*Marius.*/i })
+      
+        // ________________________________________
+        .limit(10)
+        .sort({ nume: 1 })
+        .select({ nume: 1, tags: 1 });
+
+    // AFISARE:
+    console.log(cursuri);
+}
+
+______________________________________________________________
+
+
+
+
+

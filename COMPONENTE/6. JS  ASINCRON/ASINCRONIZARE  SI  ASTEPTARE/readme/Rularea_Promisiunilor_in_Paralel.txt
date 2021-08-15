@@ -1,0 +1,219 @@
+
+
+	Rularea 'Promisiunilor' in 'Paralel'
+
+
+
+
+
+
+
+  (1.1) Cream Fisierul 'promisiuni-api-paralele.js':
+_____________________________________________________________________
+
+//  (1.1) CREAREA 'PROMISIUNII 1' - PT. 'APELAREA API-ULUI FACEBOOK'
+//  (PT. 'PRELUAREA REZULTATULUI'  OP. 'ASINCRON')
+// ========================================================================================
+const p1 = new Promise((resolve) => {
+    setTimeout(() => {
+        console.log('Operațiune asincronizată 1 ...');
+        resolve(1);
+    }, 2000);
+});
+
+
+
+
+
+// ========================================================================================
+//  (1.2) CREAREA 'PROMISIUNII 2' - PT. 'APELAREA API-ULUI TWITTER'
+//  (PT. 'PRELUAREA REZULTATULUI'  OP. 'ASINCRON')
+// ========================================================================================
+const p2 = new Promise((resolve) => {
+    setTimeout(() => {
+        console.log('Operațiune asincronizată 2 ...');
+        resolve(2);
+    }, 2000);
+});
+
+
+
+
+
+// ========================================================================================
+// (2) CONSUMAREA DUPA CE 'TOATE PROMISIUNIILOR' SUNT 'REZOLVATE'
+//      -> PRIN MET. 'ALL().THEN()':
+// ========================================================================================
+Promise.all([p1, p2])
+    .then(result => console.log(result));
+_____________________________________________________________________
+
+
+
+
+
+
+
+  (1.2) Executam 'promisiuni-api-paralele.js':
+_____________________________________________________________________
+
+	node promisiuni-api-paralele.js
+_____________________________________________________________________
+
+
+
+
+  >> Afisare in Terminal:
+_____________________________________________________________________
+
+Operațiune asincronizată 1 ...
+Operațiune asincronizată 2 ...
+[ 1, 2 ]
+_____________________________________________________________________
+
+	=> Aici lucramcu '1 Singur Fir/Thread'
+	=> dar acest 'Fir' lovit de Multiple Operatii 'Asincronizate'
+	=> aproape in Acelasi Timp.
+	=> Rezultatul este Disponibil intr-o Matrice.
+
+
+
+
+
+
+
+  (2.1) Daca 'o Promisiune' este 'Respinsa':
+_____________________________________________________________________
+
+
+// ========================================================================================
+//  (1.1) CREAREA 'PROMISIUNII 1' - PT. 'APELAREA API-ULUI FACEBOOK'
+//  (PT. 'PRINDEREA  ERORILOR' )
+// ========================================================================================
+const p1 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        console.log('Operațiune asincronizată 1 ...');
+        reject(new Error('Pentru că ceva a eșuat ...'));
+    }, 2000);
+});
+
+
+
+
+
+// ========================================================================================
+//  (1.2) CREAREA 'PROMISIUNII 2' - PT. 'APELAREA API-ULUI TWITTER'
+//  (PT. 'PRELUAREA REZULTATULUI'  OP. 'ASINCRON')
+// ========================================================================================
+const p2 = new Promise((resolve) => {
+    setTimeout(() => {
+        console.log('Operațiune asincronizată 2 ...');
+        resolve(2);
+    }, 2000);
+});
+
+
+
+
+
+// ========================================================================================
+// (2) CONSUMAREA DUPA CE 'TOATE PROMISIUNIILOR' SUNT 'REZOLVATE'
+//      -> PRIN MET. 'ALL().THEN()':
+// ========================================================================================
+Promise.all([p1, p2])
+    .then(result => console.log(result))
+    .catch(err => console.log('Eroare: ', err.message));
+_____________________________________________________________________
+	=> Adaugam Metoda 'Catch()'
+	=> pt. cazul in care una dintre 'Promisiuni' este 'Respinsa'
+
+
+
+
+
+  
+
+  (2.2) Executam 'promisiuni-api-paralele.js':
+_____________________________________________________________________
+
+	node promisiuni-api-paralele.js
+_____________________________________________________________________
+
+
+
+
+
+
+  >> Afisarea in Terminal:
+_____________________________________________________________________
+
+Operațiune asincronizată 1 ...
+Operațiune asincronizată 2 ...
+Eroare:  Pentru că ceva a eșuat ...
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+  (3.1) Consumarea 'Promisiunlori' Dupa ce 'Cel Putin o Promisiune' este 'Rezolvata'
+	   => prin Metoda 'race()':
+_____________________________________________________________________
+
+
+// ========================================================================================
+// (2.1) CONSUMAREA DUPA CE 'CEL PUTIN 1 PROMISIUNE' ESTE 'REZOLVATA'
+//      -> PRIN MET. 'RACE().THEN().CATCH()':
+// ========================================================================================
+Promise.race([p1, p2])
+    .then(result => console.log(result))
+    .catch(err => console.log('Eroare: ', err.message));
+_____________________________________________________________________
+	
+
+
+
+
+  
+
+  (3.2) Executam 'promisiuni-api-paralele.js':
+_____________________________________________________________________
+
+	node promisiuni-api-paralele.js
+_____________________________________________________________________
+
+
+
+
+
+
+  >> Afisarea in Terminal:
+_____________________________________________________________________
+
+Operațiune asincronizată 1 ...
+Operațiune asincronizată 2 ...
+1
+_____________________________________________________________________
+
+	=> Ambele Operatiuni 'Asincrine' au 'Pornit',
+	=> Dar 'Promisiunea' a fost 'Rezolvata' 
+	=> cand 'Prima Operatiune Asincrona' a fost 'Completata'
+	=> 'Rezultatul' nu mai este o 'Matrice'
+	=> ci doar 'Valoarea Primei Promisiuni Complete'.
+
+
+
+
+
+
+
+
+
+
+

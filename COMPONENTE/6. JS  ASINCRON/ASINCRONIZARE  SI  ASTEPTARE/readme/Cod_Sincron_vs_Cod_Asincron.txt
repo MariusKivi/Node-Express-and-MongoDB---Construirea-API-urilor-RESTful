@@ -1,0 +1,102 @@
+
+
+	Cod 'Sincron' vs Cod 'Asincron'
+
+
+
+
+ 
+
+  (1.0) Cream Folder-ul 'JS_Asincron' in Proiectul nostru:
+
+
+
+ (1.1) Instalam 'Package.jsom' in Noul Proiect:
+
+_____________________________________________________________________________
+
+	npm init --yes
+_____________________________________________________________________________
+
+
+
+ >> Continut Fisier 'Package.js':
+-----------------------------------------------------------------------------
+{
+    "name": "JS Asincron",
+    "version": "1.0.0",
+    "description": "Reimprospatarea Cunostintelor despre Asincronizari in Javascript",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "Marius Chivu",
+    "license": "ISC"
+}
+-----------------------------------------------------------------------------
+
+
+
+ (1.2) Cream Fisierul 'index.js' in noul Proiect.
+
+_____________________________________________________________________________
+
+// AFISARE 'LINIA 1'
+console.log('Inainte');
+
+// EX. DE 'FUNCTIE  ASINCRON / FARA BLOCARE'
+// FUNCTIA 'SETTIMEOUT( ()=>{}, TIMP_DE_ASTEPTARE)'
+setTimeout(() => {
+    console.log('Citirea unui Utilizator din Baza de Date');
+}, 2000);
+
+// AFISARE 'LINIA 2'
+console.log('Dupa');
+_____________________________________________________________________________
+	=> Functia de pe Linia 2 este Executata,
+	=> dupa  'Linia 1'
+	=> insa Afisarea sa este 'Intarziata',
+	=> de acea 'Linia 3-a' este Afisata inainea 'Functiei'.
+
+
+
+  >> Executam 'index.js' in Terminal;
+_____________________________________________________________________________
+
+	node index.js
+_____________________________________________________________________________
+
+
+
+ >> Afisarea in Terminal:
+_____________________________________________________________________________
+Inainte
+Dupa
+Citirea unui Utilizator din Baza de Date
+_____________________________________________________________________________
+	=> Observam 'Ordinea Execautarii Instructiuniilor'
+
+
+
+
+
+
+(NB!)
+=============================================================================
+  Intr-un 'Program de Sincronizare'/ cu'Blocare':
+        => Cand 'Prima Linie' se 'Executata',
+        => 'Programul' este 'Blocat',
+        => Iar 'Linia a2-a' trebuie sa 'Astepta',
+        => Pana Cand 'Prima Linie' este 'Executata'
+
+  Intr-un 'Program de Aaincronizare' / 'Fara Blocare':
+        => Cand 'Prima Linie' se 'Executata',
+        => 'Programul' nu este 'Blocat',
+        => Iar 'Linia a 2-a' se 'Executa',
+	=> fara a mai 'Astepta'
+        => pana 'Primirea Raspunsului' a 'Primei Linii'.
+=============================================================================
+
+
+

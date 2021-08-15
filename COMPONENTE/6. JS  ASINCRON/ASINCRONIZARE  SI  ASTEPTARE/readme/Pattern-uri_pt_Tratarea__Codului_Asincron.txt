@@ -1,0 +1,52 @@
+
+
+	'Pattern'-uri pentrru Tratarea 'Codului Asincron' / 'Fara Blocare'
+
+
+
+
+
+  >> Exisa '3 Pattern'-uri pentru a 'Trata' un 'Cod Asincron':
+
+	(1) CallBacks (Apelare Inversa)
+	(2) Pronises (Promisiuni)
+	(3) Async/Await (Asincron/Asteapta)
+		=> care este 'Syntactical Suger' peste 'Promisuni'
+
+
+
+  (#) Cream Functia 'getUser()':
+_________________________________________________________
+
+// ==============================================================
+// (1) INSTRUCTIUNI DE AFISARE IN CONSOLA:
+// ==============================================================
+// AFISARE 'LINIA 1'
+console.log('Inainte');
+
+// APELAREA FUNC.:
+const user = getUser(1);
+console.log(user);
+
+// AFISARE 'LINIA 2'
+console.log('Dupa');
+
+// ==============================================================
+// (2) FUNC. 'GETUSER(ID)'
+// ==============================================================
+function getUser(id) {
+    // EX. DE 'FUNCTIE  ASINCRON / FARA BLOCARE'
+    // FUNCTIA 'SETTIMEOUT( ()=>{}, TIMP_DE_ASTEPTARE)'
+    setTimeout(() => {
+        console.log('Citirea unui Utilizator din Baza de Date');
+        // RETURNAM 'OBIECTUL':
+        return { id: id, gitHubUsername: 'marius' }
+    }, 2000);
+
+    return 1;
+}
+_________________________________________________________________________________
+
+
+
+

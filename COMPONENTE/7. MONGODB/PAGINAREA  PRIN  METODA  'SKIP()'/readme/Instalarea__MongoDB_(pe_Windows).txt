@@ -1,0 +1,87 @@
+
+
+	Instalarea 'MongoDB' (pe 'Windows')
+
+
+
+
+  (1) Descarcam 'MongoDB Community Server':
+----------------------------------------------------
+  https://www.mongodb.com/try/download/community
+----------------------------------------------------
+
+	>> Alegem 'Instalare Completa'
+
+	>> Bifam 'Instal MongoDB Compase'
+		=> care este Aplicatia 'Client' 		
+		<= daca 'Compass' nu se Instaleaza il Instalam Separat
+
+	>> Run as a Network Service User
+
+
+
+
+
+
+
+ (2) Descarcam 'MongoDB Compass':
+----------------------------------------------------
+  https://www.mongodb.com/try/download/compass
+----------------------------------------------------
+	=> Utilizata pt. 'Conectarea' la 'Serverul MongoDB'
+	=> pt. a Vedea 'Bazele de Date'
+
+
+
+
+
+ (3) Setam Calea 'Variabilei Mediului':
+	=> Cautam Folderul in care s-a Instalat MongoDB 'cu ../mongod.exe'
+	=> Copiem Adresa ca Text:
+--------------------------------------------------------------------------
+C:\Program Files\MongoDB\Server\5.0\bin
+--------------------------------------------------------------------------
+
+
+  >> Cautam in Serch 'Advanced System Settings'
+  >> Clic 'Environment Variables'
+  >> Din 'List of System Variables' -> Selectam 'Path'
+  >> Clic 'Edit'
+  >> Clic 'New'
+  >> Si Adaugam 'Calea'-ul Copiata anterior:
+--------------------------------------------------------------------------
+C:\Program Files\MongoDB\Server\5.0\bin
+--------------------------------------------------------------------------
+  >> Clic Jos-Dreapta Butonul 'OK'
+  >> Clic 'OK'
+
+
+
+
+
+  (4) Cream Folder-ul 'db' in Folderul 'data'
+	=> in care 'MongoDB' isi 'Stocheaza Inplicit Datele':
+_____________________________________________________________________________
+C:\Program Files\MongoDB\Server\5.0\data\db
+_____________________________________________________________________________
+
+
+
+
+
+
+ (5) Deschidem 'Compass':
+	=> Clic 'Next'...
+	=> Clic Dreapta-Sus 'Individualy'
+	=> Pt. Conectare -> lasam Valorile Implicite:	_____________________________________________________________________________
+
+Hostname: localhost, 
+Port:     27017
+_____________________________________________________________________________
+	=> Clic 'Connect'
+	=> pt a ne Conecta la 'Server-ul MongoDB'.
+
+
+
+
+

@@ -1,0 +1,101 @@
+
+	Upgradarea unui 'Document' din 'MongoDB' utilizand 'Query First'
+
+
+
+
+
+ NB!
+_____________________________________________________________________
+
+Exista 2 Cai de 'Upgradare' a unui 'Document' in 'MongoDB':
+   (1) 'Query First' ('Interogarea Intai'):
+	=> Gasirea 'Documentului' dupa 'Id': 'findById()'
+	=> Modificarea si Upgradarea 'Proprietatilor Documentului'
+	=> Apelarea Metodei 'save()' pt Upgradarea in Baza de Date
+
+
+   (2) 'Update First' ('Upgradareaa Intai'):
+	=> Upgradarea 'Directa' a 'Documentului' - din 'Baza de Date'
+	=> Optional: se poate 'Prelua Upgradare'.
+_____________________________________________________________________
+
+
+
+
+
+
+  (1.1) Cream Functia Asincron 'augradareCurs'
+_____________________________________________________________________
+
+
+// ==============================================================
+// (7.1) UPGRADAREA 'DOCUMENTULUI' DIN 'MONGODB' -- UTIL. 'QUERY  FIRST'
+// PRIN FUNC. ASINCRONE 'UPGRADARECURS()' 
+// ==============================================================
+async function upgradareCurs(id) {
+    // --------------------------------------------------------
+    // (PAS-1) GASIREA 'DOUMENTULUI' DUPA 'ID': 'FINDBYID()'
+    //         (RETURNEAZA O 'PROMISIUNE')
+    const curs = await Curs.findById(id);
+
+    // VERIFICAM - DACA 'NU EXISTA CURS':
+    if (!curs) return;
+
+
+    // --------------------------------------------------------
+    // (PAS-2) MODIFICAREA & UPGRADAREA'PROPRIETATILOR DOCUMENTULUI'
+    curs.estePublicat = true;
+    curs.autor = 'Alt Autor';
+    // curs.set({
+    //     estePublicat: true,
+    //     autor: 'Alt Autor'
+    // });
+
+
+    // --------------------------------------------------------
+    // (PAS-3) APELAREA MET. 'SAVE()' PT. 'UPGRADAREA' IN 'BAZA DE DATE'
+    //         (RETURNEAZA O 'PROMISIUNE')
+    const rezultat = await curs.save();
+
+    // AFISARE IN CONSOLA:
+    console.log(rezultat);
+}
+
+
+
+
+// (7.2) APELAREA FUNCTIEI:
+upgradareCurs('6112885abaeb0649f0100743');
+_____________________________________________________________________
+
+
+
+
+
+  (1.2) Executam 'index.js':
+_____________________________________________________________________
+
+	node index.js
+_____________________________________________________________________
+
+
+
+ >> Afisare in Terminal:
+_____________________________________________________________________
+
+Conectat la MongoDB ...
+{ tags: [ 'Node', 'Backend' ],
+  data: 2021-08-10T14:08:26.324Z,
+  _id: 6112885abaeb0649f0100743,
+  nume: 'Curs Node.js',
+  autor: 'Alt Autor',
+  estePublicat: true,
+  __v: 0 }
+_____________________________________________________________________
+=	=> Documentul s-a Upgradat cu 'Alt Document'
+
+
+
+
+
