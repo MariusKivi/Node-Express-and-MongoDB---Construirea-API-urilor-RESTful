@@ -1,0 +1,145 @@
+
+	Stergerea 'Documentelor' din 'MongoDB'
+
+
+
+
+
+  (1.1) Cream Functia "stergereCurs()"
+		=> pt. Stergerea '1 Document'
+		=> prin Metoda 'deleteOne()':
+_____________________________________________________________________
+
+// ==============================================================
+// (8.1) STERGEREA ' 1 DOCUMENT' DIN 'MONGODB' 
+// PRIN FUNC. ASINCRONE 'STERGERECURS()' & MET. 'DELETEONE()':
+// ==============================================================
+async function stergereCurs(id) {
+    // MET. 'DELETEONE(OBIECT_QUERY)' 
+    // (RETURNEAZA O 'PROMISIUNE')
+    const rezultat = await Curs.deleteOne({ _id: id });
+
+    // AFISARE:
+    console.log(rezultat);
+}
+
+
+
+// (8.2) APELAREA FUNCTIEI:
+stergereCurs('6113ebc971d0ad4fe474ed4c');
+_____________________________________________________________________
+
+
+
+
+
+
+
+  (1.2) Executam 'index.js':
+_____________________________________________________________________
+
+	node index.js
+_____________________________________________________________________
+
+
+
+ >> Afisarea in Terminal:
+_____________________________________________________________________
+
+Conectat la MongoDB ...
+{ n: 1, ok: 1 }
+{ tags: [ 'Node', 'Backend' ],
+  data: 2021-08-10T14:08:26.324Z,
+  _id: 6112885abaeb0649f0100743,
+  nume: 'Curs Node.js',
+  autor: 'Jeanine',
+  estePublicat: false,
+  __v: 0 }
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+  (2.1) Cream Functia "stergereCurs()"
+		=> pt. Stergerea 'Mai Multor Document':
+_____________________________________________________________________
+
+// ==============================================================
+// (8.2) STERGEREA ' 1 DOCUMENT' DIN 'MONGODB' 
+// PRIN FUNC. ASINCRONE 'STERGERECURS()' & MET. 'DELETEONE()'
+// & MET. 'DELETEMANY()' & AFISAREA 'DOC. STERS':
+// ==============================================================
+async function stergereCurs(id) {
+
+    // MET. 'DELETEMANY(OBIECT_QUERY)' 
+    // (RETURNEAZA O 'PROMISIUNE')
+    const rezultat = await Curs.deleteMany({ _id: id });
+
+
+    // AFISARE:
+    console.log(rezultat);
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+  (3.1) Cream Functia "stergereCurs()"
+		=> pt. Stergerea '1 Document' & Afisarea 'Documentului Sters':
+_____________________________________________________________________
+
+// ==============================================================
+// (8.3) STERGEREA ' 1 DOCUMENT' DIN 'MONGODB' 
+// PRIN FUNC. ASINCRONE 'STERGERECURS()' & MET. 'DELETEONE()'
+// & MET. 'FINDBYIDANDREMOVE()' & AFISAREA 'DOC. STERS':
+// ==============================================================
+async function stergereCurs(id) {
+
+    // AFISAREA 'DOCUNEBTULUI STERS':
+    const curs = await Curs.findByIdAndRemove(id);
+
+    // AFISARE:
+    console.log(curs);
+}
+
+// (8.4) APELAREA FUNCTIEI:
+stergereCurs('6113e871be6e024548aa43a9');
+_____________________________________________________________________
+
+
+
+
+
+
+
+  (3.2) Executam 'index.js':
+_____________________________________________________________________
+
+	node index.js
+_____________________________________________________________________
+
+
+
+ >> Afisarea in Terminal:
+_____________________________________________________________________
+Conectat la MongoDB ...
+{ tags: [ 'angular', 'frontend' ],
+  data: 2021-08-11T15:10:41.065Z,
+  _id: 6113e871be6e024548aa43a9,
+  nume: 'Curs Angular',
+  autor: 'Marius Chivu',
+  estePublicat: true,
+  __v: 0 }
+_____________________________________________________________________
+
+
+
+
