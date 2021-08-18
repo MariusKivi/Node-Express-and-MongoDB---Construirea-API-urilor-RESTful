@@ -1,0 +1,294 @@
+
+
+	Validatoare 'Incorporate' -- required, minlength, maxlength, match,enum, min, max
+
+
+
+
+
+
+
+ (1.1) Validatorul 'required'
+	=> poate fi Setat pentru o Valoare 'Boolean'
+	=> sau pt. o Functie -> ce Returneaza o Valoare 'Boolean'
+	=> fiind de folos pt. 'Conditionarea unei Proprietati'
+
+
+   >> Ex. In 'schemaCurs' Prop. 'pret' este Ceruta/Rwquired
+      => doar daca Prop. 'estePublicat: true' este adevarata:
+______________________________________________________________
+
+// (2) CREAREA 'SCHEMEI' - 'SCHEMACURS' 
+// (PRIN PK 'MONGOOSE' & CLASA 'Schema()'):
+const schemaCurs = new mongoose.Schema({
+    // VALIDATORUL 'REQUIRED':
+    nume: { type: String, required: true },
+
+    autor: String,
+    tags: [String],
+    data: { type: Date, default: Date.now },
+    estePublicat: Boolean,
+
+    // VALIDATORUL 'REQUIRED':
+    pret: {
+        type: Number,
+
+        // SETARE 'REQUIRED' PT. O FUNC. CE RETURNEAZA VALOARE 'BOOLEAN'-A:
+        required: function() {
+            // NU PUTEM UTILIZA FUNC. 'SAGEATA'
+            // (PT. CA ACEASTA NU ARE KEYWORD-UL 'THIS')
+            return this.estePublicat;
+        }
+    }
+});
+______________________________________________________________
+
+
+
+
+
+
+
+
+ (1.2) Comentam Proprietatea 'pret'
+	=> din Obiectul 'curs'
+	=> al Func. 'CreareCurs()':
+______________________________________________________________
+// (4.1) CREAREA 'DOCUMENTELOR' IN BAZA DE DATE 'MONGODB'
+// PRIN FUNC. ASINCRONE 'CREARECURS()' 
+// ==============================================================
+async function creareCurs() {
+
+    // (A) CREAREA OBIECTULUI 'CURS' (INSTANTA A CLASEI):
+    const curs = new Curs({
+        // nume: 'Curs Angular',
+        autor: 'Marius',
+        tags: ['angular', 'frontend'],
+        estePublicat: true,
+        // pret: 60
+    });
+
+
+    // GESTIONAREA 'ERORILOR':
+    try {
+
+        // MET. DE VALIDARE 'VALIDATE()'
+        // (RETURNEAZA O 'PROMISIUNE AWAIT'):
+        // await curs.validate();
+
+
+        // (B) SALVAREA OBIECTULUI 'CURS' IN 'BAZA DE DATE'
+        // PRIN MET. 'SAVE()' -> CARE  RETURNEAZA O 'PROMISIUNE':
+        // 'OPERATII  ASINCRONE & ASTEPTARE'
+        const rezultat = await curs.save();
+
+
+        // (4.2) AFISARE  'REZULTAT':
+        console.log(rezultat);
+
+    } catch (exception) {
+        console.log(exception.message);
+    }
+}
+______________________________________________________________
+	=> primim 2 Erori de Validare
+
+
+
+
+
+
+(1.3) Executam Fisierul 'validarea_in_mongoose.js':
+______________________________________________________________
+	
+	node validarea_in_mongoose.js
+______________________________________________________________
+
+
+
+
+ >> Afisarea in Terminal:
+______________________________________________________________
+Curs validation failed: pret: Path `pret` is required., nume: Path `nume` is required.
+Conectat la MongoDB ...
+______________________________________________________________
+
+
+
+
+
+
+
+
+ (2) Validatoarele 'minlength' & 'Maxlength'& 'Match'
+	=> Adaugam in 'schemaCurs' Props. 'minlength' & 'Maxlength' & 'Match':
+______________________________________________________________
+
+// (2) CREAREA 'SCHEMEI' - 'SCHEMACURS' 
+// (PRIN PK 'MONGOOSE' & CLASA 'Schema()'):
+const schemaCurs = new mongoose.Schema({
+    // VALIDATOARELE: 'REQUIRED', 'MINLENGTH' & 'MAXLENGTH' & 'MATCH':
+    nume: {
+        type: String,
+
+        // VALIDATOARE 'BUILT-IN'
+        required: true,
+        minlength: 5,
+        maxlength: 255,
+        // match: /expresie_regulara/
+    },
+
+    autor: String,
+    tags: [String],
+    data: { type: Date, default: Date.now },
+    estePublicat: Boolean,
+
+    // VALIDATORUL 'REQUIRED':
+    pret: {
+        type: Number,
+
+        // SETARE 'REQUIRED' PT. O FUNC. CE RETURNEAZA VALOARE 'BOOLEAN'-A:
+        required: function() {
+            // NU PUTEM UTILIZA FUNC. 'SAGEATA'
+            // (PT. CA ACEASTA NU ARE KEYWORD-UL 'THIS')
+            return this.estePublicat;
+        }
+    }
+});
+______________________________________________________________
+
+
+
+
+
+
+
+
+ (3.1) Validatorul 'enum'
+	=> Adaugam in 'schemaCurs' Prop. 'categorie' :
+______________________________________________________________
+
+// (2) CREAREA 'SCHEMEI' - 'SCHEMACURS' 
+// (PRIN PK 'MONGOOSE' & CLASA 'Schema()'):
+const schemaCurs = new mongoose.Schema({
+    // VALIDATOARELE: 'REQUIRED', 'MINLENGTH' & 'MAXLENGTH' & 'MATCH':
+    nume: {
+        type: String,
+
+        // VALIDATOARE 'BUILT-IN'
+        required: true,
+        minlength: 5,
+        maxlength: 255,
+        // match: /expresie_regulara/
+    },
+
+    // VALIDATORUL 'ENUM' & 'REQUIRED':
+    categorie: {
+        type: String,
+        required,
+        enum: ['web', 'mobile', 'retea']
+    },
+
+    autor: String,
+    tags: [String],
+    data: { type: Date, default: Date.now },
+    estePublicat: Boolean,
+
+    // VALIDATORUL 'REQUIRED':
+    pret: {
+        type: Number,
+
+        // SETARE 'REQUIRED' PT. O FUNC. CE RETURNEAZA VALOARE 'BOOLEAN'-A:
+        required: function() {
+            // NU PUTEM UTILIZA FUNC. 'SAGEATA'
+            // (PT. CA ACEASTA NU ARE KEYWORD-UL 'THIS')
+            return this.estePublicat;
+        }
+    }
+});
+______________________________________________________________
+	=> daca Cursul Creat nu are una dintre Valorile 'enum'
+	=> promim o Eroare.
+
+
+
+
+
+
+
+
+
+
+
+ (3.2) Adaugam Proprietatea 'categorie' si Activam Props. 'nume' & 'pret'
+	=> in Obiectul 'curs'
+	=> al Func. 'creareCurs()':
+______________________________________________________________
+// (A) CREAREA OBIECTULUI 'CURS' (INSTANTA A CLASEI):
+    const curs = new Curs({
+        nume: 'Curs Angular',
+        categorie: '-',
+        autor: 'Marius',
+        tags: ['angular', 'frontend'],
+        estePublicat: true,
+        pret: 60
+    });
+______________________________________________________________
+	
+
+
+
+
+
+(3.3) Executam Fisierul 'validarea_in_mongoose.js':
+______________________________________________________________
+	
+	node validarea_in_mongoose.js
+______________________________________________________________
+
+
+
+
+ >> Afisarea in Terminal:
+______________________________________________________________
+
+_Curs validation failed: categorie: `-` is not a valid enum value for path `categorie`.
+Conectat la MongoDB ...
+_____________________________________________________________
+
+	=> primim informarea ca  Categoria '-' nu este Valida
+	=> nu face parte din cele 3 Valori (web, mobil, retea)
+
+
+
+
+
+
+
+
+
+
+ (4) Validatorul Numerica 'min' & 'max'
+	=> Adaugam in 'schemaCurs' in Prop. 'pret' :
+______________________________________________________________
+
+// VALIDATORUL 'REQUIRED' & 'MIN' & 'MAX':
+    pret: {
+        type: Number,
+
+        // SETARE 'REQUIRED' PT. O FUNC. CE RETURNEAZA VALOARE 'BOOLEAN'-A:
+        required: function() {
+            // NU PUTEM UTILIZA FUNC. 'SAGEATA'
+            // (PT. CA ACEASTA NU ARE KEYWORD-UL 'THIS')
+            return this.estePublicat;
+        },
+
+        // VALIDARE NUMERICA:
+        min: 40,
+        max: 800
+    }
+______________________________________________________________
+	
+
+
+
