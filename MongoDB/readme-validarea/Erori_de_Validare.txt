@@ -1,0 +1,191 @@
+
+	Erori de Validare
+
+
+
+  <> Examinam Obiectul 'Eroare' in Detaliu.
+
+
+
+  (1.1) In Functia 'creareCurs()'
+	  => Iteram Obiectul 'Error' in Blocul 'catch{}'
+	  => iar in Obiectul 'curs' -> 
+	  => Setam Props. 'tags' & 'categorie' - 'Invalide':
+_____________________________________________________________________
+
+// (4.1) CREAREA 'DOCUMENTELOR' IN BAZA DE DATE 'MONGODB'
+// PRIN FUNC. ASINCRONE 'CREARECURS()' 
+// ==============================================================
+async function creareCurs() {
+
+    // (A) CREAREA OBIECTULUI 'CURS' (INSTANTA A CLASEI):
+    const curs = new Curs({
+        nume: 'Curs Angular',
+        categorie: '-',
+        autor: 'Marius',
+        // tags: [],
+        tags: null,
+        estePublicat: true,
+        pret: 60
+    });
+
+
+    // GESTIONAREA 'ERORILOR':
+    try {
+
+        // MET. DE VALIDARE 'VALIDATE()'
+        // (RETURNEAZA O 'PROMISIUNE AWAIT'):
+        // await curs.validate();
+
+
+        // (B) SALVAREA OBIECTULUI 'CURS' IN 'BAZA DE DATE'
+        // PRIN MET. 'SAVE()' -> CARE  RETURNEAZA O 'PROMISIUNE':
+        // 'OPERATII  ASINCRONE & ASTEPTARE'
+        const rezultat = await curs.save();
+
+
+        // (4.2) AFISARE  'REZULTAT':
+        console.log(rezultat);
+
+    } catch (except) {
+        // ITERAREA PRIN TOATE PROPRIETATILE OBIECTULUI 'EROARE'
+        // PT. A OBTINE 'DETALII DESPRE 'ERORILE DE VALIDARE':
+        for (camp in except.errors)
+            console.log(except.errors[camp]);
+    }
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+
+  (1.2) Executam Fisierul 'validarea_in_mongoose.js':
+_____________________________________________________________________
+
+	node validarea_in_mongoose.js
+_____________________________________________________________________
+
+
+
+ >> Afisarea in Terminal
+_____________________________________________________________________
+
+Conectat la MongoDB ...
+{ ValidatorError: `-` is not a valid enum value for path `categorie`.
+    at new ValidatorError (C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\MongoDB\node_modules\mongoose\lib\error\validator.js:25:11)
+    at validate (C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\MongoDB\node_modules\mongoose\lib\schematype.js:782:13)
+    at C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\MongoDB\node_modules\mongoose\lib\schematype.js:831:11
+    at Array.forEach (<anonymous>)
+    at SchemaString.SchemaType.doValidate (C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\MongoDB\node_modules\mongoose\lib\schematype.js:791:19)
+    at C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\MongoDB\node_modules\mongoose\lib\document.js:1526:9
+    at _combinedTickCallback (internal/process/next_tick.js:131:7)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+    at Function.Module.runMain (module.js:678:11)
+    at startup (bootstrap_node.js:187:16)
+    at bootstrap_node.js:608:3
+  message: '`-` is not a valid enum value for path `categorie`.',
+  name: 'ValidatorError',
+  properties:
+   { validator: [Function],
+     message: '`{VALUE}` is not a valid enum value for path `{PATH}`.',
+     type: 'enum',
+     enumValues: [ 'web', 'mobile', 'retea' ],
+     path: 'categorie',
+     value: '-' },
+  kind: 'enum',
+  path: 'categorie',
+  value: '-',
+  reason: undefined,
+  '$isValidatorError': true }
+{ ValidatorError: Un curs trebuie sa aiba cel putin un tag.
+    at new ValidatorError (C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\MongoDB\node_modules\mongoose\lib\error\validator.js:25:11)
+    at validate (C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\MongoDB\node_modules\mongoose\lib\schematype.js:782:13)
+    at C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\MongoDB\node_modules\mongoose\lib\schematype.js:855:5
+    at Timeout.setTimeout [as _onTimeout] (C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\MongoDB\validarea_in_mongoose.js:77:21)
+    at ontimeout (timers.js:475:11)
+    at tryOnTimeout (timers.js:310:5)
+    at Timer.listOnTimeout (timers.js:270:5)
+  message: 'Un curs trebuie sa aiba cel putin un tag.',
+  name: 'ValidatorError',
+  properties:
+   { isAsync: true,
+     validator: [Function: validator],
+     message: 'Un curs trebuie sa aiba cel putin un tag.',
+     type: 'user defined',
+     path: 'tags',
+     value: null },
+  kind: 'user defined',
+  path: 'tags',
+  value: null,
+  reason: undefined,
+  '$isValidatorError': true }
+
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  (2.1) Preluarea Mesajului de 'Validare a Erorilor'
+	=> pt. Fiecare Proprietate 'Invalida'
+	=> Accesam Proprietatea '.message' in Afisarea Iterarii:
+_____________________________________________________________________
+
+catch (except) {
+        // ITERAREA PRIN TOATE PROPRIETATILE OBIECTULUI 'EROARE'
+        // PT. A OBTINE 'DETALII DESPRE 'ERORILE DE VALIDARE':
+        for (camp in except.errors)
+            console.log(except.errors[camp].message);
+    }
+_____________________________________________________________________
+
+
+
+
+
+
+  (2.2) Executam Fisierul 'validarea_in_mongoose.js':
+_____________________________________________________________________
+
+	node validarea_in_mongoose.js
+_____________________________________________________________________
+
+
+
+ >> Afisarea in Terminal
+_____________________________________________________________________
+
+Conectat la MongoDB ...
+`-` is not a valid enum value for path `categorie`.
+Un curs trebuie sa aiba cel putin un tag.
+_____________________________________________________________________
+
+
+
+
+
+
