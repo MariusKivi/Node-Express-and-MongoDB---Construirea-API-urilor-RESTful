@@ -1,0 +1,245 @@
+
+	Validator Personalizat
+
+
+
+
+
+ (1.1) Crearea unui Validator Personalizat pentru Proprietatea 'tags'
+	= din 'schemaCurs':
+_____________________________________________________________________
+// (2) CREAREA 'SCHEMEI' - 'SCHEMACURS' 
+// (PRIN PK 'MONGOOSE' & CLASA 'Schema()'):
+const schemaCurs = new mongoose.Schema({
+
+    // VALIDATOARELE: 'REQUIRED', 'MINLENGTH' & 'MAXLENGTH' & 'MATCH':
+    nume: {
+        type: String,
+
+        // VALIDATOARE 'BUILT-IN'
+        required: true,
+        minlength: 5,
+        maxlength: 255,
+        // match: /expresie_regulara/
+    },
+
+    // VALIDATORUL 'ENUM' & 'REQUIRED':
+    categorie: {
+        type: String,
+        required: true,
+        enum: ['web', 'mobile', 'retea']
+    },
+
+    autor: String,
+
+    // CREAM 'VALIDATORUL PERSONALIZAT':
+    tags: {
+        type: Array,
+
+        // PROP. - VALIDATOR PERSONALIZAT:
+        validate: {
+            validator: function(valoare) {
+                // LOGICA - VALIDARII PERSONALIZATE:
+                return valoare.length > 0;
+            },
+            message: 'Un curs trebuie sa aiba cel putin un tag.'
+        }
+    },
+
+    data: { type: Date, default: Date.now },
+    estePublicat: Boolean,
+
+    // VALIDATORUL 'REQUIRED' & 'MIN' & 'MAX':
+    pret: {
+        type: Number,
+
+        // SETARE 'REQUIRED' PT. O FUNC. CE RETURNEAZA VALOARE 'BOOLEAN'-A:
+        required: function() {
+            // NU PUTEM UTILIZA FUNC. 'SAGEATA'
+            // (PT. CA ACEASTA NU ARE KEYWORD-UL 'THIS')
+            return this.estePublicat;
+        },
+
+        // VALIDARE NUMERICA:
+        min: 40,
+        max: 800
+    }
+});
+_____________________________________________________________________
+
+
+
+
+
+
+ (1.2) Activam Categoria 'web' & Adaugam o Matrice Goala 
+	=> pt. Prop. 'tags'
+	=> din Obiectul 'curs' al Func. 'creareCurs()':
+_____________________________________________________________________
+// (4.1) CREAREA 'DOCUMENTELOR' IN BAZA DE DATE 'MONGODB'
+// PRIN FUNC. ASINCRONE 'CREARECURS()' 
+// ==============================================================
+async function creareCurs() {
+
+    // (A) CREAREA OBIECTULUI 'CURS' (INSTANTA A CLASEI):
+    const curs = new Curs({
+        nume: 'Curs Angular',
+        categorie: 'web',
+        autor: 'Marius',
+        tags: [],
+        estePublicat: true,
+        pret: 60
+    });
+
+
+    // GESTIONAREA 'ERORILOR':
+    try {
+
+        // MET. DE VALIDARE 'VALIDATE()'
+        // (RETURNEAZA O 'PROMISIUNE AWAIT'):
+        // await curs.validate();
+
+
+        // (B) SALVAREA OBIECTULUI 'CURS' IN 'BAZA DE DATE'
+        // PRIN MET. 'SAVE()' -> CARE  RETURNEAZA O 'PROMISIUNE':
+        // 'OPERATII  ASINCRONE & ASTEPTARE'
+        const rezultat = await curs.save();
+
+
+        // (4.2) AFISARE  'REZULTAT':
+        console.log(rezultat);
+
+    } catch (exception) {
+        console.log(exception.message);
+    }
+}
+_____________________________________________________________________
+
+
+
+ >> Sau daca Comentam Prop. 'tags':
+_____________________________________________________________________
+
+ // (A) CREAREA OBIECTULUI 'CURS' (INSTANTA A CLASEI):
+    const curs = new Curs({
+        nume: 'Curs Angular',
+        categorie: 'web',
+        autor: 'Marius',
+        // tags: [],
+        estePublicat: true,
+        pret: 60
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+ (1.3) Executam Fisierul 'validarea_in_mongoose.js':
+_____________________________________________________________________
+
+	node validarea_in_mongoose.js
+_____________________________________________________________________
+
+
+
+ >> Afisarea in Terminal:
+_____________________________________________________________________
+Curs validation failed: tags: Un curs trebuie sa aiba cel putin un tag.
+Conectat la MongoDB ...
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2.1) Daca Setam Prop. 'tags' ca fiind 'nula'
+	=> in Obiectul 'curs' al Func. 'creareCurs()':
+_____________________________________________________________________
+// (A) CREAREA OBIECTULUI 'CURS' (INSTANTA A CLASEI):
+    const curs = new Curs({
+        nume: 'Curs Angular',
+        categorie: 'web',
+        autor: 'Marius',
+        // tags: [],
+        tags: null,
+        estePublicat: true,
+        pret: 60
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+ (2.2) Executam Fisierul 'validarea_in_mongoose.js':
+_____________________________________________________________________
+
+	node validarea_in_mongoose.js
+_____________________________________________________________________
+
+
+
+
+
+ >> Afisarea in Terminal:
+_____________________________________________________________________
+Curs validation failed: tags: Cannot read property 'length' of null
+Conectat la MongoDB ...
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (3.1) Modfifical Logica Validatorului Personalizat pentru Proprietatea 'tags'
+	= din 'schemaCurs':
+_____________________________________________________________________
+
+// CREAM 'VALIDATORUL PERSONALIZAT':
+    tags: {
+        type: Array,
+
+        // PROP. - VALIDATOR PERSONALIZAT:
+        validate: {
+            validator: function(valoare) {
+                // LOGICA - VALIDARII PERSONALIZATE:
+                return valoare && valoare.length > 0;
+            },
+            message: 'Un curs trebuie sa aiba cel putin un tag.'
+        }
+    },
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (3.2) Executam Fisierul 'validarea_in_mongoose.js':
+_____________________________________________________________________
+
+	node validarea_in_mongoose.js
+_____________________________________________________________________
+
+
+
+
+
+ >> Afisarea in Terminal:
+_____________________________________________________________________
+Curs validation failed: tags: Un curs trebuie sa aiba cel putin un tag.
+Conectat la MongoDB ...
+_____________________________________________________________________
+
+
+
+
