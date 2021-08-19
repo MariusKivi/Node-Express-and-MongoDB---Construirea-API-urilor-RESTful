@@ -1,0 +1,15 @@
+{
+    "name": "MongoDB",
+    "version": "1.0.0",
+    "description": "Utilizarea Bazei de Date Document/Non-SQL - MongoDB",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "Marius Chivu",
+    "license": "ISC",
+    "dependencies": {
+        "mongoose": "^5.0.1"
+    }
+}

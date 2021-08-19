@@ -1,0 +1,345 @@
+
+	Proprietati ale Obiectelor 'Schemei'
+
+
+
+
+
+ NB!
+_____________________________________________________________________
+
+  <> Pt. 'String' avem 3 Proprietati Aditionale pe care le putem utiliza:
+	(1) 'lowercase' => prin care Mongoose Converteste Valoarea Proprietatii in 'Litere Mici';
+
+	(2) 'uppercase' => pt. Convertirea in 'Litere Mari'
+	(3) 'trim'=> pentru 'Eliminarea Spatiilor' din 'Sirul de Caractere'
+
+
+  <> Pt. 'Orice Tip de Date' avem Proprietatile:
+	(1) 'get' => este Apelat -> pt. Citirea Valoarei unei Proprietati
+	(2) 'set' => este Apelat -> pt. Setarea Valoarei unei Proprietati
+_____________________________________________________________________
+
+
+
+
+
+
+
+  (1.1) Adaugarea Proprietatii 'lowercase'
+	  => Obiectului 'categorie'
+	  => din 'schemaCurs':
+_____________________________________________________________________
+// VALIDATORUL 'ENUM' & 'REQUIRED':
+    categorie: {
+        type: String,
+        required: true,
+        enum: ['web', 'mobile', 'retea'],
+        lowercase: true
+    },
+_____________________________________________________________________
+
+
+
+
+(1.2) Modificam in Func. 'creareCurs'
+	  => Obiectului 'curs'
+	  => Setam 'categoria' - 'web'
+	  => Setam 'tags' - 'frontend'
+_____________________________________________________________________
+
+_ 
+    // (A) CREAREA OBIECTULUI 'CURS' (INSTANTA A CLASEI):
+    const curs = new Curs({
+        nume: 'Curs Angular',
+        categorie: 'web',
+        autor: 'Marius',
+        tags: ['frontend'],
+        estePublicat: true,
+        pret: 60
+    });
+____________________________________________________________________
+
+
+
+
+
+
+  (1.3) Executam Fisierul 'validarea_in_mongoose.js':
+_____________________________________________________________________
+	
+	node validarea_in_mongoose.js
+_____________________________________________________________________
+
+
+
+
+  >> Afisarea in Terminal
+_____________________________________________________________________
+Conectat la MongoDB ...
+{ tags: [ 'frontend' ],
+  data: 2021-08-19T05:59:26.325Z,
+  _id: 611df33e5359121604807c07,
+  nume: 'Curs Angular',
+  categorie: 'web',
+  autor: 'Marius',
+  estePublicat: true,
+  pret: 60,
+  __v: 0 }
+_____________________________________________________________________
+	=> S-a Creat Obiectul 'Curs'
+	=> si s-a Salvat in 'Baza de Date'
+
+	=> Prop. 'categorie' este Scrisa cu 'Litere Mici'
+
+
+
+
+
+
+
+
+
+
+
+
+  (2.1) Adaugarea Proprietatii 'trim'
+	  => Obiectului 'categorie'
+	  => din 'schemaCurs':
+_____________________________________________________________________
+// VALIDATORUL 'ENUM' & 'REQUIRED':
+    categorie: {
+        type: String,
+        required: true,
+        enum: ['web', 'mobile', 'retea'],
+        lowercase: true,
+        // uppercase: true,
+        trim: true
+    },
+_____________________________________________________________________
+
+
+
+
+(2.2) Modificam in Func. 'creareCurs'
+	  => Obiectului 'curs'
+	  => Setam Spatii Libere pt. 'categoria' - ' web ':	 
+_____________________________________________________________________
+
+    // (A) CREAREA OBIECTULUI 'CURS' (INSTANTA A CLASEI):
+    const curs = new Curs({
+        nume: 'Curs Angular',
+        categorie: ' web ',
+        autor: 'Marius',
+        tags: ['frontend'],
+        estePublicat: true,
+        pret: 60
+    });
+____________________________________________________________________
+
+
+
+
+
+
+  (2.3) Executam Fisierul 'validarea_in_mongoose.js':
+_____________________________________________________________________
+	
+	node validarea_in_mongoose.js
+_____________________________________________________________________
+
+
+
+
+  >> Afisarea in Terminal
+_____________________________________________________________________
+Conectat la MongoDB ...
+{ tags: [ 'frontend' ],
+  data: 2021-08-19T06:23:17.634Z,
+  _id: 611df8d53f171a03d0b2c6d2,
+  nume: 'Curs Angular',
+  categorie: 'web',
+  autor: 'Marius',
+  estePublicat: true,
+  pret: 60,
+  __v: 0 }
+_____________________________________________________________________
+   => Sunt 'Taiate' si 'Eliminate' Spatiile Libere din String-ul ' web '.
+
+
+
+
+
+
+
+
+
+
+  (3.1) Proprietatile 'get' si 'set' 
+	=> pt.Rotunjirea Valorii Obiectului 'pret'
+	=> din 'schemaCurs':	
+_____________________________________________________________________
+
+    // VALIDATORUL 'REQUIRED' & 'MIN' & 'MAX':
+    pret: {
+        type: Number,
+
+        // SETARE 'REQUIRED' PT. O FUNC. CE RETURNEAZA VALOARE 'BOOLEAN'-A:
+        required: function() {
+            // NU PUTEM UTILIZA FUNC. 'SAGEATA'
+            // (PT. CA ACEASTA NU ARE KEYWORD-UL 'THIS')
+            return this.estePublicat;
+        },
+
+        // VALIDARE NUMERICA:
+        min: 40,
+        max: 800,
+
+        get: valoare => Math.round(valoare),
+        set: valoare => Math.round(valoare)
+    }	
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+(3.2) Modificam in Func. 'creareCurs'
+	  => Obiectului 'curs'
+	  => Setam Prop. 'pret' - '60.8':	 
+_____________________________________________________________________
+
+ // (A) CREAREA OBIECTULUI 'CURS' (INSTANTA A CLASEI):
+    const curs = new Curs({
+        nume: 'Curs Angular',
+        categorie: ' web ',
+        autor: 'Marius',
+        tags: ['frontend'],
+        estePublicat: true,
+        pret: 60.8
+    });
+____________________________________________________________
+
+
+
+
+
+  (3.3) Executam Fisierul 'validarea_in_mongoose.js':
+_____________________________________________________________________
+	
+	node validarea_in_mongoose.js
+_____________________________________________________________________
+
+
+
+
+  >> Afisarea in Terminal
+_____________________________________________________________________
+Conectat la MongoDB ...
+{ tags: [ 'frontend' ],
+  data: 2021-08-19T06:45:41.556Z,
+  _id: 611dfe15e539253874d1bb88,
+  nume: 'Curs Angular',
+  categorie: 'web',
+  autor: 'Marius',
+  estePublicat: true,
+  pret: 61,
+  __v: 0 }
+_____________________________________________________________________
+   => Pretul este Rotunjit Superior -> la 61
+
+   => pt. a se Afisa in 'Compass' -> Schimbam Tipul Datei 'int32' in 'double'
+
+
+
+
+
+
+
+
+
+
+
+ (4.0) Modificam in 'Compass'
+	=> Valoarea Pretului = 60.8
+	=> si Tipul de Date = Double
+
+
+
+ (4.1) Comentam in Func. 'getCursuri'	
+	  => Metodele '.skip()' si '.limit()'
+	  => inlocuim 'autor' cu '_id'-ul Cursului din 'Compass'
+	  => Adaugam Preluarea 'pret: 1'
+	  => Adaugam Afisarea 'Pretului' pt Cursul Modificat
+	  => si Apelam 'getCursuri()':
+_____________________________________________________________________
+// (5.1) PRELUAREA 'DOCUMENTELOR' DIN BAZA DE DATE 'MONGODB'
+// PRIN FUNC. ASINCRONE 'GETCURSURI()' 
+// ==============================================================
+async function getCursuri() {
+
+    // CONSTANTE:
+    // IN  REALITATE FUNCTIONEAZA ASA:  /api/cursuri?numarPagina=3&simensiunePagina=10
+    const numarPagina = 2;
+    const dimensiunePagina = 10;
+
+
+    // METODA 'FIND(FILTRU)' -> RETURNEAZA OBIECTUL 'DOCUMENT QUERY' (CARE ESTE CA O 'PROMISIUNE'):
+    // PRELUAREA 'TUTUROR DOCUMENTELOR' DIN BAZA DE DATE:
+    const cursuri = await Curs
+        // ________________________________________
+        // (1) PRELUAREA 'CURSULUI' DUPA '_UD':  
+         .find({ _id: '611dfe15e539253874d1bb88' })
+        // ________________________________________
+        // CREAREA 'PAGINARI' PRIN MET. 'SKIP()':
+        // .skip((numarPagina - 1) * dimensiunePagina)
+        // ________________________________________
+        // OBTINEM 'PAGINA DOCUMENTULUI':
+        // .limit(dimensiunePagina)
+        // ________________________________________
+        .sort({ nume: 1 })
+        // ________________________________________
+        // PRELUAREA 'PROPRIETATILOR'
+        .select({ nume: 1, tags: 1, pret: 1 });
+
+    // AFISARE 'PRET' PT. CURSUL 14:
+    console.log(cursuri[0].pret);
+}
+
+
+// (5.2) APELAREA FUNCTIEI:
+getCursuri();
+_____________________________________________________________________
+
+
+
+
+
+
+
+  (4.2) Executam Fisierul 'validarea_in_mongoose.js':
+_____________________________________________________________________
+	
+	node validarea_in_mongoose.js
+_____________________________________________________________________
+
+
+
+
+  >> Afisarea in Terminal
+_____________________________________________________________________
+Conectat la MongoDB ...
+61
+_____________________________________________________________________
+	=> Afiseaza Pretul Rotunjit Superior
+	=> desi in Compass acesta este Setat la '60.8'
+
+
+
+
+
+
+
