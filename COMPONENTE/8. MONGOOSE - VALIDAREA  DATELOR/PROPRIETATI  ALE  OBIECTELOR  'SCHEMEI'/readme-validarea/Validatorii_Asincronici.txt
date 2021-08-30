@@ -1,0 +1,125 @@
+
+	Validatorii_Asincronici
+
+
+
+
+_____________________________________________________________________________
+Uneori Logica Validari implica 
+	=> Citirea din Baza de Date 
+	=> sau de pe Servicii HTTP Remote,
+
+si nu obtinem un Raspuns pe loc,
+  	=> iar in acest caz Avem nevoie de un 'Validator Asincronic'.
+_____________________________________________________________________________
+
+
+
+
+
+
+(1.1) Convertirea unui 'Validator  Sincron' intr-ulul 'Asincron'
+	=> Setaind Prop. 'isAsync' in 'tags/validate'
+	=> si Adaugand 'Callback Function' in Prop. 'validator'
+	=> si Setamd Func. 'setTimeout()'
+	=> din 'schemaCurs ':
+_____________________________________________________________________________
+// (2) CREAREA 'SCHEMEI' - 'SCHEMACURS' 
+// (PRIN PK 'MONGOOSE' & CLASA 'Schema()'):
+const schemaCurs = new mongoose.Schema({
+
+    // VALIDATOARELE: 'REQUIRED', 'MINLENGTH' & 'MAXLENGTH' & 'MATCH':
+    nume: {
+        type: String,
+
+        // VALIDATOARE 'BUILT-IN'
+        required: true,
+        minlength: 5,
+        maxlength: 255,
+        // match: /expresie_regulara/
+    },
+
+    // VALIDATORUL 'ENUM' & 'REQUIRED':
+    categorie: {
+        type: String,
+        required: true,
+        enum: ['web', 'mobile', 'retea']
+    },
+
+    autor: String,
+
+    tags: {
+        type: Array,
+
+        // PROP. - VALIDATOR PERSONALIZAT:
+        validate: {
+
+            // ACTIVAREA 'ASINCRONIZARI':
+            isAsync: true,
+
+            validator: function(valoare, callback) {
+
+                // IMPLEMENTAREA 'VALIDATATORULUI ASINCRON'
+                // PRIN FUNC. 'SETTIMEOUT()':
+                setTimeout(() => {
+                    // LOGICA - VALIDARII PERSONALIZATE:
+                    const rezultat = valoare && valoare.length > 0;
+
+                    // APELAREA FUNC.:
+                    callback(rezultat);
+
+                }, 4000);
+
+            },
+            message: 'Un curs trebuie sa aiba cel putin un tag.'
+        }
+    },
+
+    data: { type: Date, default: Date.now },
+    estePublicat: Boolean,
+
+    // VALIDATORUL 'REQUIRED' & 'MIN' & 'MAX':
+    pret: {
+        type: Number,
+
+        // SETARE 'REQUIRED' PT. O FUNC. CE RETURNEAZA VALOARE 'BOOLEAN'-A:
+        required: function() {
+            // NU PUTEM UTILIZA FUNC. 'SAGEATA'
+            // (PT. CA ACEASTA NU ARE KEYWORD-UL 'THIS')
+            return this.estePublicat;
+        },
+
+        // VALIDARE NUMERICA:
+        min: 40,
+        max: 800
+    }
+});
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+  (1.2) Executam Fisierul 'validarea_in_mongoose.js':
+_____________________________________________________________________________
+
+	node validarea_in_mongoose.js
+_____________________________________________________________________________
+
+
+
+
+
+
+  >> Afisarea in Terminal:
+_____________________________________________________________________________
+Conectat la MongoDB ...
+Curs validation failed: tags: Un curs trebuie sa aiba cel putin un tag.
+_____________________________________________________________________________
+
+
+
+

@@ -1,0 +1,20 @@
+[
+  {"_id":"1a68fdc3615eda645bc6bdec","tags":["express","backend"],"data":"2021-08-14T17:28:01.388Z","nume":"Express.js Curs","autor":"Marius","estePublicat":true,"pret":40,"__v":0},
+
+
+  {"_id":"9a68fdd7bee8ea64649c2777","tags":["node","backend"],"data":"2021-08-14T17:30:25.912Z","nume":"Node.js Curs","autor":"Marius","estePublicat":true,"pret":80,"__v":0},
+
+  {"_id":"5a68fde3f09ad7646ddec17e","tags":["aspnet","backend"],"data":"2021-08-14T17:30:59.605Z","nume":"ASP.NET MVC Curs","autor":"Marius","estePublicat":true,"pret":60,"__v":0},
+
+
+  {"_id":"5a68fdf95db93f6477053ddd","tags":["react","frontend"],"data":"2021-08-14T17:32:21.589Z","name":"React Curs","autor":"Marius","estePublicat":false,"__v":0},
+
+
+  {"_id":"5a68fe2142ae6a6482c4c9cb","tags":["node","backend"],"data":"2021-08-14T17:34:01.075Z","nume":"Node.js Curs de Jeanine","autor":"Jeanine","estePublicat":true,"pret":50,"__v":0},
+
+
+  {"_id":"5a68ff090c553064a218a547","tags":["node","backend"],"data":"2021-08-14T17:36:53.128Z","nume":"Node.js Curs de Marian","autor":"Marian","estePublicat":false,"pret":50,"__v":0},
+
+
+  {"_id":"5a6900fff467be65019a9001","tags":["angular","frontend"],"data":"2021-08-14T17:40:15.353Z","name":"Angular Curs","autor":"Marius","estePublicat":true,"pret":60,"__v":0}
+]

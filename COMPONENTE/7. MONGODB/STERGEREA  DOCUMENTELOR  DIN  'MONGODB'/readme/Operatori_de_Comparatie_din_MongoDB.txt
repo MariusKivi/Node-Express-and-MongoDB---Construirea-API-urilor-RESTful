@@ -1,0 +1,106 @@
+
+	Operatori de 'Comparatie' din 'MongoDB' penttu 'Preluarea Datelor'
+
+
+
+
+(NB) 
+______________________________________________________________
+Opreatorii ($) de 'Comparatie' din 'MongoDB':
+
+   (1) 'eq' = 'equal' (egal)
+   (2) 'ne' = 'not equal' (nu este egal)
+   (3) 'gt' = 'greater than' (mai mare ca)
+   (4) 'gte'= 'greater than or equal to' (greater than or equal to)
+   (5) 'lt' = 'less than' (mai putin de)
+   (6) 'lte' = 'less than  or  equal to'(mai mic sau egal cu)
+   (7) 'in' = 'in' (in)
+   (8) 'nin' = 'not in'(nu)
+______________________________________________________________
+
+
+
+
+
+ (1) Preluarea 'Tuturor Cursurilor' ce au 'Pretul' 
+	=> 'Mai Mare de 40 lei' &
+	=> 'Mai Mice de 80 lei':
+______________________________________________________________
+// ==============================================================
+// (6.1) PRELUAREA 'DOCUMENTELOR' DIN BAZA DE DATE 'MONGODB'
+// PRIN FUNC. ASINCRONE 'GETCURSURI()' 
+// ==============================================================
+async function getCursuri() {
+
+    // METODA 'FIND(FILTRU)' -> RETURNEAZA OBIECTUL 'DOCUMENT QUERY' (CARE ESTE CA O 'PROMISIUNE'):
+    // PRELUAREA 'TUTUROR DOCUMENTELOR' DIN BAZA DE DATE:
+    const cursuri = await Curs
+        // .find({ autor: 'Marius Chivu', estePublicat: true })
+
+        // PRELUAREA 'TUTUROR CURSURILOR' CE AU 
+        // 'PRETUL' MAI MARE SAU EGAL CU '40 LEI' 
+        // & 'MAI MIC SAU EGAL CU 80 LEI'
+        // UTILIZAM 'OBIECTUL' PT. 'FILTRARE':
+        .find({ pret: { $gte: 40, $lte: 80 } })
+
+        .limit(10)
+        .sort({ nume: 1 })
+        .select({ nume: 1, tags: 1 });
+
+    // AFISARE:
+    console.log(cursuri);
+}
+______________________________________________________________
+
+
+
+
+
+
+
+ (2) Preluarea 'Tuturor Cursurilor' ce au 'Pretul' de
+	=> '40 lei' sau
+	=> '60 lei' sau
+	=> '80 lei':
+______________________________________________________________
+// ==============================================================
+// (6.1) PRELUAREA 'DOCUMENTELOR' DIN BAZA DE DATE 'MONGODB'
+// PRIN FUNC. ASINCRONE 'GETCURSURI()' 
+// ==============================================================
+async function getCursuri() {
+
+    // METODA 'FIND(FILTRU)' -> RETURNEAZA OBIECTUL 'DOCUMENT QUERY' (CARE ESTE CA O 'PROMISIUNE'):
+    // PRELUAREA 'TUTUROR DOCUMENTELOR' DIN BAZA DE DATE:
+    const cursuri = await Curs
+        // ________________________________________
+        // (1) PRELUAREA 'TUTUROR CURSURILOR' cu 
+        // 'AUTORUL' CU NUMELE 'MARIUS CHIVU' &
+        // CU VALOAREA 'ESTE PUBLICAT' = 'ACTIVA': 
+        // .find({ autor: 'Marius Chivu', estePublicat: true })
+        // ________________________________________
+        // (2) PRELUAREA 'TUTUROR CURSURILOR' CE AU 
+        // 'PRETUL' MAI MARE SAU EGAL CU '40 LEI' 
+        // & 'MAI MIC SAU EGAL CU 80 LEI'
+        // UTILIZAM 'OBIECTUL' PT. 'FILTRARE':
+        // .find({ pret: { $gte: 40, $lte: 80 } })
+        // ________________________________________
+        // (3)PRELUAREA 'TUTUROR CURSURILOR' CE AU 'PRETUL' DE
+        // '40 LEI' SAU
+        // '60 LEI' SAU
+        // '80 LEI':
+        .find({ pret: { $in: [40, 60, 80] } })
+        .limit(10)
+        .sort({ nume: 1 })
+        .select({ nume: 1, tags: 1 });
+
+    // AFISARE:
+    console.log(cursuri);
+}
+______________________________________________________________
+
+
+
+
+
+
+

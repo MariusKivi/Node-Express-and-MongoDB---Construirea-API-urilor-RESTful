@@ -1,0 +1,64 @@
+
+	Numararea Documemtelor Existente in MongoDB
+
+
+
+
+ (1.1) Preluarea 'Numarului de Documente'
+	=> prin Metoda 'count()':
+_____________________________________________________________
+// ==============================================================
+// (6.1) PRELUAREA 'DOCUMENTELOR' DIN BAZA DE DATE 'MONGODB'
+// PRIN FUNC. ASINCRONE 'GETCURSURI()' 
+// ==============================================================
+async function getCursuri() {
+
+    // METODA 'FIND(FILTRU)' -> RETURNEAZA OBIECTUL 'DOCUMENT QUERY' (CARE ESTE CA O 'PROMISIUNE'):
+    // PRELUAREA 'TUTUROR DOCUMENTELOR' DIN BAZA DE DATE:
+    const cursuri = await Curs
+        
+	 // ________________________________________
+        // (1) PRELUAREA 'TUTUROR CURSURILOR' cu 
+        // 'AUTORUL' CU NUMELE 'MARIUS' &
+        // CU VALOAREA 'ESTE PUBLICAT' = 'ACTIVA': 
+        .find({ autor: 'Marius', estePublicat: true })
+
+        // ________________________________________
+        .limit(10)
+        .sort({ nume: 1 })
+        // .select({ nume: 1, tags: 1 })
+
+        // ________________________________________
+        // PRELUAREA 'NR. DE  DOCUMENTE'
+        // PRIN MET. 'COUNT()'
+        .count();
+
+    // AFISARE:
+    console.log(cursuri);
+}
+
+
+// (6.2) APELAREA FUNCTIEI:
+getCursuri();
+_____________________________________________________________
+
+
+
+
+
+  (1.2) Executam 'index.js':
+_____________________________________________________________
+
+	node index.js
+_____________________________________________________________
+
+
+
+
+  >> Afisare in Terminal:
+_____________________________________________________________
+Conectat la MongoDB ...
+2
+_____________________________________________________________
+
+
