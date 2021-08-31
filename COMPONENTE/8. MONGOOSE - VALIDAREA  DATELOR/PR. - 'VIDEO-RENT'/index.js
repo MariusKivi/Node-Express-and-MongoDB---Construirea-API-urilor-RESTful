@@ -12,8 +12,8 @@
 
 // INCARCARI (IMPORTURI):
 const mongoose = require('mongoose');
+const Joi = require('joi');
 const genuri = require('./routes/genuri');
-const clienti = require('./routes/clienti');
 
 
 
@@ -44,14 +44,7 @@ const app = express();
 // ____________________________________________________________________________
 // UTILIZARE
 app.use(express.json());
-
-// ____________________________________________________________________________
-// DELEGAREA RUTEI '/API/GENURI' -> CATRE RUTA 'GENYRI'
 app.use('/api/genuri', genuri);
-
-// ____________________________________________________________________________
-// DELEGAREA RUTEI '/API/CLIENTI' -> CATRE RUTA 'CLIENTI'
-app.use('/api/clienti', clienti);
 
 
 

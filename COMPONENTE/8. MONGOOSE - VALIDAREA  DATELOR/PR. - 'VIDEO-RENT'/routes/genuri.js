@@ -184,7 +184,7 @@ function validareGen(gen) {
     // LOGICA: VALIDARE CURS
     // DEF. 'SCHEMEI' = 'OBIECT':
     const schema = {
-        nume: Joi.string().min(5).max(50).required()
+        nume: Joi.string().min(3).required()
     };
 
 

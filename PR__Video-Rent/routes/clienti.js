@@ -22,10 +22,22 @@ const router = express.Router();
 
 
 // ____________________________________________________________________________
-// CREAREA MODELULUI 'GEN' CU DEF. 'SCHEMEI':
+// MODELULUI 'CLIENT' CU DEF. 'SCHEMEI':
 // ____________________________________________________________________________
-const Gen = mongoose.model('Gen', new mongoose.Schema({
+const Client = mongoose.model('Client', new mongoose.Schema({
     nume: {
+        type: String,
+        required: true,
+        minlength: 5,
+        maxlength: 50
+    },
+
+    esteAur: {
+        type: Boolean,
+        default: false
+    },
+
+    telefon: {
         type: String,
         required: true,
         minlength: 5,
@@ -43,15 +55,14 @@ const Gen = mongoose.model('Gen', new mongoose.Schema({
 
 
 // ____________________________________________________________________________
-// RUTA 1.1: '/'
-// 'CITIREA' PRIN  MET. 'GET()':
+// RUTA 1.1: GET('/')
 // ____________________________________________________________________________
 router.get('/', async(req, res) => {
     // RETURNARE 'GENURI' & 'SORTARE' DUPA 'NUME':
-    const genuri = await Gen.find().sort('nume');
+    const clienti = await Gen.find().sort('nume');
 
     // RASPUNSUL - MATRICE DE OBIECTE:
-    res.send(genuri);
+    res.send(clienti);
 });
 // ____________________________________________________________________________
 
@@ -62,13 +73,12 @@ router.get('/', async(req, res) => {
 
 
 // ____________________________________________________________________________
-// RUTA 2: '/'
-// 'CREAREA' PRIN MET. 'POST(URL, CALLBACK_FUNC(REQ, RES))' 
+// RUTA 2: POST('/')
 // ____________________________________________________________________________
 router.post('/', async(req, res) => {
 
     // DESTRUCTURAREA OBIECTELOR - APELAREA FUNC. 'VALIDAREGEN()'
-    const { error } = validareGen(req.body);
+    const { error } = validareClient(req.body);
 
     // LOGICA:  DACA 'GENUL ESTE INVALID' -> RETURNAM '400' (CERERE ERONATA)
     // VERIFICAREA VALOAREI 'REZULTAT' -> A PROP. 'ERROR'
@@ -78,15 +88,19 @@ router.post('/', async(req, res) => {
 
 
     // CREARE OBIECTUL 'GEN':
-    let gen = new Gen({ nume: req.body.nume });
+    let client = new Client({
+        nume: req.body.nume,
+        telefon: req.body.telefon,
+        esteAur: req.body.esteAur
+    });
 
 
     //     // ADAUGAM OBIECTUL 'CURS' -> IN MATRICEA 'CURSURI':
     // SALVAREA IN BAZA DE DATE:
-    gen = await gen.save();
+    client = await client.save();
 
     // RETURNAREA 'OBIECTULUI' CATRE 'CLIENT':
-    res.send(gen);
+    res.send(client);
 });
 // ____________________________________________________________________________
 
@@ -96,29 +110,31 @@ router.post('/', async(req, res) => {
 
 
 
-
 // ____________________________________________________________________________
-// RUTA 3: '/:ID'
-// 'UPGRADARE' PRIN MET. 'PUT(URL, CALLBACK_FUNC(REQ, RES))' 
+// RUTA 3: PUT('/:ID') -- PT. 'UPGRADARE'
 // ____________________________________________________________________________
 router.put('/:id', async(req, res) => {
-    const { error } = validareGen(req.body);
+    // APELAREA FUNC. 'VALIDARE CLIENT()':
+    const { error } = validareClient(req.body);
 
     // LOGICA:  DACA 'GENUL ESTE INVALID' -> RETURNAM '400' (CERERE ERONATA)
     // VERIFICAREA VALOAREI 'REZULTAT' -> A PROP. 'ERROR'
     if (error) return res.status(400).send(error.details[0].message);
 
+
     //  LOGICA:  DACAGASIREA 'GENULUI':
-    const gen = await Gen.findByIdAndUpdate(req.params.id, { nume: req.body.nume }, {
-        new: true
-    });
+    const client = await Client.findByIdAndUpdate(req.params.id, {
+        nume: req.body.nume,
+        esteAur: req.body.esteAur,
+        telefon: req.body.phone
+    }, { new: true });
 
     // LOGICA: DACA 'CURSUL NU EXISTA' -> RETURNAM '404' (RESURSA NU A FOST GASITA)
     // DACA 'NU EXISTA GEN' PT. UN 'ID' DAT:
-    if (!gen) return res.status(404).send('Genul cu ID-ul dat nu a fost găsit.');
+    if (!client) return res.status(404).send('Clientul cu ID-ul dat nu a fost găsit.');
 
     // LOGICA: RETURNARE 'GENULUI UPGRADAT' CLIENTULUI:
-    res.send(gen);
+    res.send(client);
 });
 // ____________________________________________________________________________
 
@@ -129,23 +145,22 @@ router.put('/:id', async(req, res) => {
 
 
 // ____________________________________________________________________________
-// RUTA 4: '/:ID'
-// 'STERGEREA' PRIN MET. 'DELETE(URL, CALLBACK_FUNC(REQ, RES))' 
+// RUTA 4: DELETE('/:ID')
 // ____________________________________________________________________________
 router.delete('/:id', async(req, res) => {
 
     // 'GASIREA & STERGEREA' DUPA 'ID':
-    const gen = await Gen.findByIdAndRemove(req.params.id);
+    const client = await Client.findByIdAndRemove(req.params.id);
 
 
     // LOGICA '1.2': DACA 'ELEMENTUL CAUTAT' NU EXISTA - RETURNAM EROAREA '404'
     // DACA 'NU EXISTA GEN' PT. UN 'ID' DAT:
-    if (!gen)
-        return res.status(404).send('Genul cu ID-ul dat nu a fost găsit.');
+    if (!client)
+        return res.status(404).send('Clientul cu ID-ul dat nu a fost găsit.');
 
 
     // LOGICA '2.2': RETURNAM 'RASPUNSULUI' CATRE 'CLIENT'
-    res.send(gen);
+    res.send(client);
 });
 // ____________________________________________________________________________
 
@@ -156,18 +171,17 @@ router.delete('/:id', async(req, res) => {
 
 
 // ____________________________________________________________________________
-// RUTA 1.2: '/:ID' 
-// 'CITIREA' PRIN MET. 'GET()'
+// RUTA 1.2: GET('/:ID') 
 // ____________________________________________________________________________
 router.get('/:id', async(req, res) => {
 
     // GASIREA UNUI SINGUR GEN DUPA ID:
-    const gen = await Gen.findById(req.params.id);
+    const client = await Client.findById(req.params.id);
 
     // DACA 'NU EXISTA GEN' PT. UN 'ID' DAT:
-    if (!gen)
-        return res.status(404).send('Genul cu ID-ul dat nu a fost găsit.');
-    res.send(gen);
+    if (!client)
+        return res.status(404).send('Clientul cu ID-ul dat nu a fost găsit.');
+    res.send(client);
 });
 // ____________________________________________________________________________
 
@@ -178,24 +192,26 @@ router.get('/:id', async(req, res) => {
 
 
 // ____________________________________________________________________________
-// FUNC. 'VALIDAREGEN(GEN)'
+// FUNC. 'VALIDARECLIENT)'
 // ____________________________________________________________________________
-function validareGen(gen) {
-    // LOGICA: VALIDARE CURS
+function validareClient(client) {
+    // LOGICA: VALIDARE CLIENT
     // DEF. 'SCHEMEI' = 'OBIECT':
     const schema = {
-        nume: Joi.string().min(5).max(50).required()
+        nume: Joi.string().min(5).max(50).required(),
+        telefon: Joi.string().min(5).max(50).required(),
+        esteAur: Joi.boolean()
     };
 
 
     // RETURNAREA - APELARI MET. 'VALIDATE()':
-    return Joi.validate(gen, schema);
+    return Joi.validate(client, schema);
 };
 // ____________________________________________________________________________
 
 
 
 // ____________________________________________________________________________
-// EXPORTARE 'ROUTER'
+// EXPORTARE OBIECTULUI 'ROUTER'
 // ____________________________________________________________________________
 module.exports = router;
