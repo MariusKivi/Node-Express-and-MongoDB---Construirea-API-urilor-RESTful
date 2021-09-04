@@ -1,0 +1,110 @@
+
+	Relatiile de Modelare - 'References' ('Normalizare') & 'Embedded Documents' ('Denormailzare')
+
+
+
+
+_____________________________________________________________________________________________
+NB!
+
+ Exista 3 Aboradari ale 'Relatiilor' dintre 'Bazele de Date':
+
+	(I) Referinte / Normalizare 
+		=> utilizata in Bazele de Date 'Relationale'
+		=> si care Intareste 'Integritatea Datelor'
+		=> Ofera 'Consistenta' (o Singura Valoare trebuie Modificata in cazul unui Update) 
+		=> nu ofera 'Performanta'
+		=> Solicita o 'Interogare Suplimentara'
+		
+
+	(II) Documente Incorporate / Denormalizare 
+		=> utilizata in Bazele de Date 'Nerelationale'	
+		=> in care 'Nu Avem Relatii'
+		=> Ofera 'Performanta' (in cazul unui Update -> mai multe Valoare trebuiesc Modificate)
+		=> nu ofera 'Consistenta'
+		=> putand fi Incarcat printr-o 'Singura Interogare'
+
+
+	(III) Abordarea 'Hibrida'
+		=> utila in cazul unei 'Aplicatii eCommerce'
+		=> ce Contine 'Comenzi', 'Cos de Cumparaturi'
+_____________________________________________________________________________________________
+		
+
+
+
+
+
+
+
+ (I) Abordarea 'Referinte' / 'Normalizare' 
+	=> contine 'Colectii' Separate 
+	=> pt. 'Stocarea' Datelor
+_____________________________________________________________________________________________
+
+//-------------------------------------------------------------------------------
+// OBIECT 'AUTOR':
+let autor = {
+    nume: 'Marius'
+}
+
+
+//-------------------------------------------------------------------------------
+// OBIECT 'CURS':
+let curs = {
+    // UTILIZAM 'REFERINTA':
+    autor: 'id'
+}
+_____________________________________________________________________________________________
+
+
+
+
+
+
+ (II) Documente Incorporate / Denormalizare 
+		=> contine 'Colectii Incorporate' in 'Alte Colectii': 	
+_____________________________________________________________________________________________
+
+// OBIECTUL / DOCUMENTUL 'CURS':
+let curs = {
+    // OBIECTUL / DOCUMENTUL 'AUTOR' - INCORPORAT:
+    autor: {
+        nume: 'Marius'
+    }
+}
+
+_____________________________________________________________________________________________
+
+
+
+
+
+ (III) Abordarea 'Hibrida':
+_____________________________________________________________________________________________
+
+//-------------------------------------------------------------------------------
+// COLECTIA 'AUTOR':
+let autor = {
+    nume: 'Marius',
+    // + ALTE 50 PROPRIETATI (DE EXEMPLU)
+}
+
+
+//-------------------------------------------------------------------------------
+// COLECTIA 'CURS':
+let curs = {
+    // DOCUMENTUL 'AUTOR' - INCORPORAT:
+    autor: {
+        // ID = 'REFERINTA' CATRE DOCUMENTUL 'AUTOR'
+        id: 'ref',
+        mume: 'Marius'
+    }
+}
+_____________________________________________________________________________________________
+
+
+
+
+
+
