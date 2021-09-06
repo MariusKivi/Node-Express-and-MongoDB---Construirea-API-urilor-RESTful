@@ -129,7 +129,7 @@ mongoose.connect('mongodb://localhost/locdejoaca')
 
 // ==============================================================
 // (2) CREAREA 'SCHEMEI' - 'SCHEMACURS' 
-// (PRIN PK 'MONGOOSE' & CLASA 'Schema()'):
+// (PRIN FK 'MONGOOSE' & CLASA 'Schema()'):
 const schemaCurs = new mongoose.Schema({
     nume: String,
     autor: String,

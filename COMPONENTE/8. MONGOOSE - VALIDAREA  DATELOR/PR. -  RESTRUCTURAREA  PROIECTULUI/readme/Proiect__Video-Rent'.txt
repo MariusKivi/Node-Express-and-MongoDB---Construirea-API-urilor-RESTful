@@ -1,0 +1,844 @@
+
+	Proiect 'Video-Rent'
+
+
+
+ (0) Cream Folderul Proiectului 'PR__Video-Rent'
+	=> in care Crea Fisierul '9ndex.js'
+	=> Cream Folder-ul 'routes'
+	=> in care Cream Fisierul 'genuri.js'
+
+ 
+
+
+(1.1) Cream Fisierul 'index.js'
+______________________________________________________
+
+// IMPORTURI:
+const Joi = require('joi');
+const genuri = require('./routes/genuri');
+
+// ____________________________________________________________________________
+// IMPORTAREA MODULULUI 'EXPRESS'
+const express = require('express');
+
+// ____________________________________________________________________________
+// OBIECTUL 'APP' - APELAREA FUNC. 'EXPRESS()'
+const app = express();
+
+
+
+// UTILIZARE
+app.use(express.json());
+app.use('/api/genuri', genuri);
+
+
+
+// ____________________________________________________________________________
+// VARIABILA 'ENVIRONMENT' - 'PORT'  SAu  PORTUL '3000':
+// (IN OBIECTUL GLOBAL 'PROCESS', IN PROP. 'ENV')
+const port = process.env.PORT || 3000;
+
+
+// ____________________________________________________________________________
+// MET. 'LISTEN(NR_PORT, CALLBACK FUNC*())' 
+// ASCULTAREA 'VARIABILEI ENVIRONMENT':
+app.listen(port, () => {
+    // 'TEMPLATE  STRING' (PRIN UTIL. 'BACKTICK')
+    console.log(`Port de Ascultare ${port}...`);
+});
+______________________________________________________
+
+
+
+
+
+
+(1.2) Cream Fisierul 'genuri.js'
+______________________________________________________
+
+// ____________________________________________________________________________
+// (IMP-1) IMPORTAREA MODULULUI 'EXPRESS'
+const express = require('express');
+
+// ____________________________________________________________________________
+// (IMP-2) OBIECTUL 'ROUTER' - APELAREA FUNC. 'EXPRESS.RIUTER()'
+const router = express.Router();
+
+
+
+
+
+
+
+// ____________________________________________________________________________
+// MATRICE DE OBIECTE:
+// ____________________________________________________________________________
+const genuri = [
+    { id: 1, nume: 'Actiune' },
+    { id: 2, nume: 'Groază' },
+    { id: 3, nume: 'Romantism' },
+];
+// ____________________________________________________________________________
+
+
+
+
+
+
+
+// ____________________________________________________________________________
+// RUTA: '/'
+// 'CITIREA' PRIN  MET. 'GET()':
+// ____________________________________________________________________________
+router.get('/', (req, res) => {
+    // RASPUNSUL - MATRICE DE OBIECTE:
+    res.send(genuri);
+});
+// ____________________________________________________________________________
+
+
+
+
+
+
+
+// ____________________________________________________________________________
+// RUTA: '/'
+// 'CREAREA' PRIN MET. 'POST(URL, CALLBACK_FUNC(REQ, RES))' 
+// ____________________________________________________________________________
+router.post('/', (req, res) => {
+
+    // DESTRUCTURAREA OBIECTELOR - APELAREA FUNC. 'VALIDAREGEN()'
+    const { error } = validareGen(req.body);
+
+    // LOGICA:  DACA 'GENUL ESTE INVALID' -> RETURNAM '400' (CERERE ERONATA)
+    // VERIFICAREA VALOAREI 'REZULTAT' -> A PROP. 'ERROR'
+    if (error)
+    //  RETURNAM 'EROAREA CU STATREA - 400' CATRE 'CLIENT':
+        return res.status(400).send(error.details[0].message);
+
+
+    // OBIECTUL 'GEN':
+    const gen = {
+        // CREARE 'OBIECT NOU' = 'GEN':
+        id: genuri.length + 1,
+
+        // CITIREA OBIECTULUI 'GEN' DIN 'CORPUL REQUEST'-ULUI:
+        nume: req.body.nume
+    };
+
+
+    //     // ADAUGAM OBIECTUL 'CURS' -> IN MATRICEA 'CURSURI':
+    genuri.push(gen);
+
+    // RETURNAREA 'OBIECTULUI  CREAT' IN 'CORPUL RESPONSE':
+    res.send(gen);
+});
+// ____________________________________________________________________________
+
+
+
+
+
+
+
+
+// ____________________________________________________________________________
+// RUTA: '/:ID'
+// 'UPGRADARE' PRIN MET. 'PUT(URL, CALLBACK_FUNC(REQ, RES))' 
+// ____________________________________________________________________________
+router.put('/:id', (req, res) => {
+
+    // LOGICA: CAUTAM 'GEN'
+    // PRELUAREA OBIECTULUI 'CURS' - PRIN APELAREA MET. 'FIND(FUNCTIA_SAGEATA)':
+    const gen = genuri.find(c => c.id === parseInt(req.params.id))
+
+    // LOGICA: DACA 'CURSUL NU EXISTA' -> RETURNAM '404' (RESURSA NU A FOST GASITA)
+    // DACA 'NU EXISTA GEN' PT. UN 'ID' DAT:
+    if (!gen)
+        return res.status(404).send('Genul cu ID-ul dat nu a fost găsit.');
+
+
+    // DESTRUCTURAREA OBIECTELOR - APELAREA FUNC. 'VALIDAREGEN'
+    const { error } = validareGen(req.body);
+
+    // LOGICA:  DACA 'GENUL ESTE INVALID' -> RETURNAM '400' (CERERE ERONATA)
+    // VERIFICAREA VALOAREI 'REZULTAT' -> A PROP. 'ERROR'
+    if (error)
+    //  RETURNAM 'EROAREA CU STATREA - 400' CATRE 'CLIENT':
+        return res.status(400).send(error.details[0].message);
+
+    // LOGICA: UPDGRADARE GEN:
+    gen.nume = req.body.nume;
+
+    // LOGICA: RETURNARE 'GENULUI UPGRADAT' CLIENTULUI:
+    res.send(gen);
+});
+// ____________________________________________________________________________
+
+
+
+
+
+
+
+// ____________________________________________________________________________
+// RUTA: '/:ID'
+// 'STERGEREA' PRIN MET. 'DELETE(URL, CALLBACK_FUNC(REQ, RES))' 
+// ____________________________________________________________________________
+router.delete('/:id', (req, res) => {
+
+    // LOGICA '1.1': 'CAUTAM ELEMENTUL' DUPA UN 'ID' DAT
+    // PRELUAREA OBIECTULUI 'CURS' - PRIN APELAREA MET. 'FIND(FUNCTIA_SAGEATA)':
+    const gen = genuri.find(c => c.id === parseInt(req.params.id))
+
+    // LOGICA '1.2': DACA 'ELEMENTUL CAUTAT' NU EXISTA - RETURNAM EROAREA '404'
+    // DACA 'NU EXISTA GEN' PT. UN 'ID' DAT:
+    if (!gen)
+        return res.status(404).send('Genul cu ID-ul dat nu a fost găsit.');
+
+
+    // LOGICA '2.1': DACA 'ELEMENTUL CAUTAT' EXISTA - IL 'STERGEM'
+    // GASIREA 'INDEX'-ULUI 'CURSULUI' -> IN mATRICEAA 'CURSURI'
+    const index = genuri.indexOf(gen);
+
+    // UTILIZAREA METODEI 'SPLICE()'  (PT. 'ELIMINAREA' UNUI 'OBIECT' DIN 'MATRICE')
+    genuri.splice(index, 1);
+
+
+    // LOGICA '2.2': RETURNAM 'RASPUNSULUI' CATRE 'CLIENT'
+    res.send(gen);
+
+});
+// ____________________________________________________________________________
+
+
+
+
+
+
+
+// ____________________________________________________________________________
+// RUTA: '/:ID' 
+// 'CITIREA' PRIN MET. 'GET()'
+// ____________________________________________________________________________
+router.get('/:id', (req, res) => {
+    // PRELUAREA OBIECTULUI 'GEN' - PRIN APELAREA MET. 'FIND(FUNCTIA_SAGEATA)':
+    const gen = genuri.find(c => c.id === parseInt(req.params.id))
+
+    // DACA 'NU EXISTA GEN' PT. UN 'ID' DAT:
+    if (!gen)
+        return res.status(404).send('Genul cu ID-ul dat nu a fost găsit.');
+    res.send(gen);
+});
+// ____________________________________________________________________________
+
+
+
+
+
+
+
+// ____________________________________________________________________________
+// FUNC. 'VALIDAREGEN(GEN)'
+// ____________________________________________________________________________
+function validareGen(gen) {
+    // LOGICA: VALIDARE CURS
+    // DEF. 'SCHEMEI' = 'OBIECT':
+    const schema = {
+        nume: Joi.string().min(3).required()
+    };
+
+
+    // RETURNAREA - APELARI MET. 'VALIDATE()':
+    return Joi.validate(gen, schema);
+};
+// ____________________________________________________________________________
+
+
+
+// ____________________________________________________________________________
+// EXPORTARE 'ROUTER'
+// ____________________________________________________________________________
+module.exports = router;
+______________________________________________________
+
+
+
+
+
+
+
+(1.3.1) Adaugam Fisierul 'package.json'
+______________________________________________________
+{
+    "name": "PR__Video-Rent",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "Marius Chivu",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.16.2",
+        "joi": "^13.1.0"
+    }
+}
+______________________________________________________
+
+
+
+
+
+
+(1.3.2) Restauram Dependentele Fisierului 'package.json'
+______________________________________________________
+	 
+	npm i
+______________________________________________________
+
+
+
+
+
+
+
+ (2) Instalam 'Mongoose':
+______________________________________________________
+
+	npm i mongoose
+______________________________________________________
+
+
+
+
+
+ >> Afisarea in Terminal:
+______________________________________________________
+npm WARN pr__video-rent@1.0.0 No description
+npm WARN pr__video-rent@1.0.0 No repository field.
+
++ mongoose@5.13.7
+added 31 packages in 10.182s
+______________________________________________________
+
+
+
+
+
+
+
+
+(3) Conectarea la 'Baza de Date' - 'MongoDB'
+	=> din Fisierul 'index.js':
+
+    <1> Incarcam/Importam:
+______________________________________________________
+	
+const mongoose = require('mongoose');
+______________________________________________________
+
+
+
+    <2> Mutam Importul 'Joi' din 'index.js' in 'genuri.js':
+______________________________________________________
+
+const Joi = require('joi');
+______________________________________________________
+
+
+
+    <3> Conectam 'Mongoose' la 'Baza de Date':
+______________________________________________________
+	
+// CONECTAREA  LA  'BAZA DE DATE' - 'MONGODB':
+mongoose.connect('mongodb://localhost/video-rent')
+    // 'PROMISIUNEA' - IN 'CAZ DE SUCCES':
+    .then(() => console.log('Conectat cu succes la Baza de Date MongoDB'))
+    // 'PROMISIUNEA' - IN 'CAZ DE EROARE':
+    .catch(err => console.error('Nu s-a putut conecta la MongoDB.'));	
+______________________________________________________
+
+
+
+
+
+
+ (4.1) Incarcam/Importam: Mongoose
+	=> in Fisierul 'genuri.js':
+______________________________________________________
+	
+	const mongoose = require('mongoose');
+______________________________________________________
+
+
+
+
+
+
+ (4.2) Cream/Definim 'schemaGenuri':
+______________________________________________________
+
+const schemaGenuri = new mongoose.Schema({
+    nume: {
+        type: String,
+        required: true,
+        minlength: 5,
+        maxlength: 50
+    }
+});
+______________________________________________________
+
+
+
+
+
+
+
+
+(4.3) Cream Modelul 'Gen' cu Definirea 'Schemei'
+	=> Mutata in 'Model':
+______________________________________________________
+
+const Gen = mongoose.model('Gen', new mongoose.Schema({
+    nume: {
+        type: String,
+        required: true,
+        minlength: 5,
+        maxlength: 50
+    }
+}));
+______________________________________________________
+
+
+
+ 
+
+ (4.4) Stergem Matricea
+______________________________________________________
+
+// MATRICE DE OBIECTE:
+const genuri = [
+    { id: 1, nume: 'Actiune' },
+    { id: 2, nume: 'Groază' },
+    { id: 3, nume: 'Romantism' },
+];
+______________________________________________________
+
+
+
+
+
+
+
+ (5.1) Crearea Rutei 'get('/')':
+______________________________________________________
+// RUTA: '/'
+// 'CITIREA' PRIN  MET. 'GET()':
+router.get('/', async(req, res) => {
+    // RETURNARE 'GENURI' & 'SORTARE' DUPA 'NUME':
+    const genuri = await Gen.find().sort('nume');
+
+    // RASPUNSUL - MATRICE DE OBIECTE:
+    res.send(genuri);
+});
+______________________________________________________
+
+
+
+
+
+
+
+
+ (5.2) Crearea Rutei 'post('/')'
+	=> in care Modificam 'Obiectul - Gen'
+	=> si Salvam 'genul' in Baza de Date:
+	=> aplicam 'Functiei Sageata' Keyword-ul 'async':
+______________________________________________________
+// RUTA 2: '/'
+// 'CREAREA' PRIN MET. 'POST(URL, CALLBACK_FUNC(REQ, RES))' 
+router.post('/',  async(req, res) => {
+
+    // DESTRUCTURAREA OBIECTELOR - APELAREA FUNC. 'VALIDAREGEN()'
+    const { error } = validareGen(req.body);
+
+    // LOGICA:  DACA 'GENUL ESTE INVALID' -> RETURNAM '400' (CERERE ERONATA)
+    // VERIFICAREA VALOAREI 'REZULTAT' -> A PROP. 'ERROR'
+    if (error)
+    //  RETURNAM 'EROAREA CU STATREA - 400' CATRE 'CLIENT':
+        return res.status(400).send(error.details[0].message);
+
+
+    // CREARE OBIECTUL 'GEN':
+    let gen = new Gen({ nume: req.body.nume });
+
+
+    //     // ADAUGAM OBIECTUL 'CURS' -> IN MATRICEA 'CURSURI':
+    // SALVAREA IN BAZA DE DATE:
+    gen = await gen.save();
+
+    // RETURNAREA 'OBIECTULUI' CATRE 'CLIENT':
+    res.send(gen);
+});
+______________________________________________________
+
+
+
+
+
+
+
+
+
+ (5.3) Crearea Rutei 'put('/:ID')'
+	=> Cautam Genul,
+	=> aplicam 'Functiei Sageata' Keyword-ul 'async',
+
+	=> Stergem Cautarea Obiectului intr-o Matrice:
+const gen = genuri.find(c => c.id === parseInt(req.params.id))
+
+	=> Stergem 'Setarea Proprietatii':
+gen.nume = req.body.nume;
+
+
+______________________________________________________
+// RUTA 3: '/:ID'
+// 'UPGRADARE' PRIN MET. 'PUT(URL, CALLBACK_FUNC(REQ, RES))' 
+router.put('/:id', async(req, res) => {
+
+    const { error } = validateGenre(req.body);
+
+    // LOGICA:  DACA 'GENUL ESTE INVALID' -> RETURNAM '400' (CERERE ERONATA)
+    // VERIFICAREA VALOAREI 'REZULTAT' -> A PROP. 'ERROR'
+    if (error) return res.status(400).send(error.details[0].message);
+
+
+    //  LOGICA:  DACAGASIREA 'GENULUI':
+    const gen = await Gen.findByIdAndUpdate(req.params.id, { nume: req.body.nume }, {
+        new: true
+    });
+
+
+    // LOGICA: DACA 'CURSUL NU EXISTA' -> RETURNAM '404' (RESURSA NU A FOST GASITA)
+    // DACA 'NU EXISTA GEN' PT. UN 'ID' DAT:
+    if (!gen)
+        return res.status(404).send('Genul cu ID-ul dat nu a fost găsit.');
+
+
+    // LOGICA: RETURNARE 'GENULUI UPGRADAT' CLIENTULUI:
+    res.send(gen);
+});
+______________________________________________________
+
+
+
+
+
+
+
+
+ (5.4) Crearea Rutei 'delete('/:id')'
+	=> Gasirea si Stergerea dupa id,
+	=> Aplicam 'Functiei Sageata' Keyword-ul 'async',
+	=> Stergem Cautarea Obiectului intr-o Matrice:
+const gen = genuri.find(c => c.id === parseInt(req.params.id))
+
+	=> Stergem Liniile:
+
+    // LOGICA '2.1': DACA 'ELEMENTUL CAUTAT' EXISTA - IL 'STERGEM'
+    // GASIREA 'INDEX'-ULUI 'CURSULUI' -> IN mATRICEAA 'CURSURI'
+    const index = genuri.indexOf(gen);
+
+    // UTILIZAREA METODEI 'SPLICE()'  (PT. 'ELIMINAREA' UNUI 'OBIECT' DIN 'MATRICE')
+    genuri.splice(index, 1);
+
+
+______________________________________________________
+// RUTA 4: '/:ID'
+// 'STERGEREA' PRIN MET. 'DELETE(URL, CALLBACK_FUNC(REQ, RES))' 
+router.delete('/:id', async(req, res) => {
+
+    // 'GASIREA & STERGEREA' DUPA 'ID':
+    const gen = await Gen.findByIdAndRemove(req.params.id);
+
+
+    // LOGICA '1.2': DACA 'ELEMENTUL CAUTAT' NU EXISTA - RETURNAM EROAREA '404'
+    // DACA 'NU EXISTA GEN' PT. UN 'ID' DAT:
+    if (!gen)
+        return res.status(404).send('Genul cu ID-ul dat nu a fost găsit.');
+
+
+    // LOGICA '2.2': RETURNAM 'RASPUNSULUI' CATRE 'CLIENT'
+    res.send(gen);
+});
+______________________________________________________
+
+
+
+
+
+
+
+
+
+
+ (5.5) Crearea Rutei 'get('/:id')'
+	=> Cautarea ubui Singur Id,
+	=> Aplicam 'Functiei Sageata' Keyword-ul 'async',
+	=> Stergem Cautarea Obiectului intr-o Matrice:
+const gen = genuri.find(c => c.id === parseInt(req.params.id))
+
+______________________________________________________
+// RUTA 1.2: '/:ID' 
+// 'CITIREA' PRIN MET. 'GET()'
+router.get('/:id', async(req, res) => {
+
+    // GASIREA UNUI SINGUR GEN DUPA ID:
+    const gen = await Gen.findById(req.params.id);
+
+    // DACA 'NU EXISTA GEN' PT. UN 'ID' DAT:
+    if (!gen)
+        return res.status(404).send('Genul cu ID-ul dat nu a fost găsit.');
+    res.send(gen);
+});
+______________________________________________________
+
+
+
+
+
+
+
+(6) Executam Fisierul 'index.js'
+______________________________________________________
+	
+	nodemon index.js
+______________________________________________________
+
+
+sau, pentru ca Fisierul de Intrare este 'index.js', 
+     => poate fi exclus:
+
+______________________________________________________
+	
+	nodemon 
+______________________________________________________
+
+
+
+
+ >> Afisarea in Terminal:
+______________________________________________________
+[nodemon] 2.0.12
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,json
+[nodemon] starting `node index.js`
+(node:5180) DeprecationWarning: current URL string parser is deprecated, and will be removed in a future version. To use the new parser, pass option { useNewUrlParser: true } to MongoClient.connect.
+(node:5180) [MONGODB DRIVER] Warning: Current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+Port de Ascultare 3000...
+Conectat cu succes la Baza de Date MongoDB
+______________________________________________________
+
+
+
+
+
+
+
+
+
+ (7) Deschidem pe PC -> Aplicatia 'Postman'
+	=> Clic 'Get Request'
+	=> Adaugam Link-ul:
+______________________________________________________
+
+	http://localhost:3000/api/genuri
+______________________________________________________
+	=> Clic Buton 'Send'
+
+
+
+ >> Afisarea in Terminal:
+______________________________________________________
+
+[]
+______________________________________________________
+	=> Afisare Matrice Goala pt ca nu avem Genuri
+
+
+
+
+
+
+ (8) In 'Postman'
+	=> Selectam 'Post Request'
+	=> Selectam Tab-ul 'Body',
+	=> Bifam 'raw',
+	=> Selectam 'JSON',
+	=> Setam in Editor:
+______________________________________________________
+
+{
+	"nume":"Groaza"
+}
+______________________________________________________
+	=> Clic Buton 'Send'
+
+
+
+ >> Afisarea in Browser:
+______________________________________________________
+
+[{"_id":"612ca5a8f380ae17f05085fe","nume":"Groaza","__v":0}]
+______________________________________________________
+	
+
+
+
+ >> Afisarea in Compass
+	=> unde s-a Generat Baza de Date 'video-rent',
+	=> s-a Generat Colectia/Tabela 'Gens'
+	=> s-a Generat Documentul:
+______________________________________________________
+
+_id": ObjectId("612ca5a8f380ae17f05085fe")
+nume:"Groaza"
+__v:0
+______________________________________________________
+		=> Versiunea '__v:0' vine de la Mongo
+
+
+
+
+ (9) Upgradam ID-ul
+	=> Selectam 'Put Request'
+	=> Selectam Tab-ul 'Body',
+	=> Bifam 'raw',
+	=> Selectam 'JSON',
+	=> Adaugam Link-ul:
+______________________________________________________
+
+http://localhost:3000/api/genuri/612ca5a8f380ae17f05085fe
+______________________________________________________
+	
+
+
+	=> Upgradam in Editor:
+______________________________________________________
+{
+	"nume":"Animatie"
+}
+______________________________________________________
+	=> Clic Buton 'Send'
+
+
+
+
+ >> Afisarea in Browser:
+______________________________________________________
+
+[{"_id":"612ca5a8f380ae17f05085fe","nume":"Animatie","__v":0}]
+______________________________________________________
+	
+
+
+ >> Afisarea in Compass:
+______________________________________________________
+
+_id": ObjectId("612ca5a8f380ae17f05085fe")
+nume:"Animatie"
+__v:0
+______________________________________________________
+		=> Versiunea '__v:0' vine de la Mongo
+
+
+
+
+
+
+
+ (9) Upgradam ID-ului cu un String Gol pentru 'nume':
+______________________________________________________
+{
+	"nume":""
+}
+______________________________________________________
+	=> Clic Buton 'Send'
+
+
+
+
+ >> Afisarea in Postman:
+______________________________________________________
+
+"nume" is not allowed to be empty
+______________________________________________________
+	
+
+
+
+
+
+
+ (10) Upgradam ID-ului Eronat:
+	=> Adaugam Link-ul:
+______________________________________________________
+
+http://localhost:3000/api/genuri/712ca5a8f380ae17f05085fe
+______________________________________________________
+
+	=> Comletam	
+______________________________________________________
+{
+	"nume":"Groaza"
+}
+______________________________________________________
+	=> Clic Buton 'Send'
+
+
+
+
+ >> Afisarea in Postman:
+______________________________________________________
+
+Genul cu ID-ul dat nu a fost găsit.
+______________________________________________________
+	
+
+
+
+
+
+
+
+
+ (11) Stergerea ID-ului
+	=> Selectam 'Delete Request'
+	=> Adaugam Link-ul:
+______________________________________________________
+
+http://localhost:3000/api/genuri/612ca5a8f380ae17f05085fe
+______________________________________________________
+	
+	=> Selectam Tab-ul 'Authorization',	
+	=> Clic Buton 'Send'
+
+
+
+
+ >> Afisarea in Browser:
+______________________________________________________
+
+[]
+______________________________________________________
+	
+
+
+
+
