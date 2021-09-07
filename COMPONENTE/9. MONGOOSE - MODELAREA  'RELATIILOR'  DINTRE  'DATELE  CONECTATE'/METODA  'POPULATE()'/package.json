@@ -1,0 +1,15 @@
+{
+    "name": "Mongoose__Modelarea_Relatiilor_dintre_Datele_Conectate",
+    "version": "1.0.0",
+    "description": "Mongoose - Modelarea Relatiilor dintre Datele Conectate",
+    "main": "populare.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "Marius Chivu",
+    "license": "ISC",
+    "dependencies": {
+        "mongoose": "^5.0.1"
+    }
+}
