@@ -1,0 +1,353 @@
+
+	Proiect 'Video-Rent' - Construire API-ului pentru Gestionarea Listei de Filme
+
+
+
+  (1) Adaugam in Fisierului 'genuri.js' 
+	=> din 'PR__Video-Rent/models/'
+	=> 'schemaGen':
+_____________________________________________________________________________
+
+// INCARCARI (IMPORTURI):
+// ____________________________________________________________________________
+// (IMP-4) IMPORTAREA 'JOI'
+const Joi = require('joi');
+
+// ____________________________________________________________________________
+// (IMP-3) IMPORTAREA 'MONGOOSE'
+const mongoose = require('mongoose');
+
+
+
+
+
+
+
+// ____________________________________________________________________________
+//  SCHEMEI 'SCHEMAGEN':
+// ____________________________________________________________________________
+const schemaGen = new mongoose.Schema({
+    nume: {
+        type: String,
+        required: true,
+        minlength: 5,
+        maxlength: 50
+    }
+});
+// ____________________________________________________________________________
+
+
+
+
+// ____________________________________________________________________________
+//  MODELUL 'GEN' CU SCHEMA :
+// ____________________________________________________________________________
+const Genre = mongoose.model('Gen', schemaGen);
+
+
+
+
+
+// ____________________________________________________________________________
+// FUNC. 'VALIDAREGEN(GEN)'
+// ____________________________________________________________________________
+function validareGen(gen) {
+    // LOGICA: VALIDARE CURS
+    // DEF. 'SCHEMEI' = 'OBIECT':
+    const schema = {
+        nume: Joi.string().min(5).required()
+    };
+
+
+    // RETURNAREA - APELARI MET. 'VALIDATE()':
+    return Joi.validate(gen, schema);
+};
+// ____________________________________________________________________________
+
+
+
+
+
+// ____________________________________________________________________________
+// EXPORTARE 
+// ____________________________________________________________________________
+exports.schemaGen = schemaGen;
+exports.Gen = Gen;
+exports.validare = validareGen;
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (2) Crearea Fisierului 'models/filme.js' 
+	=> in 'PR__Video-Rent/models/':
+_____________________________________________________________________________
+
+// INCARCARI (IMPORTURI):
+// ____________________________________________________________________________
+// (IMP-2) IMPORTAREA 'JOI'
+const Joi = require('joi');
+
+// ____________________________________________________________________________
+// (IMP-1) IMPORTAREA 'MONGOOSE'
+const mongoose = require('mongoose');
+
+// ____________________________________________________________________________
+// (IMP-4) IMPORTAREA './GENURI.JS'  
+const { schemaGen } = require('./genuri');
+
+
+
+
+
+
+// ____________________________________________________________________________
+// MODEL CU SCHEMA 'FILM' CU DEF. 'SCHEMEI'
+// (REP. MODELULUI IN APLICATIE - ASA CUM ESTE STOCAT IN 'MONGODB'):
+// ____________________________________________________________________________
+const Film = mongoose.model('Filme', new mongoose.Schema({
+    titlu: {
+        type: String,
+        required: true,
+        // ELIMINAREA SPATIILOR DIN JURUL TITLULUI FILMULUI
+        trim: true,
+        minlength: 5,
+        maxlength: 255
+    },
+
+    gen: {
+        type: schemaGen,
+        required: true
+    },
+    numarInStoc: {
+        type: Number,
+        required: true,
+        minlength: 0,
+        maxlength: 255
+    },
+    tarifZilnicDeInchiriere: {
+        type: Number,
+        required: true,
+        minlength: 0,
+        maxlength: 255
+    }
+}));
+// ____________________________________________________________________________
+
+
+
+
+
+
+
+// ____________________________________________________________________________
+// FUNC. 'VALIDAREFIM(FILM)'
+// ____________________________________________________________________________
+function validareFilm(film) {
+
+    // INPUT 'API' (CEEA CE TRIMETE CLIENTUL)
+    // VALIDARE FILM
+    // DEF. 'SCHEMEI' - 'JOI' = 'OBIECT':
+    const schema = {
+        titlu: Joi.string().min(5).max(50).required(),
+        idGen: Joi.string().required(),
+        numarInStoc: Joi.number().min(0).required(),
+        tarifZilnicDeInchiriere: Joi.number().min(0).required()
+    };
+
+
+    // RETURNAREA - APELARI MET. 'VALIDATE()':
+    return Joi.validare(film, schema);
+};
+// ____________________________________________________________________________
+
+
+
+
+
+// ____________________________________________________________________________
+// EXPORTARE 
+// ____________________________________________________________________________
+exports.Film = Film;
+exports.validare = validareFilm;
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+ (3) Crearea Fisierului 'routes/filme.js' 
+	=> in 'PR__Video-Rent/models/':
+_____________________________________________________________________________
+
+// ____________________________________________________________________________
+// INCARCARI (IMPORTURI):
+// ____________________________________________________________________________
+// (IMP-5) IMPORTAREA 'MODEL/FILME.JS'  
+//         (RETURNEAZA '.Filme' SI '.validare')
+const { Filme, validare } = require('../models/filme');
+
+// ____________________________________________________________________________
+// (IMP-4) IMPORTAREA 'MODEL/GENURI.JS'  
+const { Genuri } = require('../models/genuri');
+
+// ____________________________________________________________________________
+// (IMP-3) IMPORTAREA 'MONGOOSE'
+const mongoose = require('mongoose');
+
+// ____________________________________________________________________________
+// (IMP-1) IMPORTAREA MODULULUI 'EXPRESS'
+const express = require('express');
+
+// ____________________________________________________________________________
+// (IMP-2) OBIECTUL 'ROUTER' - APELAREA FUNC. 'EXPRESS.ROUTER()'
+const router = express.Router();
+
+
+
+
+// ____________________________________________________________________________
+// RUTA 1.1: GET('/')
+// ____________________________________________________________________________
+router.get('/', async(req, res) => {
+    // RETURNARE 'FILM' & 'SORTARE' DUPA 'NUME':
+    const filme = await Film.find().sort('nume');
+
+    // RASPUNSUL - MATRICE DE OBIECTE:
+    res.send(filme);
+});
+
+
+
+
+// ____________________________________________________________________________
+// RUTA 2: POST('/')
+// ____________________________________________________________________________
+router.post('/', async(req, res) => {
+    // DESTRUCTURAREA OBIECTELOR - APELAREA FUNC. 'VALIDAREFILM()'  
+    const { error } = validare(req.body);
+
+    // DACA 'FILMUL ESTE INVALID' -> RETURNAM '400' (CERERE ERONATA)
+    // VERIFICAREA VALOARII 'REZULTAT' -> A PROP. 'ERROR'
+    if (error) return res.status(400).send(error.details[0].message);
+
+
+    // GASIREA 'GENULUI FILMULUI' DUPA 'ID':
+    const gen = await Gen.findById(req.body.idGen);
+    // DACA 'GENUL NU EXISTA' RETURNAM 'EROAREA 400':
+    if (!gen) return res.status(400).send('Gen nevalid');
+
+
+    // CREARE OBIECT'FILM':
+    let film = new Film({
+        titlu: req.body.titlu,
+        gen: {
+            _id: gen._id,
+            nume: gen.nume
+        },
+        numarInStoc: req.body.numarInStoc,
+        tarifZilnicDeInchiriere: req.body.tarifZilnicDeInchiriere
+    });
+
+    // SALVAREA IN BAZA DE DATE:
+    film = await film.save();
+
+    // RETURNAM 'RASPUNSULUI' CU 'FILM'
+    res.send(film);
+});
+
+
+
+
+// ____________________________________________________________________________
+// RUTA 3: PUT('/:ID') -- PT. 'UPGRADARE'
+// ____________________________________________________________________________
+router.put('/:id', async(req, res) => {
+    // APELAREA FUNC. 'VALIDARE FILM()':  
+    const { error } = validare(req.body);
+
+    // DACA 'FILMUL ESTE INVALID' -> RETURNAM '400' (CERERE ERONATA)
+    // VERIFICAREA VALORI 'REZULTAT' -> A PROP. 'ERROR'
+    if (error) return res.status(400).send(error.details[0].message);
+
+
+    // GASIREA 'GENULUI FILMULUI' DUPA 'ID':
+    const gen = await Gen.findById(req.body.idGen);
+    // DACA 'GENUL NU EXISTA' RETURNAM 'EROAREA 400':
+    if (!gen) return res.status(400).send('Gen nevalid.');
+
+
+    // GASIREA DUPA 'ID'& UPGRADAREA 'FILMULUI':
+    const film = await Film.findByIdAndUpdate(req.params.id, {
+        titlu: req.body.titlu,
+        gen: {
+            _id: gen._id,
+            nume: gen.nume
+        },
+        numarInStoc: req.body.numarInStoc,
+        tarifZilnicDeInchiriere: req.body.tarifZilnicDeInchiriere
+    }, { new: true });
+
+    // DACA 'FILMUL NU EXISTA' -> RETURNAM '404'
+    // ('NU EXISTA FILM' PT. UN 'ID' DAT):
+    if (!film) return res.status(404).send('Filmul cu ID-ul dat nu a fost găsit.');
+
+    // RETURNAM 'RASPUNSULUI' CU 'FILM'
+    res.send(film);
+});
+
+
+
+
+// ____________________________________________________________________________
+// RUTA 4: DELETE('/:ID')
+// ____________________________________________________________________________
+router.delete('/:id', async(req, res) => {
+    // 'GASIREA & STERGEREA' DUPA 'ID':  
+    const film = await Film.findByIdAndRemove(req.params.id);
+
+    // DACA 'ELEMENTUL CAUTAT' NU EXISTA - RETURNAM EROAREA '404'
+    // DACA 'NU EXISTA FILM' PT. UN 'ID' DAT:
+    if (!film) return res.status(404).send('Filmul cu ID-ul dat nu a fost găsit.');
+
+    // RETURNAM 'RASPUNSULUI' CU 'FILM'
+    res.send(film);
+});
+
+
+
+
+// ____________________________________________________________________________
+// RUTA 1.2: GET('/:ID') 
+// ____________________________________________________________________________
+router.get('/:id', async(req, res) => {
+    // GASIREA UNUI SINGUR FILM DUPA ID:  
+    const film = await Film.findById(req.params.id);
+
+    // DACA 'NU EXISTA FILMUL' PT. UN 'ID' DAT:
+    if (!film) return res.status(404).send('Filmul cu ID-ul dat nu a fost găsit.');
+
+    // RETURNAM 'RASPUNSULUI' CU 'FILM'
+    res.send(film);
+});
+
+
+
+
+// ____________________________________________________________________________
+// EXPORTARE OBIECTULUI 'ROUTER'
+// ____________________________________________________________________________
+module.exports = router;
+_____________________________________________________________________________
+
+
+
+
+
+
