@@ -1,0 +1,263 @@
+
+	Proiect 'Video-Rent' - Construire API-ului pentru Gestionarea Inchirierilor de Filme
+
+
+
+
+  (1) Crearea Fisierului 'models/inchiriere.js' 
+	=> in 'PR__Video-Rent/models/':
+_____________________________________________________________________________
+
+// ____________________________________________________________________________
+// (IMP-2) IMPORTAREA 'JOI'
+const Joi = require('joi');
+
+// ____________________________________________________________________________
+// (IMP-1) IMPORTAREA 'MONGOOSE'
+const mongoose = require('mongoose');
+
+
+
+
+
+
+// ____________________________________________________________________________
+// MODEL CU SCHEMA 'INCHIRIERE' CU DEF. 'SCHEMEI'
+// (REP. MODELULUI IN APLICATIE - ASA CUM ESTE STOCAT IN 'MONGODB'):
+// ____________________________________________________________________________
+const Inchiriere = mongoose.model('Inchiriere', new mongoose.Schema({
+    client: {
+        type: new mongoose.Schema({
+            name: {
+                type: String,
+                required: true,
+                minlength: 5,
+                maxlength: 50
+            },
+            esteAur: {
+                type: Boolean,
+                default: false
+            },
+            telefon: {
+                type: String,
+                required: true,
+                minlength: 5,
+                maxlength: 50
+            }
+        }),
+        required: true
+    },
+    film: {
+        type: new mongoose.Schema({
+            titlu: {
+                type: String,
+                required: true,
+                // ELIMINAREA SPATIILOR DIN JURUL TITLULUI FILMULUI
+                trim: true,
+                minlength: 5,
+                maxlength: 255
+            },
+            tarifZilnicDeInchiriere: {
+                type: Number,
+                required: true,
+                min: 0,
+                max: 255
+            }
+        }),
+        required: true
+    },
+    dataIesire: {
+        type: Date,
+        required: true,
+        default: Date.now
+    },
+    dataReturnare: {
+        type: Date
+    },
+    taxaDeInchiriere: {
+        type: Number,
+        min: 0
+    }
+}));
+
+
+
+
+
+
+
+// ____________________________________________________________________________
+// FUNC. 'VALIDAREINCHIRIERE(INCHIRIERE)'
+// ____________________________________________________________________________
+function validareInchiriere(inchiriere) {
+
+    // INPUT 'API' (CEEA CE TRIMETE CLIENTUL)
+    // VALIDARE INCHIRIERE
+    // DEF. 'SCHEMEI' - 'JOI' = 'OBIECT':
+    const schema = {
+        idClient: Joi.string().required(),
+        idFilm: Joi.string().required()
+    };
+
+    // METODA JOI - 'VALIDATE()':
+    return Joi.validate(inchiriere, schema);
+}
+
+
+
+
+// ____________________________________________________________________________
+// EXPORTARE 
+// ____________________________________________________________________________
+exports.Inchiriere = Inchiriere;
+exports.validare = validareInchiriere;
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+
+  (2) Crearea Fisierului 'routes/inchiriere.js' 
+	=> in 'PR__Video-Rent/models/':
+_____________________________________________________________________________
+
+// ____________________________________________________________________________
+// (IMP-6) IMPORTAREA 'MODEL/INCHIRIERE.JS'  
+//         (RETURNEAZA '.Inchiriere' SI '.validare')
+const { Inchiriere, validare } = require('../models/inchiriere');
+
+// ____________________________________________________________________________
+// (IMP-5) IMPORTAREA 'MODEL/FILME.JS'  
+const { Film } = require('../models/filme');
+
+// ____________________________________________________________________________
+// (IMP-4) IMPORTAREA 'MODEL/CLIENTI.JS'  
+const { Client } = require('../models/clienti');
+
+// ____________________________________________________________________________
+// (IMP-3) IMPORTAREA 'MONGOOSE'
+const mongoose = require('mongoose');
+
+// ____________________________________________________________________________
+// (IMP-1) IMPORTAREA MODULULUI 'EXPRESS'
+const express = require('express');
+
+// ____________________________________________________________________________
+// (IMP-2) OBIECTUL 'ROUTER' - APELAREA FUNC. 'EXPRESS.ROUTER()'
+const router = express.Router();
+
+
+
+
+
+
+// ____________________________________________________________________________
+// RUTA 1.1: GET('/') - PRELUARE/CITIRE 'INCHIRIERE'
+// ____________________________________________________________________________
+router.get('/', async(req, res) => {
+    // RETURNARE 'INCHIRIERE' & 'SORTARE' IN ORDINE 'DESCRESCATOARE' ('-PROP') DUPA 'DATA IESIRE':
+    const inchirieri = await Inchiriere.find().sort('-dataIesire');
+
+    // RASPUNSUL - MATRICE DE OBIECTE:
+    res.send(inchirieri);
+});
+
+
+
+
+// ____________________________________________________________________________
+// RUTA 2: POST('/') - CREARE 'INCHIRIERE'
+// ____________________________________________________________________________
+router.post('/', async(req, res) => {
+    // ---------------------------------------------------------------------
+    // VALIDAREA 'REQUEST'-ULUI  
+    const { error } = validare(req.body);
+
+    // DACA 'INCHIRIEREA ESTE INVALIDA' -> RETURNAM 'EROAREA 400' (CERERE ERONATA)
+    if (error) return res.status(400).send(error.details[0].message);
+    // ---------------------------------------------------------------------
+
+
+    // ---------------------------------------------------------------------
+    // GASIREA & VALIDAREA 'CLIENTULUI' DUPA 'ID' 
+    const client = await Client.findById(req.body.idClient);
+
+    // DACA 'CLIENTUL ESTE INVALID' -> RETURNAM 'EROAREA 400' (CERERE ERONATA)
+    if (!client) return res.status(400).send('Client invalid.');
+    // ---------------------------------------------------------------------
+
+
+    // ---------------------------------------------------------------------
+    // GASIREA & VALIDAREA 'FILMULUI' DUPA 'ID' - TRIMIS DE 'CLIENT': 
+    const film = await Film.findById(req.body.idFilm);
+
+    // DACA 'FILMUL ESTE INVALID' -> RETURNAM '400' (CERERE ERONATA)
+    if (!film) return res.status(400).send('Film invalid.');
+    // ---------------------------------------------------------------------
+
+
+    //  NE ASIGURAM CA 'FILMUL NU ESTE IN STOC' = SI RET. 'EROARE 400':
+    if (film.numarInStoc === 0) return res.status(400).send('Filmul nu este în stoc.');
+
+
+    // ---------------------------------------------------------------------
+    // CREARE OBIECT 'INCHIRIERE':
+    let inchiriere = new Inchiriere({
+        client: {
+            _id: client._id,
+            nume: client.nume,
+            telefon: client.telefon
+        },
+
+        film: {
+            _id: film._id,
+            titlu: film.titlu,
+            tarifZilnicDeInchiriere: film.tarifZilnicDeInchiriere
+        }
+    });
+
+    // SALVARE 'INCHIRIERE' IN DB:
+    inchiriere = await inchiriere.save();
+    // ---------------------------------------------------------------------
+
+
+    // ---------------------------------------------------------------------
+    // UPGRADAREA 'NUMARULUI DE FILME EXISTENTE IN STOC'
+    // 'DECREMENTAND  STOCUL' ('PROP--'):
+    film.numarInStoc--;
+
+    // SALVARE 'FILM':
+    film.save();
+    // ---------------------------------------------------------------------
+
+
+    // RETURNAM 'RASPUNSULUI' PT.'INCHIRIERE'
+    res.send(inchiriere);
+});
+
+
+
+
+// ____________________________________________________________________________
+// RUTA 1.2: GET('/:ID') 
+// ____________________________________________________________________________
+router.get('/:id', async(req, res) => {
+
+    // GASIREA UNEI SINGURE INCHIRIERI DUPA ID:  
+    const inchiriere = await Inchiriere.findById(req.params.id);
+
+    // DACA 'NU EXISTA INCHIRIERE' PT. UN 'ID' DAT:
+    if (!inchiriere) return res.status(404).send('Nu a fost găsită închirierea cu actul de identitate dat.');
+
+    // RETURNAM 'RASPUNSULUI' PT.'INCHIRIERE'
+    res.send(inchiriere);
+});
+_____________________________________________________________________________
+
+
+
+
