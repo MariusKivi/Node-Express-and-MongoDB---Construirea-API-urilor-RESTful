@@ -1,0 +1,239 @@
+
+	Id-ul Obiectului Stocat in MongoDB
+
+
+
+
+
+ NB!
+=============================================================================================
+
+  (1) Cand Salvam un Obiect/Document in 'MongoDB'
+	=> acesta Genereaza '_id'-ul Obiectului:
+_____________________________________________________________________________
+
+_id: 5a754956as85657854567a4d
+_____________________________________________________________________________
+	>> care Contine '24 de Caractere'
+	>> iar fiecare '2 Caractere' = reprezinta '1byte'
+	>> deci '_id'-ul Obiectului -->  Contine '12 bytes'
+
+
+
+  >> Primii '4 bytes' = reprezinta 'timestamp'-ul 
+	=> adica data si ora creari Obiectului.
+
+
+ >> Urmatorii '3 bytes' = reprezinta 'machine identifier'
+	=> adica 'Identificatorul Dispozitivului'.
+
+
+
+
+  >> Urmatorii '2 bytes' = reprezinta 'process identifier'
+	=> adica 'Identificatorul Procesului'.
+
+
+
+>> Ultimi '3 bytes' = reprezinta un 'ObjectId counter' / 'ObjectId increment'
+	=> adica este  utilizat pt. 'Cresterea Id-ului Obiectului'.
+
+_____________________________________________________________________________
+	https://www.geeksforgeeks.org/what-is-objectid-in-mongodb/
+_____________________________________________________________________________
+
+
+
+
+
+
+ (2) Exista Sanse Foarte Scazute de a Genera 'ObjectId'-uri asemanatoare.
+
+
+      >> '1 byte' (octet) = '8 biti' ('0' si '1')
+	    => in care Pot fi Reprezentate: '2^8' = '256 Numere'
+
+
+      >> '3 byte' (octet) = '24 biti' 
+	    => in care Pot fi Reprezentate: '2^24' = '16 Milioane' de 'Numere'
+
+
+      >> Daca in aceasi 'Secunda', pe aceasi 'Masina/Dispozitiv', in acelasi 'Proces' 
+	   => sunt Generate mai mult de '16 Milioane de Documente'
+	   => 'Counter'-ul se va 'Revaesa' ('Overflow')
+	   => iar in aceasta situatie putem avea '2 Documente' cu acelasi 'id'.
+
+
+
+
+
+
+  (3) In 'MongoDB' --> 'Obiectul Id' 
+	=> Nu este Generat in sine de 'MongoDB'  
+	=> ci este Generat de 'Driver'-ul 'MongoDB'.  
+
+
+
+
+
+
+
+  (4) Cand Construim o 'Aplicatie' cu 'Node' & 'Express'
+	=> utilizam 'Mongoose'.
+
+	=> iar 'Mongoose' este o 'Abstractie' asupra 'Driver'-ului 'MongoDB'.
+=============================================================================================
+
+
+
+
+
+
+
+ 	GENERAREA 'EXPLICITA' A UNUI ' OBIECT ID'
+
+
+
+
+  (1.1) Cream in Fisierul 'idObiect.js' in Folder-ul 'Mongoose__Relatiile_dintre_Datele_Conectate':	
+_____________________________________________________________________________
+
+// IMPORTARE 'MONGOOSE':
+const mongoose = require('mongoose');
+
+
+// CREAM OBIECTUL 'ID' - 'ObjectId()':
+const id = new mongoose.Types.ObjectId();
+
+// AFISAREA 'ID':
+console.log(id);
+_____________________________________________________________________________
+
+
+
+
+
+
+ (1.2) Executarea Fisierului 'fisier.js':
+_____________________________________________________________________________
+
+	node idObiect.js
+_____________________________________________________________________________
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________________
+
+6140775a6f513630e4b7346f
+_____________________________________________________________________________
+
+	=> Acest 'ID' este Generat in 'Memorie', Nu in 'MongoDB'.
+	=> Stim ca 'Primii 4 Bytes' reprezinta 'tymestamp'.
+
+
+
+
+
+
+
+
+
+
+  (2.1) Preluarea 'timestamp'-ului (Datei si Orei Creari) 'Id'-ului:	
+_____________________________________________________________________________
+
+// IMPORTARE 'MONGOOSE':
+const mongoose = require('mongoose');
+
+
+// CREAM OBIECTUL 'ID' - 'ObjectId()':
+const id = new mongoose.Types.ObjectId();
+
+// AFISAREA 'ID':
+//console.log(id);
+
+// AFISAREA METODEI '.GETTIMESTAMP()' A 'ID'-ULUI:
+console.log(id.getTimestamp());
+_____________________________________________________________________________
+
+
+
+
+
+
+ (2.2) Executarea Fisierului 'fisier.js':
+_____________________________________________________________________________
+
+	node idObiect.js
+_____________________________________________________________________________
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________________
+
+2021-09-14T10:31:48.000Z
+_____________________________________________________________________________
+
+	
+
+
+
+
+
+
+
+  (3.1) Metoda 'isValid()' pentru Validarea 'ObvjectId'-ului:	
+_____________________________________________________________________________
+
+// IMPORTARE 'MONGOOSE':
+const mongoose = require('mongoose');
+
+
+// CREAM OBIECTUL 'ID' - 'ObjectId()':
+const id = new mongoose.Types.ObjectId();
+
+// AFISAREA 'ID':
+//console.log(id);
+
+// AFISAREA METODEI '.GETTIMESTAMP()' A 'ID'-ULUI:
+console.log(id.getTimestamp());
+
+// VALIDAREA 'OBJECTID' PRIN MET. 'ISVALID()':
+const esteValid = mongoose.Types.ObjectId.isValid('1234');
+
+// AFISARE 'ESTEVALID()':
+console.log(esteValid);
+_____________________________________________________________________________
+
+
+
+
+
+
+ (3.2) Executarea Fisierului 'fisier.js':
+_____________________________________________________________________________
+
+	node idObiect.js
+_____________________________________________________________________________
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________________
+
+2021-09-14T10:45:01.000Z
+false
+_____________________________________________________________________________
+
+	
+
+
+
+
+
+

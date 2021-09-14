@@ -1,8 +1,8 @@
 {
-    "name": "MongoDB",
+    "name": "Mongoose__Modelarea_Relatiilor_dintre_Datele_Conectate",
     "version": "1.0.0",
-    "description": "Utilizarea Bazei de Date Document/Non-SQL - MongoDB",
-    "main": "index.js",
+    "description": "Mongoose - Modelarea Relatiilor dintre Datele Conectate",
+    "main": "populare.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
