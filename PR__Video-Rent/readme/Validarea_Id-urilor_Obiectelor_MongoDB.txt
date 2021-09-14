@@ -1,0 +1,65 @@
+
+	
+	Validarea Id-urilor Obiectelor MongoDB
+
+
+
+  
+
+
+  (1) Instalarea Pachetului '
+	=> pt. Adaugarea Suportului de Validare a 'ObjectId'-urilor in 'Joi': 
+_____________________________________________________________________________
+
+	npm i joi-objectid
+_____________________________________________________________________________
+
+
+
+>> Afisare in PowerShell:
+_____________________________________________________________________________
+
++ joi-objectid@4.0.2
+added 1 package in 6.745s
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+  (2.1) Incarcam/Importam Modulul in Fisierul 'routes/inchirieri.js':
+_____________________________________________________________________________
+
+// (IMP-8) IMPORTAREA 'JOI-OBJECTID'
+Joi.objectId = require('joi-objectid')(Joi);
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+
+  (2.2) Modificam Definirea 'idClient' & 'idFilm'
+	   => din Functia 'validareInchiriere()',
+	   => din Fisierul 'models/inchiriere.js'
+	   => in loc de '.string()' adaugam 'objectId()':
+
+_____________________________________________________________________________
+
+const schema = {
+        // idClient: Joi.string().required(),
+        idClient: Joi.objectId().required(),
+        // idFilm: Joi.string().required()
+        idFilm: Joi.objectId().required()
+    };
+_____________________________________________________________________________
+
+
+
+
