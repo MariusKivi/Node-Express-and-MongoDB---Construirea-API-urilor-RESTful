@@ -14,6 +14,14 @@
 const mongoose = require('mongoose');
 const genuri = require('./routes/genuri');
 const clienti = require('./routes/clienti');
+const express = require('express');
+
+
+
+// ____________________________________________________________________________
+// OBIECTUL 'APP' - APELAREA FUNC. 'EXPRESS()'
+const app = express();
+
 
 
 
@@ -24,19 +32,6 @@ mongoose.connect('mongodb://localhost/video-rent')
     .then(() => console.log('Conectat cu succes la Baza de Date MongoDB'))
     // 'PROMISIUNEA' - IN 'CAZ DE EROARE':
     .catch(err => console.error('Nu s-a putut conecta la MongoDB.'));
-
-
-
-// ____________________________________________________________________________
-// IMPORTAREA MODULULUI 'EXPRESS'
-const express = require('express');
-
-
-
-// ____________________________________________________________________________
-// OBIECTUL 'APP' - APELAREA FUNC. 'EXPRESS()'
-const app = express();
-
 
 
 

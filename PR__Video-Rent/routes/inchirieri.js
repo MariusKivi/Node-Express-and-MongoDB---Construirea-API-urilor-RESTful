@@ -1,130 +1,3 @@
-
-	Proiect 'Video-Rent' - Construire API-ului pentru Gestionarea Inchirierilor de Filme
-
-
-
-
-  (1) Crearea Fisierului 'models/inchiriere.js' 
-	=> in 'PR__Video-Rent/models/':
-_____________________________________________________________________________
-
-// ____________________________________________________________________________
-// (IMP-2) IMPORTAREA 'JOI'
-const Joi = require('joi');
-
-// ____________________________________________________________________________
-// (IMP-1) IMPORTAREA 'MONGOOSE'
-const mongoose = require('mongoose');
-
-
-
-
-
-
-// ____________________________________________________________________________
-// MODEL CU SCHEMA 'INCHIRIERE' CU DEF. 'SCHEMEI'
-// (REP. MODELULUI IN APLICATIE - ASA CUM ESTE STOCAT IN 'MONGODB'):
-// ____________________________________________________________________________
-const Inchiriere = mongoose.model('Inchiriere', new mongoose.Schema({
-    client: {
-        type: new mongoose.Schema({
-            name: {
-                type: String,
-                required: true,
-                minlength: 5,
-                maxlength: 50
-            },
-            esteAur: {
-                type: Boolean,
-                default: false
-            },
-            telefon: {
-                type: String,
-                required: true,
-                minlength: 5,
-                maxlength: 50
-            }
-        }),
-        required: true
-    },
-    film: {
-        type: new mongoose.Schema({
-            titlu: {
-                type: String,
-                required: true,
-                // ELIMINAREA SPATIILOR DIN JURUL TITLULUI FILMULUI
-                trim: true,
-                minlength: 5,
-                maxlength: 255
-            },
-            tarifZilnicDeInchiriere: {
-                type: Number,
-                required: true,
-                min: 0,
-                max: 255
-            }
-        }),
-        required: true
-    },
-    dataIesire: {
-        type: Date,
-        required: true,
-        default: Date.now
-    },
-    dataReturnare: {
-        type: Date
-    },
-    taxaDeInchiriere: {
-        type: Number,
-        min: 0
-    }
-}));
-
-
-
-
-
-
-
-// ____________________________________________________________________________
-// FUNC. 'VALIDAREINCHIRIERE(INCHIRIERE)'
-// ____________________________________________________________________________
-function validareInchiriere(inchiriere) {
-
-    // INPUT 'API' (CEEA CE TRIMETE CLIENTUL)
-    // VALIDARE INCHIRIERE
-    // DEF. 'SCHEMEI' - 'JOI' = 'OBIECT':
-    const schema = {
-        idClient: Joi.string().required(),
-        idFilm: Joi.string().required()
-    };
-
-    // METODA JOI - 'VALIDATE()':
-    return Joi.validate(inchiriere, schema);
-}
-
-
-
-
-// ____________________________________________________________________________
-// EXPORTARE 
-// ____________________________________________________________________________
-exports.Inchiriere = Inchiriere;
-exports.validare = validareInchiriere;
-_____________________________________________________________________________
-
-
-
-
-
-
-
-
-
-  (2) Crearea Fisierului 'routes/inchiriere.js' 
-	=> in 'PR__Video-Rent/models/':
-_____________________________________________________________________________
-
 // ____________________________________________________________________________
 // (IMP-6) IMPORTAREA 'MODEL/INCHIRIERE.JS'  
 //         (RETURNEAZA '.Inchiriere' SI '.validare')
@@ -132,15 +5,19 @@ const { Inchiriere, validare } = require('../models/inchiriere');
 
 // ____________________________________________________________________________
 // (IMP-5) IMPORTAREA 'MODEL/FILME.JS'  
-const { Film } = require('../models/filme');
+const { Film } = require('../models/film');
 
 // ____________________________________________________________________________
 // (IMP-4) IMPORTAREA 'MODEL/CLIENTI.JS'  
-const { Client } = require('../models/clienti');
+const { Client } = require('../models/client');
 
 // ____________________________________________________________________________
 // (IMP-3) IMPORTAREA 'MONGOOSE'
 const mongoose = require('mongoose');
+
+// ____________________________________________________________________________
+// (IMP-7) IMPORTAREA BIBLIOTECI 'FAWN'
+const Fawn = require('fawn');
 
 // ____________________________________________________________________________
 // (IMP-1) IMPORTAREA MODULULUI 'EXPRESS'
@@ -149,6 +26,19 @@ const express = require('express');
 // ____________________________________________________________________________
 // (IMP-2) OBIECTUL 'ROUTER' - APELAREA FUNC. 'EXPRESS.ROUTER()'
 const router = express.Router();
+
+
+
+
+
+
+
+// __ __________________________________________________________________________
+// INITIALIZAREA - BIBLIOTECI 'FAWN' 
+// __ __________________________________________________________________________
+Fawn.init(mongoose);
+// __ __________________________________________________________________________
+
 
 
 
@@ -165,6 +55,9 @@ router.get('/', async(req, res) => {
     // RASPUNSUL - MATRICE DE OBIECTE:
     res.send(inchirieri);
 });
+
+
+
 
 
 
@@ -221,22 +114,47 @@ router.post('/', async(req, res) => {
     });
 
     // SALVARE 'INCHIRIERE' IN DB:
-    inchiriere = await inchiriere.save();
+    // inchiriere = await inchiriere.save();
     // ---------------------------------------------------------------------
 
 
     // ---------------------------------------------------------------------
     // UPGRADAREA 'NUMARULUI DE FILME EXISTENTE IN STOC'
     // 'DECREMENTAND  STOCUL' ('PROP--'):
-    film.numarInStoc--;
+    // film.numarInStoc--;
 
     // SALVARE 'FILM':
-    film.save();
+    // film.save();
     // ---------------------------------------------------------------------
 
 
-    // RETURNAM 'RASPUNSULUI' PT.'INCHIRIERE'
-    res.send(inchiriere);
+    // ---------------------------------------------------------------------
+    // BLOCUL 'TRY{} .. CATCH{}'
+    // ---------------------------------------------------------------------
+    try {
+
+        // ---------------------------------------------------------------------
+        // CREAREA OBIECTULUI 'TASK()' (ASEMANATOR CU 'TRANZACTIILE')
+        // PRIN INTERMEDIUL 'FAWN LIBRARY'
+        // ---------------------------------------------------------------------
+        new Fawn.Task()
+            .save('inchirieri', inchiriere)
+            .update('filme', { _id: film._id }, {
+                // OPERATORUL DE 'INCREMENTARE' - '$INC'
+                // A CARUI 'VALOARE' O 'DECREMENTAM' - '-1':
+                $inc: { numarInStoc: -1 }
+            })
+            .remove();
+        // ---------------------------------------------------------------------
+
+
+        // RETURNAM 'RASPUNSULUI' PT.'INCHIRIERE'
+        res.send(inchiriere);
+    } catch (exception) {
+        // RETURNAREA 'ERORI 500' CATRE 'CLIENT' (EROARE INTERNA DE SERVER):
+        res.status(500).send('Ceva nu a reușit.');
+    }
+    // ---------------------------------------------------------------------
 });
 
 
@@ -264,8 +182,3 @@ router.get('/:id', async(req, res) => {
 // EXPORTARE OBIECTULUI 'ROUTER'
 // ____________________________________________________________________________
 module.exports = router;
-_____________________________________________________________________________
-
-
-
-

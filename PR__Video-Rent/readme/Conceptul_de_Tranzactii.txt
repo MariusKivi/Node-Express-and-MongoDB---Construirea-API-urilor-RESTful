@@ -1,0 +1,337 @@
+
+	Conceptul de 'Tranzactii'
+
+
+
+
+
+---------------------------------------------------------------------------------------------
+NB!
+
+   In unele 'Bazele de Date Relationale' ('SQL', 'MySQL') exista Conceptul de  'Tranzactii'.
+
+
+   <1> 'Tranzactiile' = reprezinta un 'Grup de Operatii' ce Functioneaza ca o 'Unitate' -> in care toate 'Operatiuniile' trebuie sa fie 'Realizate' -> pentru a Schimba 'Starea Bazei de Date', iar in Cazul unei 'Erori a unei Operatiuni' -> 'Baza de Date' -> este Readausa la 'Starea Initiala'. 
+
+
+
+   <2> In 'MongoDB' nu avem acest Concept de 'Tranzactie',
+	=> avem Tehnica de 'Comitere în Două Faze' ('Two Phase Commit')
+
+	https://www.docs4dev.com/docs/en/mongodb/v3.6/reference/tutorial-perform-two-phase-commits.html
+
+
+
+   <3> Utilizarea Bibliotecii 'Fawn' ce Implementeaza 'Tranzactii' 
+	=> folosind Tehnica de 'Comitere în Două Faze' ('Two Phase Commit')
+
+	https://www.npmjs.com/package/fawn
+---------------------------------------------------------------------------------------------
+
+
+
+
+
+  (1) Instalarea Biblioteci 'Fawn' in Proiect:
+_____________________________________________________________________________
+
+	npm i fawn
+_____________________________________________________________________________
+
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________________
+
+npm WARN pr__video-rent@1.0.0 No description
+npm WARN pr__video-rent@1.0.0 No repository field.
+
++ fawn@2.1.5
+added 27 packages in 24.304s
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+  (2.1) Incarcarea Biblioteci 'Fawn' in Fisierul 'routes/inchiriere.js':
+_____________________________________________________________________________
+
+// (IMP-7) IMPORTAREA BIBLIOTECI 'FAWN'
+const Fawn = require('fawn');
+_____________________________________________________________________________
+
+
+
+
+
+
+  (2.2) Initializarea Biblioteci 'Fawn' in Fisierul 'routes/inchiriere.js':
+_____________________________________________________________________________
+
+Fawn.init(mongoose);
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+  (2.3) In Metoda 'post()'
+	=> Nu mai Salvam 'inchiriere' si Upgradam 'film' Explicit:
+_____________________________________________________________________________
+
+    // SALVARE 'INCHIRIERE' IN DB:
+    inchiriere = await inchiriere.save();
+    // ---------------------------------------------------------------------
+
+
+    // ---------------------------------------------------------------------
+    // UPGRADAREA 'NUMARULUI DE FILME EXISTENTE IN STOC'
+    // 'DECREMENTAND  STOCUL' ('PROP--'):
+    film.numarInStoc--;
+
+    // SALVARE 'FILM':
+    film.save();
+    // ---------------------------------------------------------------------
+
+_____________________________________________________________________________
+
+
+
+
+	=> Cream in Locul Acesteia 
+	=> un Obiect 'Task()' (care va fi precum 'Tranzactiile')
+	=> in care putem Introduce cate 'Operatii Dorim',
+	=> care sa fie 'Tratate' ca o 'Unitate'
+	=> Dupa incheierea 'Operatiuniilor' trebuie sa Apelam 'run()'
+	      --> altfel Nici-o Operatiune Nu va fi Executata.
+	=> inseran in Blocurile 'try{} catch{}':
+_____________________________________________________________________________
+ // BLOCUL 'TRY{} .. CATCH{}'
+    // ---------------------------------------------------------------------
+    try {
+
+        // ---------------------------------------------------------------------
+        // CREAREA OBIECTULUI 'TASK()' (ASEMANATOR CU 'TRANZACTIILE')
+        // PRIN INTERMEDIUL 'FAWN LIBRARY'
+        // ---------------------------------------------------------------------
+        new Fawn.Task()
+            .save('inchirieri', inchiriere)
+            .update('filme', { _id: film._id }, {
+                // OPERATORUL DE 'INCREMENTARE' - '$INC'
+                // A CARUI 'VALOARE' O 'DECREMENTAM' - '-1':
+                $inc: { numarInStoc: -1 }
+            })
+            .remove();
+        // ---------------------------------------------------------------------
+
+
+        // RETURNAM 'RASPUNSULUI' PT.'INCHIRIERE'
+        res.send(inchiriere);
+    } catch (exception) {
+        // RETURNAREA 'ERORI 500' CATRE 'CLIENT' (EROARE INTERNA DE SERVER):
+        res.status(500).send('Ceva nu a reușit.');
+    }
+_____________________________________________________________________________
+	
+
+
+
+
+  (2.4) Metoda 'post()' devenind:
+_____________________________________________________________________________
+
+// RUTA 2: POST('/') - CREARE 'INCHIRIERE'
+// ____________________________________________________________________________
+router.post('/', async(req, res) => {
+    // ---------------------------------------------------------------------
+    // VALIDAREA 'REQUEST'-ULUI  
+    const { error } = validare(req.body);
+
+    // DACA 'INCHIRIEREA ESTE INVALIDA' -> RETURNAM 'EROAREA 400' (CERERE ERONATA)
+    if (error) return res.status(400).send(error.details[0].message);
+    // ---------------------------------------------------------------------
+
+
+    // ---------------------------------------------------------------------
+    // GASIREA & VALIDAREA 'CLIENTULUI' DUPA 'ID' 
+    const client = await Client.findById(req.body.idClient);
+
+    // DACA 'CLIENTUL ESTE INVALID' -> RETURNAM 'EROAREA 400' (CERERE ERONATA)
+    if (!client) return res.status(400).send('Client invalid.');
+    // ---------------------------------------------------------------------
+
+
+    // ---------------------------------------------------------------------
+    // GASIREA & VALIDAREA 'FILMULUI' DUPA 'ID' - TRIMIS DE 'CLIENT': 
+    const film = await Film.findById(req.body.idFilm);
+
+    // DACA 'FILMUL ESTE INVALID' -> RETURNAM '400' (CERERE ERONATA)
+    if (!film) return res.status(400).send('Film invalid.');
+    // ---------------------------------------------------------------------
+
+
+    //  NE ASIGURAM CA 'FILMUL NU ESTE IN STOC' = SI RET. 'EROARE 400':
+    if (film.numarInStoc === 0) return res.status(400).send('Filmul nu este în stoc.');
+
+
+    // ---------------------------------------------------------------------
+    // CREARE OBIECT 'INCHIRIERE':
+    let inchiriere = new Inchiriere({
+        client: {
+            _id: client._id,
+            nume: client.nume,
+            telefon: client.telefon
+        },
+
+        film: {
+            _id: film._id,
+            titlu: film.titlu,
+            tarifZilnicDeInchiriere: film.tarifZilnicDeInchiriere
+        }
+    });
+
+    // SALVARE 'INCHIRIERE' IN DB:
+    // inchiriere = await inchiriere.save();
+    // ---------------------------------------------------------------------
+
+
+    // ---------------------------------------------------------------------
+    // UPGRADAREA 'NUMARULUI DE FILME EXISTENTE IN STOC'
+    // 'DECREMENTAND  STOCUL' ('PROP--'):
+    // film.numarInStoc--;
+
+    // SALVARE 'FILM':
+    // film.save();
+    // ---------------------------------------------------------------------
+
+
+    // ---------------------------------------------------------------------
+    // BLOCUL 'TRY{} .. CATCH{}'
+    // ---------------------------------------------------------------------
+    try {
+
+        // ---------------------------------------------------------------------
+        // CREAREA OBIECTULUI 'TASK()' (ASEMANATOR CU 'TRANZACTIILE')
+        // PRIN INTERMEDIUL 'FAWN LIBRARY'
+        // ---------------------------------------------------------------------
+        new Fawn.Task()
+            .save('inchirieri', inchiriere)
+            .update('filme', { _id: film._id }, {
+                // OPERATORUL DE 'INCREMENTARE' - '$INC'
+                // A CARUI 'VALOARE' O 'DECREMENTAM' - '-1':
+                $inc: { numarInStoc: -1 }
+            })
+            .remove();
+        // ---------------------------------------------------------------------
+
+
+        // RETURNAM 'RASPUNSULUI' PT.'INCHIRIERE'
+        res.send(inchiriere);
+    } catch (exception) {
+        // RETURNAREA 'ERORI 500' CATRE 'CLIENT' (EROARE INTERNA DE SERVER):
+        res.status(500).send('Ceva nu a reușit.');
+    }
+    // ---------------------------------------------------------------------
+});
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+  (3) Adaugam in Fisierul 'index.js'
+	=> importurile si Utilizarea Fisierelor create in 'routes': 
+_____________________________________________________________________________
+
+// INCARCARI (IMPORTURI):
+const genuri = require('./routes/genuri');
+const clienti = require('./routes/clienti');
+const filme = require('./routes/filme');
+const inchirieri = require('./routes/inchirieri');
+const mongoose = require('mongoose');
+const express = require('express');
+const app = express();
+
+
+
+// ____________________________________________________________________________
+// CONECTAREA  LA  'BAZA DE DATE' - 'MONGODB':
+mongoose.connect('mongodb://localhost/video-rent')
+    // 'PROMISIUNEA' - IN 'CAZ DE SUCCES':
+    .then(() => console.log('Conectat cu succes la Baza de Date MongoDB'))
+    // 'PROMISIUNEA' - IN 'CAZ DE EROARE':
+    .catch(err => console.error('Nu s-a putut conecta la MongoDB.'));
+
+
+
+
+
+
+
+// ____________________________________________________________________________
+// UTILIZARE
+app.use(express.json());
+
+// ____________________________________________________________________________
+// DELEGAREA RUTEI '/API/GENURI' -> CATRE RUTA 'GENYRI'
+app.use('/api/genuri', genuri);
+
+// ____________________________________________________________________________
+// DELEGAREA RUTEI '/API/CLIENTI' -> CATRE RUTA 'CLIENTI'
+app.use('/api/clienti', clienti);
+
+// ____________________________________________________________________________
+// DELEGAREA RUTEI '/API/FILME' -> CATRE RUTA 'FILME'
+app.use('/api/filme', filme);
+
+// ____________________________________________________________________________
+// DELEGAREA RUTEI '/API/INCHIRIERI' -> CATRE RUTA 'INCHIRIERI'
+app.use('/api/inchirieri', inchirieri);
+
+
+
+
+
+
+
+// ____________________________________________________________________________
+// VARIABILA 'ENVIRONMENT' - 'PORT'  SAu  PORTUL '3000':
+// (IN OBIECTUL GLOBAL 'PROCESS', IN PROP. 'ENV')
+const port = process.env.PORT || 3000;
+
+
+// ____________________________________________________________________________
+// MET. 'LISTEN(NR_PORT, CALLBACK FUNC*())' 
+// ASCULTAREA 'VARIABILEI ENVIRONMENT':
+app.listen(port, () => {
+    // 'TEMPLATE  STRING' (PRIN UTIL. 'BACKTICK')
+    console.log(`Port de Ascultare ${port}...`);
+});
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+ (4) Executarea Fisierului 'index.js':
+_____________________________________________________________________________
+
+	nodemon
+_____________________________________________________________________________
+
+
