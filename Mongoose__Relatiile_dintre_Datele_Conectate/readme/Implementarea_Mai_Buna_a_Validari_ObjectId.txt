@@ -1,0 +1,69 @@
+
+
+	Implementarea Mai Buna a Validari ObjectId
+
+
+
+
+  (1.1) Mutam Incarcam/Importam Modulul in Fisierul 'models/inchirieri.js'
+	   => in Fisierul 'index.js':
+_____________________________________________________________________________
+
+// (IMP-8) IMPORTAREA 'JOI-OBJECTID'
+Joi.objectId = require('joi-objectid')(Joi);
+_____________________________________________________________________________
+
+
+
+
+(1.2) Adaugam si 'Joi':
+_____________________________________________________________________________
+// (IMP-2) IMPORTAREA 'JOI'
+const Joi = require('joi');
+_____________________________________________________________________________
+
+
+
+
+
+
+
+  (2) Modificam Definirea 'idGen' 
+	   => din Functia 'validareFilm()',
+	   => din Fisierul 'models/film.js'
+	   => in loc de '.string()' adaugam 'objectId()':
+
+_____________________________________________________________________________
+
+const schema = {
+        titlu: Joi.string().min(5).max(50).required(),
+        // idGen: Joi.string().required(),
+        idGen: Joi.objectId().required(),
+        numarInStoc: Joi.number().min(0).required(),
+        tarifZilnicDeInchiriere: Joi.number().min(0).required()
+    };
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (3) Inlocuim in Fisierul 'routes/filme.js'
+ 	=> Tipul Variabilei 'let' cu 'const':	_____________________________________________________________________________
+    // let film = new Film({
+    const film = new Film({
+        titlu: req.body.titlu,
+        gen: {
+            _id: gen._id,
+            nume: gen.nume
+        },
+        numarInStoc: req.body.numarInStoc,
+        tarifZilnicDeInchiriere: req.body.tarifZilnicDeInchiriere
+    });
+_____________________________________________________________________________
+
+
+
+
