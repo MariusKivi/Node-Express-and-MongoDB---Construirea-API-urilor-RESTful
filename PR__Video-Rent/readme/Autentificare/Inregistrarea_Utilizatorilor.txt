@@ -1,0 +1,268 @@
+
+	Inregistrarea Utilizatorilor
+
+
+
+
+ (1) Cream Fisierul 'routes/utilizatori.js':
+_____________________________________________________________________________
+
+// INCARCARI (IMPORTURI):
+// -----------------------------------------------------------------------------
+// (IMP-4) IMPORTAREA 'MODEL/UTILIZATOR.JS'  
+//         (RETURNEAZA '.Utilizator' SI '.validare')
+const { Utilizator, validare } = require('../models/utilizator');
+
+// -----------------------------------------------------------------------------
+// (IMP-3) IMPORTAREA 'MONGOOSE'
+const mongoose = require('mongoose');
+
+// -----------------------------------------------------------------------------
+// (IMP-1) IMPORTAREA MODULULUI 'EXPRESS'
+const express = require('express');
+
+// -----------------------------------------------------------------------------
+// (IMP-2) OBIECTUL 'ROUTER' - APELAREA FUNC. 'EXPRESS.ROUTER()'
+const router = express.Router();
+
+
+
+
+
+
+
+// -----------------------------------------------------------------------------
+// RUTA 1: POST('/')
+// PT. 'CREAREA UTILIZATORILOR, INREGISTRAREA':
+// -----------------------------------------------------------------------------
+router.post('/', async(req, res) => {
+
+    // VALIDAREA 1:
+    // DESTRUCTURAREA OBIECTELOR - APELAREA FUNC. 'VALIDAREGEN()'
+    const { error } = validare(req.body);
+
+    // LOGICA:  DACA 'GENUL ESTE INVALID' -> RETURNAM '400' (CERERE ERONATA)
+    // VERIFICAREA VALOAREI 'REZULTAT' -> A PROP. 'ERROR'
+    if (error)
+    //  RETURNAM 'EROAREA CU STATREA - 400' CATRE 'CLIENT':
+        return res.status(400).send(error.details[0].message);
+
+
+    // VALIDAREA 2:
+    // NE ASIGURAM CA 'UTILIZATORUL' NU ESTE 'DEJA INREGISTRAT'
+    // CARE VA RETURNEAZA O 'PROMISIUNE' - PE CARE O 'AWAYT': 
+    let utilizator = await Utilizator.findOne({ email: req.body.email });
+
+    // DACA 'UTILIZATORUL EXISTA' IN 'BAZA DE DATE'
+    //  RETURNAM 'EROAREA CU STATREA - 400' CATRE 'CLIENT':
+    if (utilizator) return res.status(400).send('Utilizator deja înregistrat.');
+
+
+    // RESETAREA - OBIECTULUI 'UTILIZATOR':
+    utilizator = new Utilizator({
+        nume: req.body.nume,
+        email: req.body.email,
+        parola: req.body.parola
+    });
+
+    // SALVAREA 'UTILIZATORULUI' IN 'BAZA DE DATE'
+    await utilizator.save();
+
+
+    // RETURNAM 'RASPUNSULUI' - 'UTILIZATOR' CATRE 'CLIENT'
+    res.send(utilizator);
+});
+// -----------------------------------------------------------------------------
+
+
+
+
+// -----------------------------------------------------------------------------
+// EXPORTARE 'ROUTER'
+// -----------------------------------------------------------------------------
+module.exports = router;
+_____________________________________________________________________________
+
+
+
+
+
+
+
+  (2.1) Adaugam in Fisierul 'index.js' 
+	=> 'Importarea 'router/utilizatori.js'':
+_____________________________________________________________________________
+
+const utilizatori = require('./routes/utilizatori');
+
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+ (2.2) Adaugam in Fisierul 'index.js' 
+	=> 'Utilizarea 'Cai' & 'Rutei':
+_____________________________________________________________________________
+
+app.use('/api/utilizatori', utilizatori);
+
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (3) Executarea Fisierului 'index.js':
+_____________________________________________________________________________
+
+	nodemon
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+  (4.1) Setam in 'Postman'
+	=> POST Request
+	=> URL: http://localhost:3000/api/utilizatori
+	=> Selectam 'body'
+	=> Bifam 'raw',
+	=> Selectam 'JSON (Application/JSON)'
+	=> setam un email Invalid:
+_____________________________________________________________________________
+
+{
+	"nume": "Marius",
+	"email": "1"
+}
+_____________________________________________________________________________
+
+
+
+
+ >> Afisare in Postman
+	=> Primim Eroarea:
+_____________________________________________________________________________
+
+"email" length must be at least 5 characters long
+_____________________________________________________________________________
+
+
+
+
+
+
+ (4.2) Setam in 'Postman'
+_____________________________________________________________________________
+
+{
+	"nume": "Marius",
+	"email": "123456"
+}
+_____________________________________________________________________________
+
+
+
+
+ >> Afisare in Postman
+	=> Primim Eroarea:
+_____________________________________________________________________________
+
+"email" must be a valid email
+_____________________________________________________________________________
+
+
+
+
+
+
+
+(4.3) Setam in 'Postman'
+_____________________________________________________________________________
+
+{
+	"nume": "Marius",
+	"email": "chivumarius@yahoo.com"
+}
+_____________________________________________________________________________
+
+
+
+
+ >> Afisare in Postman
+	=> Primim Eroarea:
+_____________________________________________________________________________
+
+"parola" is required
+_____________________________________________________________________________
+
+
+
+
+
+
+
+(4.4) Setam in 'Postman'
+_____________________________________________________________________________
+
+{
+	"nume": "Marius",
+	"email": "chivumarius@yahoo.com",
+	"parola": "12345"
+}
+_____________________________________________________________________________
+
+
+
+
+ >> Afisare in Postman
+	=> Primim 'Status 200':
+_____________________________________________________________________________
+
+{
+    "_id": "61421d790d19e33c9882effa",
+    "nume": "Marius",
+    "email": "chivumarius@yahoo.com",
+    "parola": "12345",
+    "__v": 0
+}
+_____________________________________________________________________________
+
+
+
+
+
+
+
+(4.4) Setam in 'Postman' si mai Retrimitem Acelasi Request:
+_____________________________________________________________________________
+
+{
+	"nume": "Marius",
+	"email": "chivumarius@yahoo.com",
+	"parola": "12345"
+}
+_____________________________________________________________________________
+
+
+
+
+ >> Afisare in Postman
+	=> Primim 'Status 400':
+_____________________________________________________________________________
+
+Utilizator deja înregistrat.
+_____________________________________________________________________________
+
+
+
+
