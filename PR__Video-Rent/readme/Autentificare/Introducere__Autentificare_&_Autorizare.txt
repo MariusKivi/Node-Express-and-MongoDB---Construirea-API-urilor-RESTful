@@ -1,0 +1,82 @@
+
+
+
+	Introducere in 'Autentificare' si 'Autorizare'
+
+
+
+
+ <> In Proiectul 'video-rent' pot fi gestionate in prezent:
+	>> Genuri,
+	>> FFilme,
+	>> Clienti,
+	>> Inchirieri.
+
+
+ <> Vom Implementa in cele ce Urmeaza 'Autentificarea' si 'Autorizarea'.
+
+
+
+
+
+
+
+ (1) 'Autentificarea' 
+	=> este Procesul de Indentificare a Utilizatorului
+
+  Ex: 'Conectarea'
+	=> 'Numele de Utilizator' & 'Parola' sunt Trimise 'Server'-ului,
+	=> iar 'Server'-ul 'Autentifica Utilizatorul'.
+
+
+
+ (2) 'Autorizarea' 
+	=> este Procesul prin care se Determina daca Utilizatorul,
+	=> are Permisiunea Corecta 
+	=> pentu a Efectua o Operatiune Specifica.
+
+
+
+
+
+
+ (3) In Aplicatia 'video-rent'
+	=> Dorim sa ne Asiguram
+	=> ca doar Utilizatorii 'Autentificati' sau 'Autorizati' 
+	=> pot realiza Operatiuni care sa Modifice Datele.
+	
+
+     >> Utilizatorii 'Anonimi'/'Neautentificati' pot doar Citi Date.
+     >> Pentru a Crea 'Filme', 'Genuri' Utilizatorii trebuie mai intai sa se 'Autentifice'.
+
+
+
+     >> Ca si 'Securitate Suplimentara'  dorim sa ne Asiguram ca
+	=> doar 'Utilizatorii Administratori' pot Sterge Date.
+	=> Acesta reprezentand un 'Al 2-lea Nivel de Autorizare' ('Permisiuni').
+
+
+
+
+
+ (4) Pentru Implementarea Acestora trebuie sa Adaugam in Proiect:
+	<1> 'Inregistrare': POST /api/utilizatori {nume, email, parola}
+	<2> 'Autentificare': POST /api/utilizatori 
+
+
+
+
+
+  >> Iar la Crearea Schemei 
+	=> ne Asiguram ca Nu Stocam '2 Documente' cu acelasi 'Email'
+	=> in MongoDB:
+_____________________________________________________________________________
+
+email:{
+	type: String,
+	unique: true
+}
+_____________________________________________________________________________
+
+
+

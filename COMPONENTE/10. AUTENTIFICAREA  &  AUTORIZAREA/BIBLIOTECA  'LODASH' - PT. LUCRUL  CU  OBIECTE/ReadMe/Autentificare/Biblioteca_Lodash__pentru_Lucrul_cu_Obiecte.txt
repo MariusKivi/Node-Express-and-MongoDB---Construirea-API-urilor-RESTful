@@ -1,0 +1,208 @@
+
+	Biblioteca 'Lodash' pentru Lucrul cu Obiecte
+
+
+
+
+
+ In Metoda 'post()' din 'routes/utilizatori.js'
+	=> dorim sa Modificam Raspunsul,
+	=> care poate fi realizat prin '2 Abordari':
+
+
+ (Abordarea 1) Returnarea unui 'Obiect Personalizat':
+_____________________________________________________________________________
+
+    // RETURNAM 'RASPUNSULUI' - 'UTILIZATOR' CATRE 'CLIENT'
+    // res.send(utilizator);
+
+    // (ABORDAREA 1) RETURNAM 'RASPUNSULUI' - 'UTILIZATOR' UN 'OBIECT PERSONALIZAT':
+    res.send({
+        nume: utilizator.nume,
+        email: utilizator.email
+    });
+_____________________________________________________________________________
+
+
+
+
+
+ (Abordarea 2) Utilizarea Biblioteci 'Lodash'
+	=> ce Ofera o multime de Utilitati pt. Lucr ul cu Obiecte
+	=> care este practic 'Versiunea Optimizata' a lui '_':
+
+-----------------------------------------------------------------------------
+https://lodash.com/
+-----------------------------------------------------------------------------
+
+
+
+
+
+
+ (1) Instalarea 'Lodash Library':
+_____________________________________________________________________________
+
+	npm i lodash    
+_____________________________________________________________________________
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________________
+
++ lodash@4.17.21
+updated 1 package in 10.727s
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (2.1) Importarea Biblioteci 'Lodash' in 'routes/utilizatori.js':
+_____________________________________________________________________________
+
+// (IMP-5) IMPORTAREA BIBLIOTECI 'LODASH' - DENUMITA CONVENTIONAL '_':  
+const _ = require('lodash');
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  (2.2) Implementarea 'Abordari 2' - Biblioteci 'Lodash'
+	   => cu Metoda 'pick(Obiect, Matrice_de_Proprietati)':
+_____________________________________________________________________________
+
+    // (ABORDAREA 2) BIBLIOTECA 'LODASH' - '_'
+    // CU MET. 'PICK(OBIECT, ['PROP1','PROP2'.. ])':
+    res.send(_.pick(utilizator, ['_id', 'nume', 'email']));
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+
+ (3) Modificam de asemenea Resetarea Obiectului 'Utilizator'
+	=> cu Metoda '.pick()' 
+
+
+ -> Inlocuim:
+_____________________________________________________________________________
+    // RESETAREA - OBIECTULUI 'UTILIZATOR':
+    // utilizator = new Utilizator({
+    //     nume: req.body.nume,
+    //     email: req.body.email,
+    //     parola: req.body.parola
+    // });
+_____________________________________________________________________________
+
+
+
+ -> Cu:
+_____________________________________________________________________________
+    
+    // RESETAREA - OBIECTULUI 'UTILIZATOR'
+    // CU MET. 'PICK(OBIECT, ['PROP1','PROP2'.. ])':
+    utilizator = new Utilizator(_.pick(req.body, ['nume', 'email', 'parola']));	
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (4) Rulam 'Monitorizarea Node':
+_____________________________________________________________________________
+
+	nodemon
+_____________________________________________________________________________
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________________
+
+reateIndexes instead.
+Conectat cu succes la Baza de Date MongoDB
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (5) Deschidem 'Postman'
+	=> si Trimitem un Nou POST Request catre Server: (Body.raw, JSON): 
+_____________________________________________________________________________
+
+{
+	"nume": "Marius",
+	"email": "chivumarius10@yahoo.com",
+	"parola": "12345"
+}	
+_____________________________________________________________________________
+
+	=> Clic 'Send'
+
+
+
+ 
+ >> Afisare in Postman - 'Status: 200':
+_____________________________________________________________________________
+
+{
+    "_id": "6142e635b6dac62688ef9259",
+    "nume": "Marius",
+    "email": "chivumarius10@yahoo.com"
+}
+_____________________________________________________________________________
+
+
+
+
+
+
+ (6) Pentru Cresterea Complexitatii 'Parolei' 
+	=> poate fi Utilizat Pachetul NPM 'joi-password-complexity
+':
+
+-----------------------------------------------------------------------------
+https://www.npmjs.com/package/joi-password-complexity
+-----------------------------------------------------------------------------
+
+
+ >> Care Poate fi Instalatprin Comanda:
+_____________________________________________________________________________
+
+	npm i joi-password-complexity
+_____________________________________________________________________________
+	=> insa Nu il utilizam in Proiectul Actual
+
+
+
