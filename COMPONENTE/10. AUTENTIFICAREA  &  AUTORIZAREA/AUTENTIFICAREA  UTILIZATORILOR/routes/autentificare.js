@@ -1,7 +1,12 @@
 // INCARCARI (IMPORTURI):
 // ____________________________________________________________________________
+// (IMP-7) IMPORTAREA BIBLIOTECI 'JOI':
+const Joi = require('joi');
+
+// ____________________________________________________________________________
 // (IMP-6) IMPORTAREA BIBLIOTECI 'BCRYPT':
 const bcrypt = require('bcrypt');
+
 
 // ____________________________________________________________________________
 // (IMP-5) IMPORTAREA BIBLIOTECI 'LODASH' - DENUMITA CONVENTIONAL '_':  
@@ -10,7 +15,7 @@ const _ = require('lodash');
 // ____________________________________________________________________________
 // (IMP-4) IMPORTAREA 'MODEL/UTILIZATOR.JS'  
 //         (RETURNEAZA '.Utilizator' SI '.validare')
-const { Utilizator, validare } = require('../models/utilizator');
+const { Utilizator } = require('../models/utilizator');
 
 // ____________________________________________________________________________
 // (IMP-3) IMPORTAREA 'MONGOOSE'
@@ -42,9 +47,7 @@ router.post('/', async(req, res) => {
 
     // LOGICA:  DACA 'GENUL ESTE INVALID' -> RETURNAM '400' (CERERE ERONATA)
     // VERIFICAREA VALOAREI 'REZULTAT' -> A PROP. 'ERROR'
-    if (error)
-    //  RETURNAM 'EROAREA CU STATREA - 400' CATRE 'CLIENT':
-        return res.status(400).send(error.details[0].message);
+    if (error) return res.status(400).send(error.details[0].message);
 
 
     // VALIDAREA 2 -----------------------------------------------------------
@@ -54,19 +57,21 @@ router.post('/', async(req, res) => {
 
     // DACA 'UTILIZATORUL NU EXISTA' IN 'BAZA DE DATE'
     //  RETURNAM 'EROAREA CU STATREA - 400' CATRE 'CLIENT':
-    if (!utilizator) return res.status(400).send('Email-ul sau parola invalida.');
+    if (!utilizator) return res.status(400).send('Email sau parola invalida.');
 
 
 
     // VALIDAREA 3 -----------------------------------------------------------
+    // VALIDAREA 'PAROLEI'
     // MET. 'COMPARE(PAROLA_TEXT_PLAN, PAROLA_HASH-URATA)' :
-    const parolaValida = bcrypt.compare(req.body.parola, utilizator.parola);
+    const parolaValida = await bcrypt.compare(req.body.parola, utilizator.parola);
 
     // DACA 'PAROLA NU ESTE VALIDA' - RETURNAM 'EROAREA 400':
-    if (!parolaValida) return res.status(400).send('Email-ul sau parola invalida.');
+    if (!parolaValida) return res.status(400).send('Email sau parola invalida.');
+
 
     // TRIMTEREA RASPUNSULUI CATRE 'CLIENT':
-    req.send(true);
+    res.send(true);
 });
 // ____________________________________________________________________________
 
@@ -90,7 +95,7 @@ function validare(req) {
 
 
     // RETURNAREA - APELARI MET. JOI 'VALIDATE()':
-    return Joi.validate(utilizator, schema);
+    return Joi.validate(req, schema);
 };
 // ____________________________________________________________________________
 

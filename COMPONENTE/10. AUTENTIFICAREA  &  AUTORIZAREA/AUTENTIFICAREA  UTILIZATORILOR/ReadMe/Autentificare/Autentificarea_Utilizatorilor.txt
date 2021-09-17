@@ -11,28 +11,33 @@
 _____________________________________________________________________________
 
 // INCARCARI (IMPORTURI):
-// ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+// (IMP-7) IMPORTAREA BIBLIOTECI 'JOI':
+const Joi = require('joi');
+
+// ----------------------------------------------------------------------------
 // (IMP-6) IMPORTAREA BIBLIOTECI 'BCRYPT':
 const bcrypt = require('bcrypt');
 
-// ---------------------------------------------------------------------------
+
+// ----------------------------------------------------------------------------
 // (IMP-5) IMPORTAREA BIBLIOTECI 'LODASH' - DENUMITA CONVENTIONAL '_':  
 const _ = require('lodash');
 
-// ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // (IMP-4) IMPORTAREA 'MODEL/UTILIZATOR.JS'  
 //         (RETURNEAZA '.Utilizator' SI '.validare')
-const { Utilizator, validare } = require('../models/utilizator');
+const { Utilizator } = require('../models/utilizator');
 
-// ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // (IMP-3) IMPORTAREA 'MONGOOSE'
 const mongoose = require('mongoose');
 
-// ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // (IMP-1) IMPORTAREA MODULULUI 'EXPRESS'
 const express = require('express');
 
-// ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // (IMP-2) OBIECTUL 'ROUTER' - APELAREA FUNC. 'EXPRESS.ROUTER()'
 const router = express.Router();
 
@@ -42,10 +47,10 @@ const router = express.Router();
 
 
 
-// ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // RUTA 1: POST('/')
 // PT. 'CREAREA UTILIZATORILOR, INREGISTRAREA':
-// ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 router.post('/', async(req, res) => {
 
     // VALIDAREA 1 -----------------------------------------------------------
@@ -54,9 +59,7 @@ router.post('/', async(req, res) => {
 
     // LOGICA:  DACA 'GENUL ESTE INVALID' -> RETURNAM '400' (CERERE ERONATA)
     // VERIFICAREA VALOAREI 'REZULTAT' -> A PROP. 'ERROR'
-    if (error)
-    //  RETURNAM 'EROAREA CU STATREA - 400' CATRE 'CLIENT':
-        return res.status(400).send(error.details[0].message);
+    if (error) return res.status(400).send(error.details[0].message);
 
 
     // VALIDAREA 2 -----------------------------------------------------------
@@ -66,21 +69,22 @@ router.post('/', async(req, res) => {
 
     // DACA 'UTILIZATORUL NU EXISTA' IN 'BAZA DE DATE'
     //  RETURNAM 'EROAREA CU STATREA - 400' CATRE 'CLIENT':
-    if (!utilizator) return res.status(400).send('Email-ul sau parola invalida.');
+    if (!utilizator) return res.status(400).send('Email sau parola invalida.');
 
 
 
     // VALIDAREA 3 -----------------------------------------------------------
+    // VALIDAREA 'PAROLEI'
     // MET. 'COMPARE(PAROLA_TEXT_PLAN, PAROLA_HASH-URATA)' :
-    const parolaValida = bcrypt.compare(req.body.parola, utilizator.parola);
+    const parolaValida = await bcrypt.compare(req.body.parola, utilizator.parola);
 
     // DACA 'PAROLA NU ESTE VALIDA' - RETURNAM 'EROAREA 400':
-    if (!parolaValida) return res.status(400).send('Email-ul sau parola invalida.');
+    if (!parolaValida) return res.status(400).send('Email sau parola invalida.');
 
     // TRIMTEREA RASPUNSULUI CATRE 'CLIENT':
-    req.send(true);
+    res.send(true);
 });
-// ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 
 
@@ -89,9 +93,9 @@ router.post('/', async(req, res) => {
 
 
 
-// ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // FUNC. 'VALIDARE(REQUEST)'
-// ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 function validare(req) {
     // VALIDARE UTILIZATOR
     // DEF. 'SCHEMEI JOI' = 'OBIECT':
@@ -102,17 +106,17 @@ function validare(req) {
 
 
     // RETURNAREA - APELARI MET. JOI 'VALIDATE()':
-    return Joi.validate(utilizator, schema);
+    return Joi.validate(req, schema);
 };
-// ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 
 
 
 
-// ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // EXPORTARE 'ROUTER'
-// ---------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 module.exports = router;
 
 _____________________________________________________________________________
@@ -129,6 +133,8 @@ _____________________________________________________________________________
 
 const autentificare = require('./routes/autentificare');
 _____________________________________________________________________________
+
+
 
 
 
