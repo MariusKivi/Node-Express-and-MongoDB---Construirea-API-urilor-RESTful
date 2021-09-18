@@ -1,3 +1,6 @@
+// (IMP-9) IMPORTAREA  MODULULUI 'CONFIG':
+const config = require('config');
+
 // (IMP-2) IMPORTAREA 'JOI'
 const Joi = require('joi');
 
@@ -59,6 +62,22 @@ app.use('/api/utilizatori', utilizatori);
 app.use('/api/autentificare', autentificare);
 
 
+
+
+
+
+
+// ____________________________________________________________________________
+// CONDITIE:
+if (!config.get('cheiaPrivataJWT')) {
+
+    // AFISAREA 'ERORI':
+    console.error('EROARE FATALA: cheiaPrivataJWT nu este definita.');
+
+    // IESIREA DIN OBIECTUL GLOBAL - 'PROCESS'
+    // MET. 'EXIT(0 = SUCCES, ALT_NR = ESEC)':
+    process.exit(1);
+}
 
 
 
