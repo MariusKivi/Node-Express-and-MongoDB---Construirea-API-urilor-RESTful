@@ -1,0 +1,23 @@
+{
+    "name": "video-renting",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "Marius Chivu",
+    "license": "ISC",
+    "dependencies": {
+        "bcrypt": "^1.0.3",
+        "config": "^3.3.6",
+        "express": "^4.16.2",
+        "fawn": "^2.1.5",
+        "joi": "^13.1.0",
+        "joi-objectid": "^4.0.2",
+        "jsonwebtoken": "^8.5.1",
+        "lodash": "^4.17.21",
+        "mongoose": "^5.13.7"
+    }
+}
