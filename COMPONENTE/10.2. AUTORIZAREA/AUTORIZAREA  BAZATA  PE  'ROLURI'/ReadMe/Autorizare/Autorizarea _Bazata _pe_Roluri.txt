@@ -1,0 +1,127 @@
+
+	Autorizarea Bazata pe 'Roluri'
+
+
+
+
+
+   >  Stergerea Datepor poate fi realizata doar de Utilizatori Autentificati.
+
+
+
+
+
+   (1.1) Adaugarea Proprietatii 'esteAdministrator'
+	=> in 'models/utilizator.js'
+	=>  in 'schemaUtilizator' :
+_____________________________________________________________________________
+
+esteAdministrator: Boolean
+_____________________________________________________________________________
+
+
+
+
+
+
+
+  (1.2) Adaugarea Proprietatii 'esteAdministrator'
+	=> in 'models/utilizator.js'
+	=>  in Metoda 'generareTokenAutomat' 
+	=> in Token in Semnatura 'sign()':
+_____________________________________________________________________________
+
+schemaUtilizator.methods.generareTokenAutentificare = function() {
+
+    // JSON WEB TOKEN (JWT)
+    // MET. 'JWT..SIGN({OBIECT_PAYLOAD, PERMISIUNE_ADMIN}, 'CHIE_PRIVATA/SECRETA')'
+    // APELAREA MET. 'CONFIG.GET()' CA ARGUMENT:
+    const token = jwt.sign({ _id: this._id, esteAdministrator: this.esteAdministrator }, config.get('cheiaPrivataJWT'));
+    return token;
+};
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+  (2)  Cream un 'Utilizator Administrator'
+	=>  din 'MongoDB Compass' :
+	          >> Clic 'Edit' pe o 'Inregistrare'
+	          >>  Adaugam Prop. 'esteAdministrator:true' ( dupa 'Parola')
+	          >> Clic 'Update'
+	          >> 
+	          >> 
+_____________________________________________________________________________
+
+_id: ObjectId("614829e7e953a312d8482d3c")
+   nume: "Marius Chivu"
+   email: "chivumarius@yahoo.com"
+   parola: $10$3TgmNxU8eLNep9phkkIbbucWNZYBCtNVfRXPGcP1CliUp631YKlcq"
+   esteAdministrator: true
+__v:0
+
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+   (3) Cream Fisierul 'middleware/administrator.js':
+_____________________________________________________________________________
+
+// FUNC. EXPORTATA 'ADMINISTRATOR(){}' :
+// -----------------------------------------------------------------------------------------------------------------
+module.exports = function(req, res, next) {
+
+    // DACA 'UTILIZ. NU ESTE ADMINISTRATOR'
+    // RETURNAM 'EROARE 403':
+    if (!req.utilizator.esteAdministrator)
+        return res.status(403).send('Acces interzis.');
+
+
+    // DACA 'UTILIZATORUL ESTE ADMINISTRATOR'
+    // TRECEM 'CONTROLUL' CATRE 'URMATOAREA' FUNCTIE 'MIDDLEWARE'
+    // PRIN APELAMD FUNC. MIDDLEWARE URMATOARE 'NEXT()':
+    next();
+}
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (4.1) Aplicam 2 Functii 'Middleware' c
+	=> in 'routes/genuri.js'
+	=> pe Ruta 'delete()':
+_____________________________________________________________________________
+router.delete('/:id', [autorizare, administrator], async(req, res) => {
+	...
+}
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (4.2) Impotyam 'middleware/administrare.js':
+_____________________________________________________________________________
+
+// (IMP-6) IMPORTAREA 'MIDDLEWARE/ADMINISTRATOR.JS'
+const administrator = require('../middleware/administrator');
+_____________________________________________________________________________
+
+
+
