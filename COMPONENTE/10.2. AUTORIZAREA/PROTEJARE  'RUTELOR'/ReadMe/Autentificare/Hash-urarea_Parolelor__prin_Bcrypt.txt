@@ -1,0 +1,271 @@
+
+	'Hash'-urarea Parolelor prin Biblioteca 'bcrypt' 
+
+
+
+
+ (1) Instalarea Biblioteci 'bcrypt'
+	=> pt. Hash-urarea Parolelor:
+
+-----------------------------------------------------------------------------
+https://www.npmjs.com/package/bcrypt
+-----------------------------------------------------------------------------
+
+
+>> Rulam Comanda in Terminal:
+_____________________________________________________________________________
+
+	npm i bcrypt@1.0.3
+_____________________________________________________________________________
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________________
+
++ bcrypt@1.0.3
+added 95 packages in 18.271s
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (2.1) Cream Fisierul 'hash.js'
+	=> in Folder-ul 'Autentificarea_si_Autorizare',
+	=> (in care adaugam 'Restaurarea Package.json')
+	=> pentru a Testa Utilizarea Biblioteci 'bcrypt':
+_____________________________________________________________________________
+
+// IMPORTAREA BIBLIOTECI 'BCRYPT':
+const bcrypt = require('bcrypt');
+
+
+// FUNCT. ASINCRON 'RUN()':
+async function run() {
+
+    // MET. ASINCRON 'GENSALT(NR_CARACTERE, CALLBACK_FUNC)' SAU 'PROMISIUNE'
+    // (STRING RENDOM - ADAUGAT INAINTE / DUPA PAROLA):
+    const salt = await bcrypt.genSalt(10);
+
+    // AFISARE IN CONSOLA:
+    console.log(salt);
+}
+
+
+// APELAREA FUNCTIEI:
+run();
+_____________________________________________________________________________
+	
+   >> Utilizam 'genSalt()' 
+	=> care este un 'String'
+	=> adaugat 'Inaintea parolei' sau 'Dupa Parola'
+	=> pt. ca Parola Hash-urata Rezultata sa fie Diferita
+	=> de fiecare data cand Parola este Utilizata.
+
+
+
+
+
+
+ (2.2) Executam Fisierul 'hash.js'
+_____________________________________________________________________________
+
+	node hash.js
+_____________________________________________________________________________
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________________
+
+$2a$10$cO1/cTL8fAoA3/iaY6JSDe
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (3.1) Adaugarea Metodei de Hash-urare 'hash()'
+_____________________________________________________________________________
+
+// IMPORTAREA BIBLIOTECI 'BCRYPT':
+const bcrypt = require('bcrypt');
+
+
+// FUNCT. ASINCRON 'RUN()':
+async function run() {
+
+    // MET. ASINCRON 'GENSALT(NR_CARACTERE, CALLBACK_FUNC)' SAU 'PROMISIUNE'
+    // (STRING RENDOM - ADAUGAT INAINTE / DUPA PAROLA):
+    const salt = await bcrypt.genSalt(10);
+
+    // MET. 'HASH('PAROLA', SALT, CALLBACK)' SAu 'PROMISIUNE'  PT HASURAREA PAROLEI:
+    const hashed = await bcrypt.hash('1234', salt, )
+
+    // AFISARE 'SALT' IN CONSOLA:
+    console.log(salt);
+
+    // AFISARE 'HASHED' IN CONSOLA:
+    console.log(hashed);
+}
+
+
+// APELAREA FUNCTIEI:
+run();
+_____________________________________________________________________________
+
+
+
+
+
+
+
+(3.2) Executam Fisierul 'hash.js'
+_____________________________________________________________________________
+
+	node hash.js
+_____________________________________________________________________________
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________________
+
+$2a$10$EZCTHMKo0rgjqZVXNqcGQu
+$2a$10$EZCTHMKo0rgjqZVXNqcGQuArxutk1yWvjVLF9fqBsmGfr4XOebpMi
+_____________________________________________________________________________
+	=> Pe 'inia 1' avem 'Salt'
+	=> pe 'Linia 2' avem 'Salt' inclus in 'Hash'-urarea Parolei.
+
+
+
+
+
+
+
+(4.1) Copiem cele 2 Metode Asingron ale Constantelor 'salt' & 'hashed'
+	=> in Proiectul 'PR__Video-Rent / routers/ utilizatori.js'
+	=> in Metoda 'POST()' deasupra Salvari Utilizatorului:
+_____________________________________________________________________________
+
+    // MET. ASINCRON 'GENSALT(NR_CARACTERE, CALLBACK_FUNC)' SAU 'PROMISIUNE'
+    // (STRING RENDOM - ADAUGAT INAINTE / DUPA PAROLA):
+    const salt = await bcrypt.genSalt(10);
+
+    // MET. 'HASH('PAROLA', SALT, CALLBACK)' SAu 'PROMISIUNE'  PT HASURAREA PAROLEI:
+    const hashed = await bcrypt.hash('1234', salt, );
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (4.2) Inlocuim:
+	=> Parola '1234' cu 'utilizator.parola',
+	=> si Redenumim 'const hashed' in 'utilizator.parola':
+_____________________________________________________________________________
+
+ // MET. 'HASH('PAROLA', SALT, CALLBACK)' SAu 'PROMISIUNE'  PT HASURAREA PAROLEI:
+    utilizator.parola = await bcrypt.hash(utilizator.parola, salt);
+_____________________________________________________________________________
+
+
+
+
+
+
+
+  (4.3) Importam Biblioteca 'bcrypt'
+	   => in 'routers/utilizatori.js'
+_____________________________________________________________________________
+
+// (IMP-6) IMPORTAREA BIBLIOTECI 'BCRYPT':
+const bcrypt = require('bcrypt');
+_____________________________________________________________________________
+
+
+
+
+
+
+ (5) Stergem din 'MongoDB Compass' - Colectia 'utilizatori'
+	=> intrucat 'Parola' contine 'Text Plan'
+
+
+
+
+
+
+ (7) Rulam 'Monitorizarea Node' din 'PR__Video-Rent':
+_____________________________________________________________________________
+
+	nodemon
+_____________________________________________________________________________
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________________
+
+createIndexes instead.
+Conectat cu succes la Baza de Date MongoDB
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (8) Iar din 'Postman' Retrimitem un nou POST Request:
+_____________________________________________________________________________
+
+{
+	"nume": "Marius",
+	"email": "chivumarius@yahoo.com",
+	"parola": "12345"
+}
+_____________________________________________________________________________
+	> cLIC 'sEND'
+
+
+
+
+ >> Afisare in Postman:
+_____________________________________________________________________________
+
+{
+    "_id": "61431374e8eba128c47b6e91",
+    "nume": "Marius",
+    "email": "chivumarius@yahoo.com"
+}
+_____________________________________________________________________________
+
+
+
+
+
+>> Afisare in 'MongoDB Compass' cu Parola 'Hash'-urata:
+_____________________________________________________________________________
+
+
+_id: ObjectId("61431374e8eba128c47b6e91")
+	nume: "Marius"
+	email: "chivumarius@yahoo.com"
+	parola:"$2a$10$AA9zLZq5xSyaKCzS8cKIHOkhvrADMcTqhngMkm6oSNLs.lUJlV3Oe"
+__v:0
+_____________________________________________________________________________
+
+
+

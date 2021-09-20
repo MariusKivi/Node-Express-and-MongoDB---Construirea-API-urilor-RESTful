@@ -1,0 +1,205 @@
+
+	Incapsularea 'Logicii' in 'Models'
+
+
+
+  In prezent avem aceeasi 'Implementarea' a Generari 'JSON Web Token'
+	=> in 'routes/utilizatori.js'
+	=> si in 'routes/autentificare.js'
+	<= pentru a Solutiona aceasta Problema
+	=> vom Incapsula 'Logica' intr-un 'Singur Loc'.
+
+
+  In 'OOP' avem un Principiu denumit  'Principiul Expertului în Informații' care mentioneaza : 
+	=> ca un 'Obiect' care are 'Suficiente Informatii'
+	=> si este un 'Expert' pe o anumita 'Zona'
+	=> trebuie sa fie 'Responsabil' 
+	=> in 'Luarea Deciziilor' 
+	=> si 'Indeplinirea Sarcinilor'
+	
+
+
+
+
+ >> Implementarea  Principiului 'Expertului în Informații' :
+
+
+ 
+
+   (1) Crearea Constantei separate 'schemeiUtilizator' 
+	=> in 'models/utilizator.js''
+	=> si Ctean Metoda 'generareTokenAutentificare'
+	=> ca Functie Anonima 
+	=> in care Mutam 'Generarea Token'-ului 
+	=> din Fisierul 'routes/autentificare.js'
+	=> si ii inlocuim in '_id' - 'utilizator' cu 'this'
+	=> si Returnam 'token':	 
+_____________________________________________________________________________
+
+// --------------------------------------------------------------------------------------------------------------------
+//  SCHEMA SEPARATA 'SCHEMAUTILIZATOR':
+// --------------------------------------------------------------------------------------------------------------------
+const schemaUtilizator = new mongoose.Schema({
+    nume: {
+        type: String,
+        required: true,
+        minlength: 5,
+        maxlength: 50
+    },
+    email: {
+        type: String,
+        required: true,
+        minlength: 5,
+        maxlength: 255,
+        // UNICITATEA PROP. 'EMAIL':
+        unique: true
+    },
+    parola: {
+        type: String,
+        required: true,
+        minlength: 5,
+        maxlength: 1024,
+    }
+});
+// --------------------------------------------------------------------------------------------------------------------
+
+
+
+
+// --------------------------------------------------------------------------------------------------------------------
+//  MET. '.METHODS.GENERARETOKENAUTENTIFICARE()' IN 'SCHEMAUTILIZATOR' 
+//  CA FUNCTIE ANONIMA::
+// --------------------------------------------------------------------------------------------------------------------
+schemaUtilizator.methods.generareTokenAutentificare = function() {
+
+    // JSON WEB TOKEN (JWT)
+    // MET. SEMN'.SIGN({OBIECT_PAYLOAD}, 'CHIE_PRIVATA/SECRETA')'
+    // APELAREA MET. 'CONGIG.GET()' CA ARGUMENT:
+    const token = jwt.sign({ _id: this._id }, config.get('cheiaPrivataJWT'));
+    return token;
+};
+// --------------------------------------------------------------------------------------------------------------------
+
+
+
+
+// --------------------------------------------------------------------------------------------------------------------
+//  MODELUL 'UTILIZATOR' CU APELARE 'SCHEMAUTILIZATOR' :
+// --------------------------------------------------------------------------------------------------------------------
+const Utilizator = mongoose.model('Utilizator', schemaUtilizator);
+// --------------------------------------------------------------------------------------------------------------------
+
+_____________________________________________________________________________
+
+
+
+
+
+
+
+  (2) Apelarea Metodei 'generareTokenAutentificare' 
+	=> in 'routes/autentificare.js'
+	=> in Metoda 'router.post(){}':
+_____________________________________________________________________________
+
+    // PRINCIPIUL 'EXPERTULUI IN INFORMATII' (DIN OOP)
+     // APELAREA  MET. '.GENERARETOKENAUTENTIFICARE()':
+    const token = utilizator.generareTokenAutentificare();
+
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (3) Apelarea Metodei 'generareTokenAutentificare' 
+	=> si in 'routes/utilizatori.js' in locul Metodei 'jwt.sign()'
+	=> in Metoda 'router.post(){}':
+_____________________________________________________________________________
+
+    // PRINCIPIUL 'EXPERTULUI IN INFORMATII' (DIN OOP)
+     // APELAREA  MET. '.GENERARETOKENAUTENTIFICARE()':
+    const token = utilizator.generareTokenAutentificare();
+
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (4) Decupam Importarea 'config' & 'jwt' 
+	=> din 'routes/autentificare.js'
+	=> si o Plasam in 'modules/utilizator.js':
+_____________________________________________________________________________
+
+_// ------------------------------------------------------------------------------------------------------------------
+// (IMP-6) IMPORTAREA  MODULULUI 'CONFIG':
+const config = require('config');
+
+// ------------------------------------------------------------------------------------------------------------------
+// (IMP-5) IMPORTAREA BIBLIOTECI 'JSON WEB TOKEN':
+const jwt = require('jsonwebtoken');
+____________________________________________________________________________
+
+
+
+
+
+
+
+
+  (4) Pornim Monitorizarea Node din VMD:
+_____________________________________________________________________________
+
+	nodemon
+_____________________________________________________________________________
+
+
+
+
+
+ (5) Inregistram un 'Utilizator Nou' in 'Postman'
+	=> POST Request,
+	=> URL: http://localhost:3000/api/utilizatori
+	=> Body, raw, JSON(application/json):
+_____________________________________________________________________________
+
+{
+	"nume": "Marius Chivu",
+	"email": "chivumarius20@yahoo.com",
+	"parola": "12345"
+}
+_____________________________________________________________________________
+
+
+
+
+
+ >> Afisare in 'Postman / Body':
+_____________________________________________________________________________
+
+{
+    "_id": "6147047d9f682d294c337615",
+    "nume": "Marius Chivu",
+    "email": "chivumarius25@yahoo.com"
+}
+_____________________________________________________________________________
+
+
+
+
+
+
+ >> Afisare in 'Postman / Headers':
+_____________________________________________________________________________
+
+x-autentificare-token →eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTQ3MDQ3ZDlmNjgyZDI5NGMzMzc2MTUiLCJpYXQiOjE2MzIwNDQxNTd9.VeSuBs4PNxMumKGfEu4GW
+_____________________________________________________________________________
+	=> Obtinem 'Token-ul de Autentificare'
+
+
+

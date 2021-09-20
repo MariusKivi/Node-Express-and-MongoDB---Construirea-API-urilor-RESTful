@@ -1,0 +1,156 @@
+
+	Autentificarea Utilizatorilor
+
+
+
+
+ (1) Ctram Fisierul 'routes/autentificare.js'
+	=> in care Copiem Codul din 'utilizatori.js' si il Modificam,
+	=> Copiem Functia 'validareUtilizator' din 'models/utilizator.js'
+	     	=> pe care o Modificam:
+_____________________________________________________________________________
+
+// INCARCARI (IMPORTURI):
+// ----------------------------------------------------------------------------
+// (IMP-7) IMPORTAREA BIBLIOTECI 'JOI':
+const Joi = require('joi');
+
+// ----------------------------------------------------------------------------
+// (IMP-6) IMPORTAREA BIBLIOTECI 'BCRYPT':
+const bcrypt = require('bcrypt');
+
+
+// ----------------------------------------------------------------------------
+// (IMP-5) IMPORTAREA BIBLIOTECI 'LODASH' - DENUMITA CONVENTIONAL '_':  
+const _ = require('lodash');
+
+// ----------------------------------------------------------------------------
+// (IMP-4) IMPORTAREA 'MODEL/UTILIZATOR.JS'  
+//         (RETURNEAZA '.Utilizator' SI '.validare')
+const { Utilizator } = require('../models/utilizator');
+
+// ----------------------------------------------------------------------------
+// (IMP-3) IMPORTAREA 'MONGOOSE'
+const mongoose = require('mongoose');
+
+// ----------------------------------------------------------------------------
+// (IMP-1) IMPORTAREA MODULULUI 'EXPRESS'
+const express = require('express');
+
+// ----------------------------------------------------------------------------
+// (IMP-2) OBIECTUL 'ROUTER' - APELAREA FUNC. 'EXPRESS.ROUTER()'
+const router = express.Router();
+
+
+
+
+
+
+
+// ----------------------------------------------------------------------------
+// RUTA 1: POST('/')
+// PT. 'CREAREA UTILIZATORILOR, INREGISTRAREA':
+// ----------------------------------------------------------------------------
+router.post('/', async(req, res) => {
+
+    // VALIDAREA 1 -----------------------------------------------------------
+    // DESTRUCTURAREA OBIECTELOR - APELAREA FUNC. 'VALIDAREGEN()'
+    const { error } = validare(req.body);
+
+    // LOGICA:  DACA 'GENUL ESTE INVALID' -> RETURNAM '400' (CERERE ERONATA)
+    // VERIFICAREA VALOAREI 'REZULTAT' -> A PROP. 'ERROR'
+    if (error) return res.status(400).send(error.details[0].message);
+
+
+    // VALIDAREA 2 -----------------------------------------------------------
+    // NE ASIGURAM CA 'UTILIZATORUL' NU ESTE 'DEJA INREGISTRAT'
+    // CARE VA RETURNEAZA O 'PROMISIUNE' - PE CARE O 'AWAYT': 
+    let utilizator = await Utilizator.findOne({ email: req.body.email });
+
+    // DACA 'UTILIZATORUL NU EXISTA' IN 'BAZA DE DATE'
+    //  RETURNAM 'EROAREA CU STATREA - 400' CATRE 'CLIENT':
+    if (!utilizator) return res.status(400).send('Email sau parola invalida.');
+
+
+
+    // VALIDAREA 3 -----------------------------------------------------------
+    // VALIDAREA 'PAROLEI'
+    // MET. 'COMPARE(PAROLA_TEXT_PLAN, PAROLA_HASH-URATA)' :
+    const parolaValida = await bcrypt.compare(req.body.parola, utilizator.parola);
+
+    // DACA 'PAROLA NU ESTE VALIDA' - RETURNAM 'EROAREA 400':
+    if (!parolaValida) return res.status(400).send('Email sau parola invalida.');
+
+    // TRIMTEREA RASPUNSULUI CATRE 'CLIENT':
+    res.send(true);
+});
+// ----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+// ----------------------------------------------------------------------------
+// FUNC. 'VALIDARE(REQUEST)'
+// ----------------------------------------------------------------------------
+function validare(req) {
+    // VALIDARE UTILIZATOR
+    // DEF. 'SCHEMEI JOI' = 'OBIECT':
+    const schema = {
+        email: Joi.string().min(5).max(255).required().email(),
+        parola: Joi.string().min(5).max(255).required()
+    };
+
+
+    // RETURNAREA - APELARI MET. JOI 'VALIDATE()':
+    return Joi.validate(req, schema);
+};
+// ----------------------------------------------------------------------------
+
+
+
+
+
+// ----------------------------------------------------------------------------
+// EXPORTARE 'ROUTER'
+// ----------------------------------------------------------------------------
+module.exports = router;
+
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (2.1) Adaugam in 'index.js'
+	=> Importarea Modulului 'autentificare.js' 
+_____________________________________________________________________________
+
+const autentificare = require('./routes/autentificare');
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (2.2) Adaugam in 'index.js'
+	=> Delegarea URL-ului '/api/autentificare'
+	=> Rutei 'autentificare'
+_____________________________________________________________________________
+
+// DELEGAREA RUTEI '/API/AUTENTIFICARE' -> CATRE RUTA 'AUTENTIFICARE'
+app.use('/api/autentificare', autentificare);
+_____________________________________________________________________________
+
+
+
+
+
+

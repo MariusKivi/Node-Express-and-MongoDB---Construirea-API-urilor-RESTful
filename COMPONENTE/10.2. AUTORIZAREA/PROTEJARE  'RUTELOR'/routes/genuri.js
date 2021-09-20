@@ -1,7 +1,7 @@
 // INCARCARI (IMPORTURI):
 // ____________________________________________________________________________
-// (IMP-5) IMPORTAREA 'MIDDLEWARE/AUTENTIFICARE.JS'
-const autentificare = require('../middleware/autentificare');
+// (IMP-5) IMPORTAREA 'MIDDLEWARE/AUTORIZARE.JS'
+const autorizare = require('../middleware/autorizare');
 
 
 // ____________________________________________________________________________
@@ -51,7 +51,7 @@ router.get('/', async(req, res) => {
 // RUTA 2: POST('/', MIDDLEWARE, ROITE_HANDLER)
 // 'CREAREA' PRIN MET. 'POST(URL, CALLBACK_FUNC(REQ, RES))' 
 // ____________________________________________________________________________
-router.post('/', autentificare, async(req, res) => {
+router.post('/', autorizare, async(req, res) => {
 
     // DESTRUCTURAREA OBIECTELOR - APELAREA FUNC. 'VALIDAREGEN()'
     const { error } = validare(req.body);
@@ -117,7 +117,7 @@ router.put('/:id', async(req, res) => {
 // RUTA 4: '/:ID'
 // 'STERGEREA' PRIN MET. 'DELETE(URL, CALLBACK_FUNC(REQ, RES))' 
 // ____________________________________________________________________________
-router.delete('/:id', autentificare, async(req, res) => {
+router.delete('/:id', autorizare, async(req, res) => {
 
     // 'GASIREA & STERGEREA' DUPA 'ID':
     const gen = await Gen.findByIdAndRemove(req.params.id);

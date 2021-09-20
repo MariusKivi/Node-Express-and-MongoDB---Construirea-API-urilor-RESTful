@@ -8,23 +8,23 @@
 
 
 
-  (1.1)  Importarea 'middleware/autentificare' 
+  (1.1)  Importarea 'middleware/autorizare' 
 	=>  in 'routes/genuri.js'
 _____________________________________________________________________________
 
 // (IMP-5) IMPORTAREA 'MIDDLEWARE/AUTENTIFICARE.JS'
-const autentificare = require('../middleware/autentificare');
+const autorizare= require('../middleware/autorizare');
 _____________________________________________________________________________
 
 
 
   (1.2) Adaugarea 
-	=-> Argumentului 'autentificare '  
+	=-> Argumentului 'autorizare '  
 	=> in Metoda 'post()'	 si 'delete()'
 	=> post('Ruta', Middlewaare, Route_Handler):
 _____________________________________________________________________________
 
-router.post('/', autentificare, async(req, res) => {
+router.post('/', autorizare, async(req, res) => {
 	....
 }
 
@@ -34,7 +34,7 @@ _____________________________________________________________________________
 
   >> Si:
 _____________________________________________________________________________
-router.delete('/:id', autentificare, async(req, res) => {
+router.delete('/:id', autorizare, async(req, res) => {
 	...
 }
 _____________________________________________________________________________

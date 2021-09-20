@@ -1,0 +1,105 @@
+
+	Preluare 'Utilizatorului Curent'
+
+
+
+_____________________________________________________________________________
+  NB! 
+
+  Inlocuim denumirea middleware cu autorizare, pentru a evita confuziile.
+
+    <> 'Autentificarea' = inseamna 'Validarea Numelui de Utilizator si a Parolei'.
+
+   <> 'Autorizarea' = inseamna 'Acordarea de Permisiunii'  pentru 'Utilizatori'  in a 'Accesa' / 'Nu Accesa' o 'Resursa'.
+
+_____________________________________________________________________________
+
+
+
+
+
+  (1.1) Importam in Fisierul 'routes/utilizatori.js' :
+_____________________________________________________________________________
+// (IMP-5) IMPORTAREA 'MIDDLEWARE/AUTORIZARE.JS'
+const autorizare= require('../middleware/autorizare');
+_____________________________________________________________________________
+
+
+
+
+
+
+
+  (1.2) Cream Ruta 'router.get('/me')'
+	=> in Fisierul 'routes/utilizatori.js' 
+	=> care va fi 'Disponibila' doar 'Utilizatorilor Autorizati' :
+_____________________________________________________________________________
+
+// --------------------------------------------------------------------------------------------------------------------
+// RUTA 2: GET('/EU', MANIPULAREA_RUTEI) - 
+// PRIN '/ME' - CLIENTUL NU TRIMITE 'ID'-UL
+// PT. 'PRELUAREA/CITIREA UTILIZATORULUI':
+// --------------------------------------------------------------------------------------------------------------------
+router.get('/eu', autorizare, async(req, res) => {
+    // OBTINEREA OBIECTULUI 'UTILIZATOR' EVITAND 'PROMISIUNEA'
+    // GASIREA 'UTILIZATORULUI DUPA ID'
+    // &CEREREA OBIECTULUI 'UTILIZATOR' 
+    // & ACCESAREA PROP. '_ID'
+    // & EXCLUDEM PROP. 'PAROLA':
+    const utilizator = await Utilizator
+        .findById(req.utilizator._id)
+        .select('-parola');
+
+    // TRIMITEREA 'RASPUNSULUI' CATRE 'CLIENT':
+    res.send(utilizator);
+});
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+ (2) In 'Postman'  - Nu Trimitem 'JSON Web Token'
+	=> clic '+' pt. a crea un 'Nou Tab',
+	=> GET Request,
+	=> URL: http://localhost:3000/api/eu
+	=> Autorization
+	=> Clic 'Send':
+
+  >> Afisare:
+_____________________________________________________________________________
+
+Acces refuzat. Niciun token furnizat.
+_____________________________________________________________________________
+
+
+
+
+
+
+(3) In 'Postman'  - Trimitem 'JSON Web Token'	
+	=> Headers
+	=> Key: x-autentificare-token
+	=> Value:
+_____________________________________________________________________________
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTQ4NTQzNjdmZWI1OTMzYzRiNGUzYTMiLCJpYXQiOjE2MzIxMzAxMDN9.79PJiOGOA0GOdVEEpV76GLnsBdEmzfjAhvtDdh7ckk0
+_____________________________________________________________________________
+
+	=> Clic 'Send':
+
+
+  >> Afisare:
+_____________________________________________________________________________
+{
+	_id": "614854367feb5933c4b4e3a3",
+	nume:"Marius Chivu",
+	email:"chivumarius22@yahoo.com",
+	__v":0
+}
+_____________________________________________________________________________
+
+
+

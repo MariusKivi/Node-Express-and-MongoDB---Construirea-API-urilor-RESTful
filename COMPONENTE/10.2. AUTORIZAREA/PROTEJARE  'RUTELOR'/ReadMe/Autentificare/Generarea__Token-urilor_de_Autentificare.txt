@@ -1,0 +1,130 @@
+
+	Generarea 'Token'-urilor de 'Autentificare'
+
+
+
+
+ JSON Web Token:
+-----------------------------------------------------------------------------
+	https://jwt.io
+-----------------------------------------------------------------------------
+	>> Gasim diferite 'Biblioteci' care lucreaza cu 'JWT'.
+
+  NPM JS - SON Web Token
+-----------------------------------------------------------------------------
+https://www.npmjs.com/package/jsonwebtoken
+-----------------------------------------------------------------------------
+
+
+
+
+
+  (1) Instalarea 'JSON Web Token' in Proiect:
+_____________________________________________________________________________
+
+	npm i jsonwebtoken
+_____________________________________________________________________________
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________________
+
++ jsonwebtoken@8.5.1
+added 13 packages in 17.446s
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (2.1) Importam 'JWT' in 'routes/autentificare.js':
+_____________________________________________________________________________
+
+// (IMP-8) IMPORTAREA BIBLIOTECI 'JSON WEB TOKEN':
+const jwt = require('jsonwebtoken');
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (2.2) In 'routes/autentificare.js' in Metoda 'post()'
+	=> Adaugam Apelarea Metodei '.sign()'
+	     => ce are ca Argumentul 1 = 'Obiectul Payload'
+	     => si Arg. 2 = 'Cheie Secreta/Privata' (care NU se Stocheaza in Codul Sursa):
+_____________________________________________________________________________
+
+
+    // JSON WEB TOKEN (JWT)
+    // MET. SEMN'.SIGN({OBIECT_PAYLOAD}, 'CHIE_PRIVATA/SECRETA')'
+    const token = jwt.sign({ _id: utilizator._id }, 'ChiePrivataJWT');
+
+    // TRIMTEREA RASPUNSULUI 'TOKEN' CATRE 'CLIENT':
+    res.send(token);
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+  (3) Pornim Monitorizarea Node din Powershell:
+_____________________________________________________________________________
+
+	nodemon
+_____________________________________________________________________________
+
+
+
+
+
+
+ (4) Trimitem 'Date de Autentificare Valide'
+	=> Din "Postman":
+_____________________________________________________________________________
+
+{
+	"email": "chivumarius@yahoo.com",
+	"parola": "12345"
+}
+_____________________________________________________________________________
+	=> Clic 'Send'
+
+
+
+ >> Afisare in 'Postman' a 'JSON Web Token'-ului:
+_____________________________________________________________________________
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTQzMTM3NGU4ZWJhMTI4YzQ3YjZlOTEiLCJpYXQiOjE2MzE4ODY4NTV9.3dop81J_onmI8LAanIyDYhzFxMr5XDi8Ag0az-22F0g
+_____________________________________________________________________________
+	=> Copiem Codul
+
+
+
+
+
+
+
+  (5) Copiem Codul Generat antetior
+	=> in 'JWT.IO' in 'Encoded'
+	=> si Vedem 'Payload'-ul:
+_____________________________________________________________________________
+
+{
+  "_id": "61431374e8eba128c47b6e91",
+  "iat": 1631886855
+}
+_____________________________________________________________________________
+	=> 'iat' = Data siOra crearii Obiectului
+
+
+
+
+

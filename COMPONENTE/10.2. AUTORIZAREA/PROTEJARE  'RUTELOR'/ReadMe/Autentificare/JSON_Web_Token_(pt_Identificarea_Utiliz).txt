@@ -1,0 +1,99 @@
+
+	JSON Web Token (JWT)
+
+
+
+NB!
+------------------------------------------------------
+ <> 'JSON Web Token' -->  este un 'String Lung' pentru Identificarea Utilizatorului.
+
+ <> Metaforic ne putem gandi la el ca la
+	=> Licenta de Conducere,
+	=> sau Parola
+
+ [1] Cand un 'Utilizator' --> se Conecteaza --> la 'Server'
+
+
+ [2] 'Server' --> Genereaza --> 'JSON Web Token' (care este ca o 'Licent de Conducere', 'Parola')
+
+
+ [3] 'Server' --> Trimite 'JSON Web Token' --> catre 'Client' --> Spunandu-i ca la Urmatoarea Accesare -->  sa 'Arate Parola', sa 'Arate Licenta de Conducere' (ID-ul)
+
+
+ [4] Pe 'Client' (Aplicatie Web/Mobil) <-- se Trebuie sa 'Stocam SWT'-ul  --> pentru a-l Trimite Inapoi 'Server'-ului --> pentru Constantele 'API' Viitoare.
+
+
+    (a) Daca 'Clientul' -> este o 'Aplicatie Web' 
+	   => putem utiliza 'Stocarea Locala' (care este un Loc Special Prezent in Toate Browser-ele).
+
+
+    (b) Daca 'Clientul' -> este o 'Aplicatie Mobila' 
+	   => avem Optiuni Similare de Stocare (depinzand de Platforma utilizata).
+
+------------------------------------------------------
+
+
+
+
+ (0) Exemplu 'JWT'
+	=> Putem vedea pe:
+
+------------------------------------------------------
+https://jwt.io/
+------------------------------------------------------
+
+
+
+
+
+ (1) Obiectul 'JSON Web Token' - Codificat:
+	=> care are 3 Parti, separate prin '.'
+_____________________________________________________________________________
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+_____________________________________________________________________________
+
+
+
+ <Punctul 1> Este 'HEADER:ALGORITHM & TOKEN TYPE':	
+_____________________________________________________________________________
+
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+_____________________________________________________________________________
+	=> 'alg' = 'Algorithm'
+	=> 'typ' = 'Type'
+	=> 'iat' = Data siOra crearii Obiectului
+
+
+  <Punctul 2> Este 'PAYLOAD:DATA':
+	=> In care avem Obiectul 'JSON' cu 3 Proprietati:
+_____________________________________________________________________________
+
+{
+  "sub": "1234567890",
+  "name": "John Doe",
+  "iat": 1516239022
+}
+_____________________________________________________________________________
+	=> 'sub' = este precum un 'ID' de 'Utilizator'
+
+
+  <Punctul 3> Este 'Semnatura Digitala'- 'VERIFY SIGNATURE':
+_____________________________________________________________________________
+
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),  
+ 
+     your-256-bit-secret
+ 
+   ) 
+secret base64 encoded
+_____________________________________________________________________________
+
+
+
+

@@ -1,19 +1,36 @@
-// ____________________________________________________________________________
+
+	Autorizarea 'Middleware'
+
+
+
+
+  Vrem ca Metoda 'router.post()'  pentru Crearea Noilor 'Genuri de Filme'
+	=> din 'routes/genuri.js'
+	=> sa fie Vizualizata doar de 'Utilizatori Autentificati'
+	
+
+
+
+
+  (1) Cream in Proiectul 'video-renting'
+	=> Folder-ul 'middleware'
+	=> in Care Cream Fisierul 'auttorizare.js':
+_____________________________________________________________________________
+
+// --------------------------------------------------------------------------------------------------------------------
 // (IMP-1) IMPORTAREA BIBLIOTECI 'JSOM WEB TOKEN':
 const jwt = require('jsonwebtoken');
 
-// ____________________________________________________________________________
+// --------------------------------------------------------------------------------------------------------------------
 // (IMP-2) IMPORTAREA BIBLIOTECI 'CONFIG':
 const config = require('config');
 
 
 
 
-
-
-// ____________________________________________________________________________
-// FUNC. EXPORTATA 'AUTENTIFICARE(){}' :
-// ____________________________________________________________________________
+// --------------------------------------------------------------------------------------------------------------------
+// FUNC. EXPORTATA 'AUTORIZARE(){}' :
+// --------------------------------------------------------------------------------------------------------------------
 module.exports = function(req, res, next) {
 
     // AUTORIZAREA 'UTILIZATORILOR AUTENTIFICATI' PT. 'VIZUALIZARE'
@@ -47,3 +64,9 @@ module.exports = function(req, res, next) {
         res.status(400).send('Token invalid.');
     }
 }
+_____________________________________________________________________________
+
+
+
+
+

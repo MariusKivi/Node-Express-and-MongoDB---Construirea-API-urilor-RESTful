@@ -12,7 +12,7 @@ const config = require('config');
 
 
 // ____________________________________________________________________________
-// FUNC. EXPORTATA 'AUTENTIFICARE(){}' :
+// FUNC. EXPORTATA 'AUTORIZARE(){}' :
 // ____________________________________________________________________________
 module.exports = function(req, res, next) {
 

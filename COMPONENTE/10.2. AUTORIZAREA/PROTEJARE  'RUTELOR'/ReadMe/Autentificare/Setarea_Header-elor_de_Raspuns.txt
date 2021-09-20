@@ -1,0 +1,132 @@
+
+	Setarea 'Header'-elor de 'Raspuns'
+
+
+
+
+
+   >> Vom crea 'Autentificarea Utilizatorilor' odata cu 'Inregistrarea'.
+
+
+
+  (1.1) Setam Metoda '.header()' 
+	=> in  Modulul 'routes/utilizatori.js'
+	=> in Metoda 'post(){}'  (in care 'Inregistram' un 'Utilizator Nou')
+
+	=> Adaugam Codul pentru Generarea Token-ului  (il Copiem din autentificare.js)
+	=> iar Inainte de Metoda '.send()' din Raspunsul Returnat
+	=> Apelam Metoda '.header('Prefix-Nume_Arbitrar', Valoare)':
+_____________________________________________________________________________
+
+    // JSON WEB TOKEN (JWT)
+    // MET. SEMN'.SIGN({OBIECT_PAYLOAD}, 'CHIE_PRIVATA/SECRETA')'
+    // APELAREA MET. 'CONGIG.GET()' CA ARGUMENT:
+    const token = jwt.sign({ _id: utilizator._id }, config.get('cheiaPrivataJWT'));
+
+
+    // (ABORDAREA 2) BIBLIOTECA 'LODASH' - '_'
+    // CU MET. 'PICK(OBIECT, ['PROP1','PROP2'.. ])'
+    // SI MET. 'HEADER('PREFIX-NUME_ALEATORIU', VALOARE)':
+    res.header('x-autentificare-token', token).send(_.pick(utilizator, ['_id', 'nume', 'email']));
+_____________________________________________________________________________
+	>> Prefixul 'x-' se Adauga pentru toate 'Header-ele Personalizate' 
+
+
+
+
+
+
+ (1.2) Importam in 'routes/utilizatori.js':
+_____________________________________________________________________________
+
+// ----------------------------------------------------------------------------------------------------------------------
+// (IMP-7) IMPORTAREA BIBLIOTECI 'JSOM WEB TOKEN':
+const jwt = require('jsonwebtoken');
+
+// ----------------------------------------------------------------------------------------------------------------------
+// (IMP-8) IMPORTAREA BIBLIOTECI 'CONFIG':
+const config = require('config');
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+ (2) Pornim Monitorizarea Node:
+_____________________________________________________________________________
+
+	nodemon
+_____________________________________________________________________________
+
+
+
+
+
+
+
+  (3) Setam 'User' cu 'Email Nou' in 'Postman' 
+	=> Met. 'POST Request' 
+	=> URL: http://localhost:3000/api/utilizatori
+	=> Body, raw, json(application/json):	
+_____________________________________________________________________________
+
+{
+	"nume": "Marius",
+	"email": "chivumarius10@yahoo.com",
+	"parola": "12345"
+}
+_____________________________________________________________________________
+
+
+
+
+ >> Afisare in Postman:
+_____________________________________________________________________________
+
+{
+    "_id": "61460ff6591f053258789099",
+    "nume": "Marius",
+    "email": "chivumarius10@yahoo.com"
+}
+_____________________________________________________________________________
+
+
+
+
+
+
+
+  >> Pe Tab-ul 'Header' - deasupra Afisari in 'Postman'
+	=> Vedem 'Noul Header' creat -  'x-autentificare-token':
+_____________________________________________________________________________
+
+connection →keep-alive
+
+content-length →84
+
+content-type →application/json; charset=utf-8
+
+date →Sat, 18 Sep 2021 16:12:38 GMT
+
+etag →W/"54-nmOuWxGqqM8cjNn0UpVSHfzj4pc"
+
+
+x-autentificare-token →eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTQ2MGZmNjU5MWYwNTMyNTg3ODkwOTkiLCJpYXQiOjE2MzE5ODE1NTh9.CMXrOhhBM4ZZrPfYCyqJ6Lp4y6wA_gEAbovHb2QOn84
+
+
+x-powered-by →Express
+_____________________________________________________________________________
+
+
+
+   >> Astfel, in 'Aplicatia Client'
+	=> Cand 'Inregistram' un 'Utilizator',
+	=> Putem Citi acest 'Header',
+	=> Putem Stoca acest Obiect 'JSON Web Token' pe 'Client',
+	=> iar la o 'Urmatoare Apelare' a unui 'API',
+	=> Trimitem 'Server'-ului Obiect 'JSON Web Token' de pe 'Client' .
+
+
