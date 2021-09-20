@@ -1,0 +1,23 @@
+
+	Deconectarea Utilizatorilor
+
+
+
+
+
+	
+  >> Implementam Caracteristiac 'Deconectare' pe 'Aplicatia Client'
+	=> prin Stergerea 'Token'-ului de pe 'Aplicatia Client'
+	=> din 'routes/autentificare.js'
+	=> metoda 'post()'
+  
+_____________________________________________________________________________
+    // PRINCIPIUL 'EXPERTULUI IN INFORMATII' (DIN OOP)
+    // APELAREA  MET. '.GENERARETOKENAUTENTIFICARE()':
+    const token = utilizator.generareTokenAutentificare();
+_____________________________________________________________________________
+
+
+>> Token-ul trebuie Stocat pe 'Aplicatia Client'
+
+
