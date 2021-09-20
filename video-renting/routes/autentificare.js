@@ -24,7 +24,6 @@ const mongoose = require('mongoose');
 // ____________________________________________________________________________
 // (IMP-1) IMPORTAREA MODULULUI 'EXPRESS'
 const express = require('express');
-const { util } = require('config');
 
 // ____________________________________________________________________________
 // (IMP-2) OBIECTUL 'ROUTER' - APELAREA FUNC. 'EXPRESS.ROUTER()'

@@ -1,0 +1,187 @@
+
+	Testarea 'Autorizarii' bazate pe 'Roluri'
+
+
+
+
+
+  (1) Copiem din Postman 
+	=> Id-ul unui 'gen'
+_____________________________________________________________________________
+
+5a78ae720f3386b2b5296dff
+_____________________________________________________________________________
+
+
+
+
+
+
+
+  (2) In Postman Nu Aven 'Token'
+	=> Cream 'Tab Nou'/'+'
+	=> Delete Req,
+	=> URL: http://localhost:3000/api/genuri/3a78ae720f3386b2b5296dff
+	=> Clic 'Send'
+_____________________________________________________________________________
+Acces interzis. Nu este furnizat niciun token.
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+
+  (3.1) Ne Conectam din 'Postman' cu Un 'Utilizator' care nu este 'Administrator'
+	=> Selectam Tab-ul 2 'Autentificare':
+_____________________________________________________________________________
+
+
+{
+	"email": "chivumarius10@yahoo.com",
+    "parola": "12345"
+}
+_____________________________________________________________________________
+
+	=> Clic 'Send'
+
+
+  >> Obtinem 'JSON Web Token'-ul:
+_____________________________________________________________________________
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTQ4MmEwZGU5NTNhMzEyZDg0ODJkM2YiLCJpYXQiOjE2MzIxNTE2NjF9.oT2TMbtPtyj7D-I5k9BKtg_ac3JN6wZiPMJZssYHCf8
+_____________________________________________________________________________
+	=> Copiem Link-ul
+
+
+  (3.2) Verificam Link-ul daca este Admin
+	=> de pe: https://jwt.io/
+	=> inserand Link-ul in zona 'Encoded'
+	
+  > > Vedem 'Payload'-ul:
+
+_____________________________________________________________________________
+
+{
+  "_id": "61482a0de953a312d8482d3f",
+  "iat": 1632151661
+}
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+  (3.3) Verificam daca acest 'Utilizator' poate 'Sterge Genul de Film'
+	=> acesta 'Neavand' acesta 'Permisiune
+	=> Selectam DELETE Request
+	=> Headers'
+	=> Key: x-autentificare-token
+	=>Value:
+_____________________________________________________________________________
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTQ4MmEwZGU5NTNhMzEyZDg0ODJkM2YiLCJpYXQiOjE2MzIxNTE2NjF9.oT2TMbtPtyj7D-I5k9BKtg_ac3JN6wZiPMJZssYHCf8
+_____________________________________________________________________________
+
+
+	=> Clic 'Send':
+
+  >> Primim Status 403:
+_____________________________________________________________________________
+
+Acces interzis.
+_____________________________________________________________________________
+
+
+
+
+
+
+
+  (4.1) Ne Conectam din 'Postman' cu Un 'Utilizator' care  este 'Administrator'
+	=> Selectam Tab-ul 2 'Autentificare':
+_____________________________________________________________________________
+
+
+{
+  "email": "chivumarius@yahoo.com",
+    "parola": "12345"
+}
+_____________________________________________________________________________
+
+	=> Clic 'Send'
+
+
+  >> Obtinem 'JSON Web Token'-ul:
+_____________________________________________________________________________
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTQ4MjllN2U5NTNhMzEyZDg0ODJkM2MiLCJlc3RlQWRtaW5pc3RyYXRvciI6dHJ1ZSwiaWF0IjoxNjMyMTUzMDkzfQ.Ko9tQO4jkdy_W4NBQNC3mNd9UxbisOKAbYBZnV35ZOA
+_____________________________________________________________________________
+	=> Copiem Link-ul
+
+
+  (4.2) Verificam Link-ul daca este Admin
+	=> de pe: https://jwt.io/
+	=> inserand Link-ul in zona 'Encoded'
+	
+  > > Vedem 'Payload'-ul:
+
+_____________________________________________________________________________
+
+{
+  "_id": "614829e7e953a312d8482d3c",
+  "esteAdministrator": true,
+  "iat": 1632153093
+}
+_____________________________________________________________________________
+
+
+
+
+
+
+
+
+  (4.3) Verificam daca acest 'Utilizator' poate 'Sterge Genul de Film'
+	=> acesta 'Avand' acesta 'Permisiune'
+	=> Selectam DELETE Request
+	=> Headers'
+	=> Key: x-autentificare-token
+	=>Value:
+_____________________________________________________________________________
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTQ4MjllN2U5NTNhMzEyZDg0ODJkM2MiLCJlc3RlQWRtaW5pc3RyYXRvciI6dHJ1ZSwiaWF0IjoxNjMyMTUzMDkzfQ.Ko9tQO4jkdy_W4NBQNC3mNd9UxbisOKAbYBZnV35ZOA
+_____________________________________________________________________________
+
+
+	=> Clic 'Send':
+
+  >> Primim Status 403:
+_____________________________________________________________________________
+
+{
+   "_id": "5a78ae720f3386b2b5296dff",
+   "nume": "Gen Nou",
+   "_v":0
+}
+_____________________________________________________________________________
+	=> 'Genul' a fost Sters.
+
+
+
+
+
+
+
+  (5) Daca in Aplicatie avem mai multe Roluri
+	=> Am adauga in 'schemaUtilizator'
+	=> Proprietati, precum 'roluri', 'operatiuni':
+_____________________________________________________________________________
+
+roluri: [],
+
+operatiuni: []
+_____________________________________________________________________________
+
