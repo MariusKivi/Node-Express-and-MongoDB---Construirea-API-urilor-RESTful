@@ -1,0 +1,132 @@
+
+	Protejarea 'Rutelor'
+
+
+
+
+  >> Aplicam 'Middleware'-ul Selectiv pentru Anumite 'Rute'.
+
+
+
+  (1.1)  Importarea 'middleware/autentificare' 
+	=>  in 'routes/genuri.js'
+_____________________________________________________________________________
+
+// (IMP-5) IMPORTAREA 'MIDDLEWARE/AUTENTIFICARE.JS'
+const autentificare = require('../middleware/autentificare');
+_____________________________________________________________________________
+
+
+
+  (1.2) Adaugarea 
+	=-> Argumentului 'autentificare '  
+	=> in Metoda 'post()'	 si 'delete()'
+	=> post('Ruta', Middlewaare, Route_Handler):
+_____________________________________________________________________________
+
+router.post('/', autentificare, async(req, res) => {
+	....
+}
+
+_____________________________________________________________________________
+
+
+
+  >> Si:
+_____________________________________________________________________________
+router.delete('/:id', autentificare, async(req, res) => {
+	...
+}
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (2.1) In 'Postman' clic  '+' / 'New Tab' si cream 'Token Invalid'
+	=> 'POST Request' pentru 'Genuri',
+	=> URL: http://localhost:3000/api/genuri
+	=> Body, form-data
+	=> Clic 'Send':
+
+  >> Afisarea - Eroarea 401:
+_____________________________________________________________________________
+ 
+Acces interzis. Nu este furnizat niciun token.
+_____________________________________________________________________________
+
+
+
+
+
+
+ (2.2) In 'Postman' clic  '+' / 'New Tab' si cream 'Token Inalid'
+	=> 'POST Request' pentru 'Genuri',
+	=> URL: http://localhost:3000/api/genuri
+	=> Headers, 
+	=> Key: x-autentificare-token
+	=> Value: 1234
+	=> Clic 'Send':
+
+  >> Afisarea - Eroarea 401:
+_____________________________________________________________________________
+ 
+Token invalid.
+_____________________________________________________________________________
+
+
+
+
+
+
+
+ (3) In Tab-ul 'Inregistrare Utilizator' 
+	=> avem Token-ul de Autentificare Valid:
+_____________________________________________________________________________
+ 
+x-autentificare-token →eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTQ3MDQ3ZDlmNjgyZDI5NGMzMzc2MTUiLCJpYXQiOjE2MzIwNDQxNTd9.VeSuBs4PNxMumKGfEu4GWqrvXOQaWlfdtHTlOFsXrCw
+_____________________________________________________________________________
+	=> pe care il Copiem.
+
+
+
+
+
+
+
+ (4)  Adaugam 'Token-ul de Autentificare Valid' copiat
+	=> Tab-ul 'http://localhost:3000/api/genuri'  
+	=> in Value: 	
+_____________________________________________________________________________
+ 
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTQ3MDQ3ZDlmNjgyZDI5NGMzMzc2MTUiLCJpYXQiOjE2MzIwNDQxNTd9.VeSuBs4PNxMumKGfEu4GWqrvXOQaWlfdtHTlOFsXrCw
+_____________________________________________________________________________
+	
+
+
+  >> Iar in 'Body' adaugam:
+_____________________________________________________________________________
+ 
+{
+	"nume":"Gen Nou"
+}
+_____________________________________________________________________________
+	=> Clic 'Send'
+
+
+
+
+ >> Afisare in Postman:
+
+_____________________________________________________________________________
+
+{
+    "_id": "6147047d9f682d294c337615",
+    "nume": "Gen Nou",
+    "_v":0
+}
+_____________________________________________________________________________
+
+
