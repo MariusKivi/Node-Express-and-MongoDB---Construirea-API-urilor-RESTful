@@ -11,7 +11,7 @@ _____________________________________________________________________
 // EXPORTAREA - FUNC. 'ASYNC MIDDLEWARE()'
 // (CE VA FI PRECUM O 'FUNC. DE FABRICARE'
 //  PE CARE O APELAM SI PRIMIM O 'NOUA FUNC.')
-dodule.export = function asyncMiddleware(handler) {
+dodule.exports = function asyncMiddleware(handler) {
 
     // RETURNAREA 'FUNC. ASINCRON' DE 'GESTIONARE A RUTEI':
     return async(req, res, next) => {

@@ -1,0 +1,137 @@
+
+	Erori 'Asincron' in 'Express'
+
+
+
+
+--------------------------------------------------------------------------------------------------------------
+	https://www.npmjs.com/package/express-async-errors
+--------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+  (1) Instalarea  Pachetuluil 'express-async-errors'
+	=> care 'Impacheteaza Codul de Gestionare a Rutei'
+	=> in ceva Asemanator cu 'middleware/asinc.js ' 
+_____________________________________________________________________
+
+	npm i express-async-errors
+_____________________________________________________________________
+
+
+
+  >> Afisare in PowerShell:
+_____________________________________________________________________
++ express-async-errors@3.1.1
+added 1 package in 8.304s
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Importam Modulul in 'index.js'
+_____________________________________________________________________
+
+// (IMP-11 IMPORTAREA  MODULULUI 'EXPRESS-ASYNC-ERRORS':
+require('express-async-errors');
+
+_____________________________________________________________________
+
+
+
+
+ 
+
+
+
+ (3) Stergem Apelul catre 'asyncMiddleware()'
+	=> din 'routes/genuri.js'
+	=> si Revenim la Implementarea Initiala
+	=> si Stergem si Importul :
+_____________________________________________________________________
+// (IMP-6) IMPORTAREA 'MIDDLEWARE/ASYNC.JS'
+//const asyncMiddleware = require('../middleware/async');
+
+
+
+
+router.get('/', async(req, res) => {
+	...
+});
+
+
+
+router.post('/', autorizare, async(req, res) => {
+	...
+});
+
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (4.1) Rulam in Terminal MongoDB:
+_____________________________________________________________________
+
+	mongod
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (4.2) Pornim Aplicatia 'video-renting':
+_____________________________________________________________________
+
+	nodemon
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (5.1) Preluam in 'Postman' preluam toate 'genyrile'
+	=> prin 'GET Req'
+	=> URL:  http://localhost:3000/api/genuri
+	= > clic 'Send'
+_____________________________________________________________________
+
+{
+   "_id": "5a6f7cd119b24cd82dfd54b46",
+   "nume": "Sci-Fi",
+   "_v": 0
+}
+_____________________________________________________________________
+
+
+
+ (5.1)  Oprim in Terminal MongoDB:
+
+
+ (5.3) Trimitem o alta Cerere 'GET Request' catre Server
+	=> Primim Eroarea 500:
+_____________________________________________________________________
+
+Ceva a eșuat.
+_____________________________________________________________________
+
+	 => Asta demonstreaza ca Pachetul instalat a mutat controlul de la'Gestionari Rutei' catre functia de 'Gestionare a Erorii'.
+
+
+	=> Daca Pachetul nu va Functiona atunci putem folosi varianta 'middleware/async.js'
+
+
