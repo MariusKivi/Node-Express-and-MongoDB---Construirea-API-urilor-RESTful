@@ -1,0 +1,85 @@
+
+	Functia de 'Gestionare' a 'Erorilor Middleware' din 'Express'
+
+
+
+
+  (1)  In Folder-ul 'middleware' 
+	=> Crean Fisierul 'eroare.js' 
+	=> in care cream Functia de Gestionare a 'Erorilor Middleware' 
+	=> in care Mutam 'Logica' Blocului 'Catch{}'
+	=> din 'routes/genuri.js':
+_____________________________________________________________________
+
+// ____________________________________________________________________________
+
+// EXPORTAREA FUNC. DE 'GESTIONARE' A 'ERORILOR MIDDLEWARE'  DIN  'EXPRESS'
+module.exports = function(err, req, res, next) {
+    // RETURNAM 'RASPUNSULUI' CATRE 'GENuri'
+    // EROAREA '500' - 'EROARE INTERNA DE  SERVER'
+    res.status(500).send('Ceva a eșuat.');
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+(2.1) In 'index.js'  - Importam:
+_____________________________________________________________________
+
+// (IMP-10) IMPORTAREA  MODULULUI 'EROARE':
+const eroare = require('./middleware/eroare');
+_____________________________________________________________________
+
+
+
+
+
+
+(2.2) Utilizarea Functiei 'middleware/eroare' 
+	=> In 'index.js' :
+_____________________________________________________________________
+
+// UTILIZAREA - FUNC 'MIDDLEWARE EROARE' PRIN 'REFERINTA':
+app.use(eroare);
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+
+ (3)  In 'routes/genuri.js' 	
+	=> in Metoda 'get(){}'
+	=> Adaugam Parametrul 'next'
+	=> in Blocul 'catch{}'
+	=> Pasam Controlul catre Functia de 'Gestionare a Erorilor Middleware'
+_____________________________________________________________________
+
+router.get('/', async(req, res, next) => {
+
+    // BLOCURILE DE INCERCARI 'TRY{} & CATCH{}':
+    try {
+        // RETURNAREA 'PROMISIUNI' - 'GENURI' & 'SORTARE' DUPA 'NUME':
+        const genuri = await Gen.find().sort('nume');
+
+        // RETURNAM 'RASPUNSULUI' CATRE 'GENuri'
+        res.send(genuri);
+
+    } catch (exception) {
+        // APELAREA 'NEXT()' SI TRECEREA 'EXCEPTIEI'
+        next(exception);
+    }
+});
+_____________________________________________________________________
+	=> aceasta apelare a 'Exceptiei' este Repetitiva.
+	=> urmeaza sa o imbinatatim.
+
+
+
