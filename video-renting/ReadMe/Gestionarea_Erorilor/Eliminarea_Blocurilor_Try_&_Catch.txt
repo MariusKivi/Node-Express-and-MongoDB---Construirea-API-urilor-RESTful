@@ -1,0 +1,90 @@
+
+	Eliminarea Blocurilor 'Try & Catch'
+
+
+
+
+  (1) In Folder-ul 'middleware' 
+	=> Ceam Fisierul 'async.js':
+_____________________________________________________________________
+
+// EXPORTAREA - FUNC. 'ASYNC MIDDLEWARE()'
+// (CE VA FI PRECUM O 'FUNC. DE FABRICARE'
+//  PE CARE O APELAM SI PRIMIM O 'NOUA FUNC.')
+dodule.export = function asyncMiddleware(handler) {
+
+    // RETURNAREA 'FUNC. ASINCRON' DE 'GESTIONARE A RUTEI':
+    return async(req, res, next) => {
+        // BLOCURILE DE INCERCARE:
+        try {
+
+            // APELARE FUNC. ASINCRON 'HANDLER()':
+            await handler(req, res);
+
+        } catch (exception) {
+
+            // APELARE:
+            next(exception);
+        }
+    };
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2.1 ) In  'routes/genuri.js'
+	=> Modificam Metoda 'get()
+	=> Adaugam 'asyncMiddleware'
+	=> in care includem totul ca 'async()=>{})'
+	=> stergem Argumentul 'next':
+_____________________________________________________________________
+
+// RUTA 1.1: '/'
+// 'CITIREA' PRIN  MET. 'GET()':
+// ____________________________________________________________________________
+router.get('/', asyncMiddleware(async(req, res) => {
+
+    // RETURNAREA 'PROMISIUNI' - 'GENURI' & 'SORTARE' DUPA 'NUME':
+    const genuri = await Gen.find().sort('nume');
+
+    // RETURNAM 'RASPUNSULUI' CATRE 'GENuri'
+    res.send(genuri);
+}));
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (2.2) Importam in  'routes/genuri.js':
+_____________________________________________________________________
+
+// (IMP-6) IMPORTAREA 'MIDDLEWARE/ASYNC.JS'
+const asyncMiddleware = require('../middleware/async');
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (2.3) Cu aceasta Noua Implementare
+	=> Impachetam fiecare 'Gestionare a Rutei'
+	=> cu 'asyncMiddleware'
+	=> iar Metoda 'post()' va deveni:	
+_____________________________________________________________________
+
+router.post('/', autorizare, asyncMiddleware(async(req, res) => {
+	...
+}));
+_____________________________________________________________________
+
