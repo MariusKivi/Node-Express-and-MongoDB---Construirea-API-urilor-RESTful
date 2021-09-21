@@ -1,0 +1,97 @@
+
+	Gestionarea 'Promisiunilor Respinse'
+
+
+
+
+  (1) Adaugarea Blocurilor de Incercari 'try{} cath{}'
+	=> in 'routes/genuri.js'
+	=> in Metoda 'route.get(){}'
+_____________________________________________________________________
+
+router.get('/', async(req, res) => {
+
+    // BLOCURILE DE INCERCARI 'TRY{} & CATCH{}':
+    try {
+        // RETURNAREA 'PROMISIUNI' - 'GENURI' & 'SORTARE' DUPA 'NUME':
+        const genuri = await Gen.find().sort('nume');
+
+        // RETURNAM 'RASPUNSULUI' CATRE 'GENuri'
+        res.send(genuri);
+
+    } catch (exception) {
+
+        // RETURNAM 'RASPUNSULUI' CATRE 'GENuri'
+        // EROAREA '500' - 'EROARE INTERNA DE  SERVER'
+        res.status(500).send('Ceva a eșuat.');
+    }
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2.1) Rulam 'MongoDaemon' in 'Terminalul MongoDB':
+_____________________________________________________________________
+
+	mongod
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (2.2) Rulom Proiectul 'video-renting' din 'CMD':
+_____________________________________________________________________
+
+	nodemon
+_____________________________________________________________________
+
+
+
+
+
+
+
+(2.3) Oprim 'MongoD' in 'Terminalul MongoDB':
+_____________________________________________________________________
+
+	Ctrl + C
+_____________________________________________________________________
+
+
+ sau:
+_____________________________________________________________________
+
+	net stop MongoDB
+_____________________________________________________________________
+
+
+ (3) Din 'Postman' trimitem 
+	=> un 'GET Request'
+	=> din URL: http://localhost:3000/api/genuri
+	=> Clic 'Send'
+
+  >> Primim Status '500':
+_____________________________________________________________________
+
+Ceva a eșuat.
+_____________________________________________________________________
+
+
+
+
+
+
+  (4) In Terminalul in care am Rulat Proiectul 'video-renting'
+	=> Nu se mai Afiseaza
+	=> 'Unhandler Promise Rejection'
+
+
+
