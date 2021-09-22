@@ -1,0 +1,89 @@
+
+	Extragerea 'Logici de Configurare' in Fisierul 'config.js'
+
+
+
+
+  (1) In Folder-ul 'startup'
+	=> Cream Fisierul 'config.js'
+	=> in care Mutam Codul 'config'
+	=> si Inlocuim 'console.eror()' cu 'aruncarea exceptiei'
+	=> Mutam si Importul 'config'	
+	=> din 'index.js':
+_____________________________________________________________________
+
+// (IMP-9) IMPORTAREA  MODULULUI 'CONFIG':
+const config = require('config');
+
+
+
+
+
+// EXPORTAM FUNCTIA ANONIMA:
+module.exports = function() {
+
+    // CONDITIE:
+    if (!config.get('cheiaPrivataJWT')) {
+        
+       // ARUNCAM O EXCEPTIE:
+        throw new Error('EROARE FATALA: cheiaPrivataJWT nu este definita.');       
+    }
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Importam in 'index.js' Fisierul 'startup/db.js':
+_____________________________________________________________________
+
+require('./startup/config')();
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (3) Fisierul 'index.js' ramanand:
+_____________________________________________________________________
+// (IMP-2) IMPORTAREA 'JOI'
+const Joi = require('joi');
+
+// (IMP-8) IMPORTAREA 'JOI-OBJECTID'
+Joi.objectId = require('joi-objectid')(Joi);
+
+const express = require('express');
+const app = express();
+
+// IMPORTAREA  FISIERELOR DIN FOLDER-UL 'STARTUP':
+require('./startup/login');
+require('./startup/routes')(app);
+require('./startup/db')();
+require('./startup/config')();
+
+
+
+// ____________________________________________________________________________
+// VARIABILA 'ENVIRONMENT' - 'PORT'  SAu  PORTUL '3000':
+// (IN OBIECTUL GLOBAL 'PROCESS', IN PROP. 'ENV')
+const port = process.env.PORT || 3000;
+
+
+// ____________________________________________________________________________
+// MET. 'LISTEN(NR_PORT, CALLBACK FUNC*())' 
+// ASCULTAREA 'VARIABILEI ENVIRONMENT':
+app.listen(port, () => {
+    // 'TEMPLATE  STRING' (PRIN UTIL. 'BACKTICK')
+    console.log(`Port de Ascultare ${port}...`);
+});
+_____________________________________________________________________
+
+
+
+
