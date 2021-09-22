@@ -1,0 +1,200 @@
+
+	Netratarea/Nesolutionarea Promisiunii Respinse 
+	('Unhandled Promise Rejections')
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------
+  NB!
+
+   >> Afisarea Erori se realizeaza prin 'Winston'
+	
+  >>  Iar aceasta Abordare functioneaza doar cu Cos Sincronizat
+
+  >> Cu alte cuvinte, dca avem o 'Promisiune' undeva
+	=> iar acea 'Promisiune' este 'Respinsa'
+	=> acest Cod Nu va fi Executat
+-----------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+  (1) Inlocum 'Aruncarea Exceptiei' cu 'Promisiunea Respinsa Netratata'
+	=> in 'index.js':
+_____________________________________________________________________
+
+// 'PROMISIUNEA RESPINSA' ('REJECTED PROMISE')
+// CU MET. '.REJECT(OBIECT_ERROR())'
+const p = Promise.reject(new Error('Ceva a eșuat lamentabil.'));
+
+// APELAREA 'PROMISIUNI'
+// NU APELAM MET. 'CATCH()' PT. 'GESTIONAREA RESPINGERI'
+// AVEM O 'RESPINGERE NETRATATA / SOLUTIONATA' (UNHANDLED):
+p.then(() => console.log('Terminat'));
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Pornim Aplicatia:
+_____________________________________________________________________
+
+	node index.js
+_____________________________________________________________________
+
+
+
+ >> Afisarea in Terminal:
+_____________________________________________________________________
+
+(node:16456) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 2): Error: Ceva a eșuat lamentabil.
+_____________________________________________________________________
+	=> aceasta nu Opreste 'Procesul Node' / 'Serverul'.
+	=> Dar daca in Viitor apar altele se va Opri aici.
+	=> Procesul va Esua.
+
+
+
+
+
+
+ (3) Tratarea / Solutionarea  'Promisiuniilor Respinse Netratate'
+_____________________________________________________________________
+
+// TRATAREA 'PROMISIUNILOR RESPINSA NETRATATE' ('UNHANDLED PROMISE REJECTED'):
+// PRIN OBIECTUL 'PROCESS' & MET. 'ON()':
+process.on('unhandledRejection', exception => {
+    // AFISARE:
+    console.log('AVEM O RESPINGERE NETRATATA (NESOLUTIONATA).');
+
+    // INREGISTRAREA ERORI PRIN 'WINSYTOM'
+    winston.error(exception.message, exception);
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+(4) Repornim Aplicatia:
+_____________________________________________________________________
+
+	node index.js
+_____________________________________________________________________
+
+
+
+ >> Afisarea in Terminal:
+_____________________________________________________________________
+
+AVEM O RESPINGERE NETRATATA (NESOLUTIONATA).
+error: Ceva a eșuat lamentabil. Error: Ceva a eșuat lamentabil.
+_____________________________________________________________________
+
+
+
+
+ >> Afisarea in Fisierul 'logfile.log':
+_____________________________________________________________________
+
+{"message":"Ceva a eșuat lamentabil.","stack":"Error: Ceva a eșuat lamentabil.\n    at Object.<anonymous> (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\index.js:94:26)\n    at Module._compile (module.js:635:30)\n    at Object.Module._extensions..js (module.js:646:10)\n    at Module.load (module.js:554:32)\n    at tryModuleLoad (module.js:497:12)\n    at Function.Module._load (module.js:489:3)\n    at Function.Module.runMain (module.js:676:10)\n    at startup (bootstrap_node.js:187:16)\n    at bootstrap_node.js:608:3","level":"error","timestamp":"2021-09-22T08:53:07.404Z"}
+_____________________________________________________________________
+	
+
+	
+
+
+
+
+
+
+
+ (5) Teminam ambele Procese in cazul Erorilor
+	=> in 'index.js':
+_____________________________________________________________________
+
+// ----------------------------------------------------------------------------------------------------------------------
+// TRATAREA ERORILOR - 'UNCAUGHT  EXCEPTION' ('EXCEPTIE NEPRINSA')
+// PRIN OBIECTUL 'PROCESS' & MET. 'ON()':
+process.on('uncaughtException', exception => {
+    
+    // INREGISTRAREA ERORI PRIN 'WINSYTOM'
+    winston.error(exception.message, exception);
+
+    // OPRIM RULAREA  APLICATIEI 
+    // APELND MET. 'EXIT(1)' PE 'PROCES' CU VALOAREA '1':
+    //  '0' = 'SUCCES'
+    //  '1' = 'ESEC'
+    process.exit(1);
+});
+
+
+
+
+// ----------------------------------------------------------------------------------------------------------------------
+// TRATAREA 'PROMISIUNILOR RESPINSA NETRATATE' ('UNHANDLED PROMISE REJECTED'):
+// PRIN OBIECTUL 'PROCESS' & MET. 'ON()':
+process.on('unhandledRejection', exception => {
+   
+    // INREGISTRAREA ERORI PRIN 'WINSYTOM'
+    winston.error(exception.message, exception);
+
+    // OPRIM RULAREA  APLICATIEI 
+    // APELND MET. 'EXIT(1)' PE 'PROCES' CU VALOAREA '1':
+    //  '0' = 'SUCCES'
+    //  '1' = 'ESEC'
+    process.exit(1);
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+  (6.1) Exista o alta 'Varianta' de a Scrie 'Procesul' - 'Uncaught Exception'
+	=> prin Apelarea  'Helper'-ului in 'Winston'
+	=> folosind Metoda 'handleExceptions():
+_____________________________________________________________________
+
+// (VAR. 2) TRATAREA ERORILOR - 'UNCAUGHT  EXCEPTION' ('EXCEPTIE NEPRINSA')
+// PRIN 'WINSTON' & MET. 'HANDLEEXCEPTION(OBIECT_DE_TRANSPORT)':
+winston.handleExceptions(new winston.transports.File({ filename: 'uncaughtExceptin.log' }));
+
+_____________________________________________________________________
+	=> aceasta nu este valabil si pt. 'Promise Rejection'.
+
+
+
+
+
+
+
+
+  (6.2) O alta Varianta de Scriere a 'Procesului'
+	=> prin 'Aruncarea Exceptiei':
+_____________________________________________________________________
+
+// (VAR. 2) TRATAREA 'PROMISIUNILOR RESPINSA NETRATATE' ('UNHANDLED PROMISE REJECTED'):
+// PRIN OBIECTUL 'PROCESS' & MET. 'ON()'
+// IN CARE 'ARUNCAM EXCEPTIA':
+process.on('unhandledRejection', exception => {
+
+    // ARUNCAREA UNEI 'EXCEPTII':
+    throw exception;
+});
+_____________________________________________________________________
+
+
+
+
