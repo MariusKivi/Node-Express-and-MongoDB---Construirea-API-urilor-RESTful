@@ -1,3 +1,87 @@
+
+	Extragerea 'Rutelor' in Fisierul 'Routes.js'
+
+
+
+
+  (1) Cream Folder-ul 'startup'
+	=> in care Cream Fisierul 'routes.js'
+	=> in care Mutam Rutele 'app.use()'
+	=> si 'Importurile Rutelor'
+	=> din 'index.js':
+_____________________________________________________________________
+
+// IMPORTARE 'EXPRESS':
+const express = require('express');
+
+// IMPORTAREA 'RUTELOR':
+const genuri = require('../routes/genuri');
+const clienti = require('../routes/clienti');
+const filme = require('../routes/filme');
+const inchirieri = require('../routes/inchirieri');
+const utilizatori = require('../routes/utilizatori');
+const autentificare = require('../routes/autentificare');
+
+// IMPORTAREA  MODULULUI 'ERROR':
+const error = require('../middleware/error');
+
+
+
+
+// EXPORTAM FUNCTIA ANONIMA:
+module.exports = function(app) => {
+
+
+    // UTILIZARE
+    app.use(express.json(app));
+
+    // DELEGAREA RUTEI '/API/GENURI' -> CATRE RUTA 'GENYRI'
+    app.use('/api/genuri', genuri);
+
+    // DELEGAREA RUTEI '/API/CLIENTI' -> CATRE RUTA 'CLIENTI'
+    app.use('/api/clienti', clienti);
+
+    // DELEGAREA RUTEI '/API/FILME' -> CATRE RUTA 'FILME'
+    app.use('/api/filme', filme);
+
+    // DELEGAREA RUTEI '/API/INCHIRIERI' -> CATRE RUTA 'INCHIRIERI'
+    app.use('/api/inchirieri', inchirieri);
+
+    // DELEGAREA RUTEI '/API/UTILIZATORI' -> CATRE RUTA 'UTILIZATORI'
+    app.use('/api/utilizatori', utilizatori);
+
+    // DELEGAREA RUTEI '/API/AUTENTIFICARE' -> CATRE RUTA 'AUTENTIFICARE'
+    app.use('/api/autentificare', autentificare);
+
+
+    // UTILIZAREA - FUNC 'MIDDLEWARE ERROR' PRIN 'REFERINTA':
+    app.use(error);
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Importam in 'index.js' Fisierul 'startup/routes.js':
+_____________________________________________________________________
+
+// (IMP-14 IMPORTAREA  MODULULUI 'STARTUP/ROUTES':
+require('./startup/routes');
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (3) Fisierul 'index.js' ramanand:
+_____________________________________________________________________
+
 // (IMP-11 IMPORTAREA  MODULULUI 'EXPRESS-ASYNC-ERRORS':
 require('express-async-errors');
 
@@ -28,9 +112,6 @@ require('./startup/routes');
 
 
 
-
-
-
 // (VAR. 2) TRATAREA ERORILOR - 'UNCAUGHT  EXCEPTION' ('EXCEPTIE NEPRINSA')
 // PRIN 'WINSTON' & MET. 'HANDLEEXCEPTION(OBIECT_DE_TRANSPORT)':
 winston.handleExceptions(new winston.transports.File({ filename: 'uncaughtExceptin.log' }));
@@ -38,7 +119,7 @@ winston.handleExceptions(new winston.transports.File({ filename: 'uncaughtExcept
 
 
 
-//__________________________________________________________________________
+-----------------------------------------------------------------------------------------------------------------
 // (VAR. 2) TRATAREA 'PROMISIUNILOR RESPINSA NETRATATE' ('UNHANDLED PROMISE REJECTED'):
 // PRIN OBIECTUL 'PROCESS' & MET. 'ON()'
 // IN CARE 'ARUNCAM EXCEPTIA':
@@ -51,7 +132,7 @@ process.on('unhandledRejection', exception => {
 
 
 
-// ____________________________________________________________________________
+// -----------------------------------------------------------------------------------------------------------------
 // APELAREA 'WINSTON'
 //'TRANSPORT' PT 'INREGISTRAREA MESAJELOR' INTR-UN 'FISIER':
 winston.add(winston.transports.File, { filename: 'logfile.log' });
@@ -70,7 +151,7 @@ winston.add(winston.transports.MongoDB, {
 
 
 
-// ____________________________________________________________________________
+// -----------------------------------------------------------------------------------------------------------------
 // 'PROMISIUNEA RESPINSA' ('REJECTED PROMISE')
 // CU MET. '.REJECT(OBIECT_ERROR())'
 const p = Promise.reject(new Error('Ceva a eșuat lamentabil.'));
@@ -83,7 +164,7 @@ p.then(() => console.log('Terminat'));
 
 
 
-// ____________________________________________________________________________
+// -----------------------------------------------------------------------------------------------------------------
 // CONDITIE:
 if (!config.get('cheiaPrivataJWT')) {
 
@@ -98,7 +179,7 @@ if (!config.get('cheiaPrivataJWT')) {
 
 
 
-// ____________________________________________________________________________
+// -----------------------------------------------------------------------------------------------------------------
 // CONECTAREA  LA  'BAZA DE DATE' - 'MONGODB':
 mongoose.connect('mongodb://localhost/video-renting')
     // 'PROMISIUNEA' - IN 'CAZ DE SUCCES':
@@ -110,19 +191,21 @@ mongoose.connect('mongodb://localhost/video-renting')
 
 
 
-
-
-
-// ____________________________________________________________________________
+// -----------------------------------------------------------------------------------------------------------------
 // VARIABILA 'ENVIRONMENT' - 'PORT'  SAu  PORTUL '3000':
 // (IN OBIECTUL GLOBAL 'PROCESS', IN PROP. 'ENV')
 const port = process.env.PORT || 3000;
 
 
-// ____________________________________________________________________________
+// -----------------------------------------------------------------------------------------------------------------
 // MET. 'LISTEN(NR_PORT, CALLBACK FUNC*())' 
 // ASCULTAREA 'VARIABILEI ENVIRONMENT':
 app.listen(port, () => {
     // 'TEMPLATE  STRING' (PRIN UTIL. 'BACKTICK')
     console.log(`Port de Ascultare ${port}...`);
 });
+_____________________________________________________________________
+
+
+
+
