@@ -1,0 +1,108 @@
+
+	Afisarea 'Exceptiilor Netratate' in 'Consola'
+
+
+
+
+  (1)  In 'startup/login.js'
+	=> Adaugam Afisare in Consola prin Winston
+	=> in ' winston.handleExceptions()':
+_____________________________________________________________________
+
+// TRATAREA ERORILOR - 'UNCAUGHT  EXCEPTION' ('EXCEPTIE NEPRINSA')
+    // PRIN 'WINSTON' & MET. 'HANDLEEXCEPTION(OBIECT_DE_TRANSPORT)':
+    winston.handleExceptions(
+        new winston.transports.Console({ colorize: true, prettyPrint: true }),
+        new winston.transports.File({ filename: 'uncaughtExceptin.log' })
+    );
+_____________________________________________________________________
+
+
+
+
+  >> Fisierul Comlet:
+_____________________________________________________________________
+// (IMP-12 IMPORTAREA  BIBLIOTECiI 'WINSTON'
+//  ('IMPLICIT' ESTE PT. 'LOGAREA' - 'TRANSPORTULUI' IN 'CONSOLA'):
+const winston = require('winston');
+
+// (IMP-13 IMPORTAREA  BIBLIOTECiI 'WINSTON-MONGODB'
+//'T 'INREGISTRAREA MESAJELOR' IN 'MONGODB':
+require('winston-mongodb');
+
+// (IMP-11 IMPORTAREA  MODULULUI 'EXPRESS-ASYNC-ERRORS':
+require('express-async-errors');
+
+
+
+
+
+// EXPORTAM FUNCTIA ANONIMA:
+module.exports = function() {
+
+    // TRATAREA ERORILOR - 'UNCAUGHT  EXCEPTION' ('EXCEPTIE NEPRINSA')
+    // PRIN 'WINSTON' & MET. 'HANDLEEXCEPTION(OBIECT_DE_TRANSPORT)':
+    winston.handleExceptions(
+        new winston.transports.Console({ colorize: true, prettyPrint: true }),
+        new winston.transports.File({ filename: 'uncaughtExceptin.log' })
+    );
+
+
+    // (VAR. 2) TRATAREA 'PROMISIUNILOR RESPINSA NETRATATE' ('UNHANDLED PROMISE REJECTED'):
+    // PRIN OBIECTUL 'PROCESS' & MET. 'ON()'
+    // IN CARE 'ARUNCAM EXCEPTIA':
+    process.on('unhandledRejection', exception => {
+
+        // ARUNCAREA UNEI 'EXCEPTII':
+        throw exception;
+    });
+
+    // APELAREA 'WINSTON'
+    //'TRANSPORT' PT 'INREGISTRAREA MESAJELOR' INTR-UN 'FISIER':
+    winston.add(winston.transports.File, { filename: 'logfile.log' });
+
+    // DACA DORIM DOAR SA 'AFISAM EROAREA' IN 'MONGODB'
+    // (2) FARA A 'STOCA MESAJUL INFORMATIV'
+    // ADAUGAM SI PROP. 'LEVEL'
+    winston.add(winston.transports.MongoDB, {
+        db: 'mongodb://localhost/video-renting',
+        level: 'error'
+    });
+
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Pornim Aplicatia:
+_____________________________________________________________________
+
+	node index.js
+_____________________________________________________________________
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________
+
+Error: EROARE FATALA: cheiaPrivataJWT nu este definita.
+    at module.exports (C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\video-renting\startup\config.js:18:15)
+    at Object.<anonymous> (C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\video-renting\index.js:9:28)
+    at Module._compile (module.js:635:30)
+    at Object.Module._extensions..js (module.js:646:10)
+    at Module.load (module.js:554:32)
+    at tryModuleLoad (module.js:497:12)
+    at Function.Module._load (module.js:489:3)
+    at Function.Module.runMain (module.js:676:10)
+    at startup (bootstrap_node.js:187:16)
+    at bootstrap_node.js:608:3
+_____________________________________________________________________
+
+
+
+
