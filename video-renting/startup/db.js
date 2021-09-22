@@ -10,8 +10,8 @@ module.exports = function() {
 
     // CONECTAREA  LA  'BAZA DE DATE' - 'MONGODB':
     mongoose.connect('mongodb://localhost/video-renting', { useNewUrlParser: true, useUnifiedTopology: true })
-        // 'PROMISIUNEA' - IN 'CAZ DE SUCCES':
-        // .then(() => console.log('Conectat cu succes la Baza de Date MongoDB'))
+    A // 'PROMISIUNE' - IN 'CAZ DE SUCCES':
+    // .then(() => console.log('Conectat cu succes la Baza de Date MongoDB'))
         .then(() => winston.info('Conectat cu succes la Baza de Date MongoDB'));
     // 'PROMISIUNEA' - IN 'CAZ DE EROARE':
     // .catch(err => console.error('Nu s-a putut conecta la MongoDB.'));
