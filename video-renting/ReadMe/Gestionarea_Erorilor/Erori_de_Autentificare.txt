@@ -1,0 +1,184 @@
+
+	Erori de 'Autentificare'
+
+
+
+NB!
+----------------------------------------------------------------------------------------------------------
+
+  Biblioteca  de Autentificare ''Winston:
+----------------------------------------------------------------------------------------------------------
+https://www.npmjs.com/package/winston
+----------------------------------------------------------------------------------------------------------
+
+
+    <> Acest Obict are un asa numit 'Transport'
+	=> care este un 'Dispozitiv' de 'Stocare'
+	=> al 'Autentificarilor'.
+
+  <> 'Winston' contine 'Transporurile':
+         (1) 'Console'  -->  pt. Afisarea Mesajelor in 'Consola',
+         (2) 'File'   -->  pt. Apelarea unui 'Punct Final HTT' pt. Afisarea Mesajelor, 
+         (3) 'Http' -->  pt. Apelarea unui 'Punct Final HTT' pt. Afisarea Mesajelor, 
+
+
+  <> Nivelele de Importanta ale Erorilor Afisate:
+        (1) 'error'        ('Eroare')
+        (2) 'warn'        ('Avertizare')
+        (3) 'info'           ('Informare')
+        (4) 'verbose'  ('Detaliere')
+        (5) 'debug'     ('Depanare')
+        (6) 'silly'          ('Prostesc')
+
+----------------------------------------------------------------------------------------------------------
+
+
+
+
+  (1) Instalarea Bibliotecii 'Winston':	
+_____________________________________________________________________
+
+	npm i winston
+_____________________________________________________________________
+
+
+
+  >> Afisarea in PowerShell:
+_____________________________________________________________________
++ winston@3.3.3
+added 25 packages in 13.541s
+_____________________________________________________________________
+
+
+
+
+
+
+ (2.1) Importarea in 'index.js':
+_____________________________________________________________________
+
+// (IMP-12 IMPORTAREA  BIBLIOTECiI 'WINSTON'
+//  ('IMPLICIT' ESTE PT. 'LOGAREA' - 'TRANSPORTULUI' IN 'CONSOLA'):
+const winston = require('winston');
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (2.2) Adaugarea 'Transportului' 
+	=> pt. 'Afisarea  Mesajelor ' intr-un 'Fisier': 
+_____________________________________________________________________
+
+// APELAREA 'WINSTON'
+//'TRANSPORT' PT 'INREGISTRAREA MESAJELOR' INTR-UN 'FISIER':
+winston.add(winston.transports.File, { filename:'logfile.log'});
+
+____________________________________________________________________
+
+
+
+
+
+
+
+
+ (3.1) In Fisierul 'moddleware/eroare.js'
+	=> Importam Winston'
+_____________________________________________________________________
+
+//  ('IMPLICIT' ESTE PT. 'LOGAREA' - 'TRANSPORTULUI' IN 'CONSOLA'):
+const winston = require('winston');
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+  (3.2) Adaugam Apelare 'winston' in Functia Exportata:
+_____________________________________________________________________
+
+module.exports = function(err, req, res, next) {
+    // (1) APELAM 'WINSTON.LOG(NIVEL_DE_IMPORTANTA_AL_ERORI)'
+    // PT. 'AFISAREA ERORI':
+    // winston.log('error', err.message);
+
+    // (2) SAU FOLOSIM MET. 'HELPER':
+    // winston.error(err.message);
+
+    // (3) PUTEM STOCA SI METADATE 'ERR':
+    winston.error(err.message, err);
+
+    // RETURNAM 'RASPUNSULUI' CATRE 'GENuri'
+    // EROAREA '500' - 'EROARE INTERNA DE  SERVER'
+    res.status(500).send('Ceva a eșuat.');
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (4) Aruncan o 'Eroare'  in Fisierul  'routes/genuri.js'
+	=> in Ruta 'get()':	
+_____________________________________________________________________
+
+router.get('/', async(req, res) => {
+
+    // ARUNCAM O 'EROARE':
+    throw new Error('Nu s-au putut obține genurile');
+
+    // RETURNAREA 'PROMISIUNI' - 'GENURI' & 'SORTARE' DUPA 'NUME':
+    const genuri = await Gen.find().sort('nume');
+
+    // RETURNAM 'RASPUNSULUI' CATRE 'GENuri'
+    res.send(genuri);
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (5) Pornim Aplicatia:
+_____________________________________________________________________
+
+	nodemon
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (6) In Postman
+	=> Trimitem 'GET Request'
+	=> catre EndPoint: http://localhost:3000/api/genuri
+	=> Clic ''Send'
+_____________________________________________________________________
+
+Ceva a eșuat.
+_____________________________________________________________________
+	=>Primim Eroarea in Consola  -> Generata de 'Winston'
+
+
+  >> Iar in Proiect se va Genera Fisierul 'logfile.log':
+	=> IIn care Obtinem  Obiectul 'message'
+_____________________________________________________________________
+{"message":"token is not defined","stack":"ReferenceError: token is not defined\n    at module.exports (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\middleware\\autorizare.js:21:55)\n    at newFn (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express-async-errors\\index.js:16:20)\n    at Layer.handle [as handle_request] (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express\\lib\\router\\route.js:137:13)\n    at Route.dispatch (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express\\lib\\router\\route.js:112:3)\n    at newFn (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express-async-errors\\index.js:16:20)\n    at Layer.handle [as handle_request] (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express\\lib\\router\\index.js:281:22\n    at Function.process_params (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express\\lib\\router\\index.js:335:12)\n    at next (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express\\lib\\router\\index.js:275:10)\n    at Function.handle (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express\\lib\\router\\index.js:174:3)\n    at router (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express\\lib\\router\\index.js:47:12)\n    at newFn (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express-async-errors\\index.js:16:20)\n    at Layer.handle [as handle_request] (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express\\lib\\router\\index.js:317:13)\n    at C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express\\lib\\router\\index.js:284:7\n    at Function.process_params (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express\\lib\\router\\index.js:335:12)\n    at next (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express\\lib\\router\\index.js:275:10)\n    at jsonParser (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\body-parser\\lib\\types\\json.js:118:7)\n    at newFn (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express-async-errors\\index.js:16:20)\n    at Layer.handle [as handle_request] (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\node_modules\\express\\lib\\router\\index.js:317:13)","level":"error","timestamp":"2021-09-22T05:13:04.586Z"}
+_____________________________________________________________________
+
+
