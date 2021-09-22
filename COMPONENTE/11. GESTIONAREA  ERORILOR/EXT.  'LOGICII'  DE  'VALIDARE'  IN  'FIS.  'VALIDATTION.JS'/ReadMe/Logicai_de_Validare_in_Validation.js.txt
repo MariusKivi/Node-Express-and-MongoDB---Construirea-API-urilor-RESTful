@@ -1,0 +1,139 @@
+
+	Extragerea 'Logici 'de 'Validare' in Fisierul 'Validation.js'
+
+
+
+
+  (1) In Folder-ul 'startup'
+	=> Cream Fisierul 'validation.js'
+	=> in care Mutam Codul 'joi.add'
+	=> si Inlocuim 'Joi'	
+	=> din 'index.js':
+_____________________________________________________________________
+// (IMP-2) IMPORTAREA 'JOI'
+const Joi = require('joi');
+
+
+
+// EXPORTAM FUNCTIA ANONIMA:
+module.exports = function() {
+    // ADAUGAREA 'ID-ULUI OBIECTULUI' LUI 'JOI-OBJECTID'
+    Joi.objectId = require('joi-objectid')(Joi);
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2.1) Importam in 'index.js' Fisierul 'startup/db.js':
+_____________________________________________________________________
+
+require('./startup/validation')();
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2.2) Importam 'Winston' 
+	=> in 'index.js'  :
+_____________________________________________________________________
+
+const winston = require('winston');
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+
+(2.3) Inlocuim 'console.gog()'
+	=> din 'app.listen()'
+	=> cu 'winston.info()'
+	=> din 'index.js'
+_____________________________________________________________________
+// MET. 'LISTEN(NR_PORT, CALLBACK FUNC*())' 
+// ASCULTAREA 'VARIABILEI ENVIRONMENT':
+app.listen(port, () => {
+   
+    // APELARE 'WINSTON' 
+    // MET. 'INFO()' & 'TEMPLATE  STRING' (PRIN UTIL. 'BACKTICK')
+    winston.info(`Port de Ascultare ${port}...`);
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (3) Fisierul 'index.js' ramanand:
+_____________________________________________________________________
+const winston = require('winston');
+const express = require('express');
+const app = express();
+// IMPORTAREA  FISIERELOR DIN FOLDER-UL 'STARTUP':
+require('./startup/login');
+require('./startup/routes')(app);
+require('./startup/db')();
+require('./startup/config')();
+require('./startup/validation')();
+
+
+
+
+
+// ____________________________________________________________________________
+// VARIABILA 'ENVIRONMENT' - 'PORT'  SAu  PORTUL '3000':
+// (IN OBIECTUL GLOBAL 'PROCESS', IN PROP. 'ENV')
+const port = process.env.PORT || 3000;
+
+
+// ____________________________________________________________________________
+// MET. 'LISTEN(NR_PORT, CALLBACK FUNC*())' 
+// ASCULTAREA 'VARIABILEI ENVIRONMENT':
+app.listen(port, () => {
+    // 'TEMPLATE  STRING' (PRIN UTIL. 'BACKTICK')
+    // console.log(`Port de Ascultare ${port}...`);
+
+    // APELARE 'WINSTON' 
+    // MET. 'INFO()' & 'TEMPLATE  STRING' (PRIN UTIL. 'BACKTICK')
+    winston.info(`Port de Ascultare ${port}...`);
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+(4) Pornim Aplicatia:
+_____________________________________________________________________
+
+	nodemon
+_____________________________________________________________________
+
+
+
+ >> Afisare in Terminal:
+_____________________________________________________________________
+info: Port de Ascultare 3000...
+
+info: Conectat cu succes la Baza de Date MongoDB
+_____________________________________________________________________
+
+
+
+
+
