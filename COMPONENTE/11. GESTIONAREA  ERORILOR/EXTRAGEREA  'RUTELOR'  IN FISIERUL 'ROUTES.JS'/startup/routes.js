@@ -16,7 +16,7 @@ const error = require('../middleware/error');
 
 
 // EXPORTAM FUNCTIA ANONIMA:
-module.exports = function(app) => {
+module.exports = function(app) {
 
 
     // UTILIZARE

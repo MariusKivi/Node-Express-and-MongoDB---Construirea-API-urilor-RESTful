@@ -29,7 +29,7 @@ const error = require('../middleware/error');
 
 
 // EXPORTAM FUNCTIA ANONIMA:
-module.exports = function(app) => {
+module.exports = function(app)  {
 
 
     // UTILIZARE
@@ -69,7 +69,7 @@ _____________________________________________________________________
 _____________________________________________________________________
 
 // (IMP-14 IMPORTAREA  MODULULUI 'STARTUP/ROUTES':
-require('./startup/routes');
+require('./startup/routes')(app);
 _____________________________________________________________________
 
 
@@ -107,7 +107,7 @@ const express = require('express');
 const app = express();
 
 // (IMP-14 IMPORTAREA  MODULULUI 'STARTUP/ROUTES':
-require('./startup/routes');
+require('./startup/routes')(app);
 
 
 

@@ -1,3 +1,59 @@
+
+	Extragerea 'Logici DB' in Fisierul 'db.js'
+
+
+
+
+  (1) In Folder-ul 'startup'
+	=> Cream Fisierul 'db.js'
+	=> in care Mutam Conectare 'mongoose.connect()'
+	=> Importam 'Winston' pt. a Afisa prin el.
+	=> Apelam 'Winston' in Metoda 'then()'
+	=> Stergem Metoda 'catch()'
+	=> Mutam Importul 'mongose' aici
+	=> din 'index.js':
+_____________________________________________________________________
+
+// (IMP-12 IMPORTAREA  BIBLIOTECiI 'WINSTON'
+//  ('IMPLICIT' ESTE PT. 'LOGAREA' - 'TRANSPORTULUI' IN 'CONSOLA'):
+const winston = require('winston');
+const mongoose = require('mongoose');
+
+
+
+// EXPORTAM FUNCTIA ANONIMA:
+module.exports = function()  {
+
+    // CONECTAREA  LA  'BAZA DE DATE' - 'MONGODB':
+    mongoose.connect('mongodb://localhost/video-renting')
+        // 'PROMISIUNEA' - IN 'CAZ DE SUCCES':     
+        .then(() => winston.info('Conectat cu succes la Baza de Date MongoDB'));   
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Importam in 'index.js' Fisierul 'startup/db.js':
+_____________________________________________________________________
+
+// (IMP-15 IMPORTAREA  MODULULUI 'STARTUP/DB':
+require('./startup/db')();
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (3) Fisierul 'index.js' ramanand:
+_____________________________________________________________________
+
 // (IMP-11 IMPORTAREA  MODULULUI 'EXPRESS-ASYNC-ERRORS':
 require('express-async-errors');
 
@@ -18,16 +74,13 @@ const Joi = require('joi');
 // (IMP-8) IMPORTAREA 'JOI-OBJECTID'
 Joi.objectId = require('joi-objectid')(Joi);
 
-const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 
 // (IMP-14 IMPORTAREA  MODULULUI 'STARTUP/ROUTES':
 require('./startup/routes')(app);
-
-
-
-
+// (IMP-15 IMPORTAREA  MODULULUI 'STARTUP/DB':
+require('./startup/db')();
 
 
 
@@ -58,7 +111,6 @@ winston.add(winston.transports.File, { filename: 'logfile.log' });
 
 
 
-
 // DACA DORIM DOAR SA 'AFISAM EROAREA' IN 'MONGODB'
 // (2) FARA A 'STOCA MESAJUL INFORMATIV'
 // ADAUGAM SI PROP. 'LEVEL'
@@ -82,7 +134,6 @@ p.then(() => console.log('Terminat'));
 
 
 
-
 // ____________________________________________________________________________
 // CONDITIE:
 if (!config.get('cheiaPrivataJWT')) {
@@ -94,22 +145,6 @@ if (!config.get('cheiaPrivataJWT')) {
     // MET. 'EXIT(0 = SUCCES, ALT_NR = ESEC)':
     process.exit(1);
 }
-
-
-
-
-// ____________________________________________________________________________
-// CONECTAREA  LA  'BAZA DE DATE' - 'MONGODB':
-mongoose.connect('mongodb://localhost/video-renting')
-    // 'PROMISIUNEA' - IN 'CAZ DE SUCCES':
-    .then(() => console.log('Conectat cu succes la Baza de Date MongoDB'))
-    // 'PROMISIUNEA' - IN 'CAZ DE EROARE':
-    .catch(err => console.error('Nu s-a putut conecta la MongoDB.'));
-
-
-
-
-
 
 
 
@@ -126,3 +161,32 @@ app.listen(port, () => {
     // 'TEMPLATE  STRING' (PRIN UTIL. 'BACKTICK')
     console.log(`Port de Ascultare ${port}...`);
 });
+_____________________________________________________________________
+
+
+
+
+
+
+
+  (4) Pornim Aplicatia:
+_____________________________________________________________________
+
+	node index.js
+_____________________________________________________________________
+ 
+
+
+  >> Afisarea in Terminal:
+_____________________________________________________________________
+
+_(node:10812) DeprecationWarning: current URL string parser is deprecated, and will be removed in a future version. To use the new parser, pass option { useNewUrlParser: true } to MongoClient.connect.
+(node:10812) [MONGODB DRIVER] Warning: Current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+Port de Ascultare 3000...
+(node:10812) DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
+info: Conectat cu succes la Baza de Date MongoDB
+____________________________________________________________________
+
+
+
+
