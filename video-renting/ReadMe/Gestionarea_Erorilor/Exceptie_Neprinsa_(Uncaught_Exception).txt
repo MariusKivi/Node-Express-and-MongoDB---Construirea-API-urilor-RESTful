@@ -1,0 +1,112 @@
+
+	Exceptie Neprinsa ('uncaughtException')
+
+
+
+
+NB!
+-------------------------------------------------------------------------------------------------------------------
+
+  >> Daca o Eroare este Aruncata/Throw
+	=> in Afara Continutului 'Express'
+	=> Middleware-ul 'Error.js' nu o va Acoperi.
+-------------------------------------------------------------------------------------------------------------------
+
+
+
+
+  (1) Aruncam o Noua Eroare
+	=> in 'index.js'
+	=> sub Configurarea 'winston':
+_____________________________________________________________________
+
+// ARUNCAM O 'NOUA EROARE' IN AFARA CONTEXTULUI 'EXPRESS':
+throw new Error('Ceva a eșuat la pornire.');
+
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Pornim Aplicatia
+_____________________________________________________________________
+
+	nodemon
+_____________________________________________________________________
+
+
+
+>> Afisarea in Terminal
+_____________________________________________________________________
+
+Error: Ceva a eșuat la pornire.
+    at Object.<anonymous> (C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\video-renting\index.js:59:7)
+    at Module._compile (module.js:635:30)
+    at Object.Module._extensions..js (module.js:646:10)
+    at Module.load (module.js:554:32)
+    at tryModuleLoad (module.js:497:12)
+    at Function.Module._load (module.js:489:3)
+_____________________________________________________________________
+	=> Aplicatia 'Esueaza'
+	=> Iar 'Eroarea Nu este Stocata' in Fisierul '.log' sau in DB 'log' 
+
+
+
+
+
+
+
+ (3) Tratam Eroarea  in 'index.js' 
+	=> Utilizand Obiectul 'process' 
+	=> care este un 'Emitator de Evenimente'
+	=> care 'Emite' sau 'Publica Evenimente'
+	=> si ne da Metoda 'on()' 
+	=> pe care o Utilizam pentru a ne  'Abona' la un 'Eveniment'
+	=> iar in 'Node' avem un 'Eveniment Standard'
+	=> denumit 'uncaughtException' (adaica 'Excepte Neprinsa')
+_____________________________________________________________________
+
+// TRATAREA ERORILOR - 'UNCAUGHT  EXCEPTION' ('EXCEPTIE NEPRINSA')
+// PRIN OBIECTUL 'PROCESS' & MET. 'ON()':
+process.on('uncaughtException', exception => {
+    // AFISARE:
+    console.log('AVEM O EXCEPTIE NEPRINSA.');
+
+    // INREGISTRAREA ERORI PRIN 'WINSYTOM'
+    winston.error(exception.message, exception);
+});
+_____________________________________________________________________
+
+
+
+ >> Afisarea in Terminal:
+_____________________________________________________________________
+
+AVEM O EXCEPTIE NEPRINSA.
+error: Ceva a eșuat la pornire. Error: Ceva a eșuat la pornire.
+    at Object.<anonymous> (C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\video-renting\index.js:72:7)
+    at Module._compile (module.js:635:30)
+    at Object.Module._extensions..js (module.js:646:10)
+    at Module.load (module.js:554:32)
+    at tryModuleLoad (module.js:497:12)
+    at Function.Module._load (module.js:489:3)
+    at Function.Module.runMain (module.js:676:10)
+    at startup (bootstrap_node.js:187:16)
+    at bootstrap_node.js:608:3
+_____________________________________________________________________
+
+
+
+
+
+>> Afisarea in Fisierul 'logfile.log':
+_____________________________________________________________________
+
+{"message":"Ceva a eșuat la pornire.","stack":"Error: Ceva a eșuat la pornire.\n    at Object.<anonymous> (C:\\Users\\mariu\\OneDrive\\Desktop\\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\\video-renting\\index.js:72:7)\n    at Module._compile (module.js:635:30)\n    at Object.Module._extensions..js (module.js:646:10)\n    at Module.load (module.js:554:32)\n    at tryModuleLoad (module.js:497:12)\n    at Function.Module._load (module.js:489:3)\n    at Function.Module.runMain (module.js:676:10)\n    at startup (bootstrap_node.js:187:16)\n    at bootstrap_node.js:608:3","level":"error","timestamp":"2021-09-22T07:28:24.379Z"}
+_____________________________________________________________________
+
+
+
