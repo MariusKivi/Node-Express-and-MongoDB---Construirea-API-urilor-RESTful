@@ -1,0 +1,128 @@
+
+	Conectarea la 'MongoDB'
+
+
+
+ Pachetul:
+----------------------------------------------------------------------------------------------------------
+https://www.npmjs.com/package/winston-mongodb
+----------------------------------------------------------------------------------------------------------
+
+
+
+
+
+   (1) Instalam Pachetul 'Winston-Mongodb' Versiunea '@3.0.0':
+_____________________________________________________________________
+
+	npm i winston-mongodb@3.0.0
+_____________________________________________________________________
+
+
+
+ >> Afisare:
+_____________________________________________________________________
+
++ winston-mongodb@3.0.0
+added 7 packages in 2.215s
+_____________________________________________________________________
+
+
+
+
+
+
+ (2.1) Importam:
+_____________________________________________________________________
+
+// (IMP-13 IMPORTAREA  BIBLIOTECiI 'WINSTON-MONGODB'
+//'T 'INREGISTRAREA MESAJELOR' IN 'MONGODB':
+require('winston-mongodb');
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (2.2) Apelam:
+_____________________________________________________________________
+
+// APELAREA 'WINSTON-MONGODB'
+//'TRANSPORT' PT 'INREGISTRAREA MESAJELOR' IN 'MONGODB':
+winston.add(winston.transports.MongoDB, { db: 'mongodb://localhost/video-renting' });
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (3) Pornim Aplicatia:
+_____________________________________________________________________
+
+	nodemon
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+  (4) In Postman
+	=> GET Request
+	=> URL:  http://localhost:3000/api/genuri
+	=> Clic 'Send':
+
+  > Afisare:
+_____________________________________________________________________
+
+Ceva a eșuat.
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (5) Deschidem 'MomgoDB Compass'
+	=> dam 'Refesh'
+	=> Iar in Baza de Date a fost Generata Colectia 'log'
+ _____________________________________________________________________
+
+_id: ObjectId("614ac7354b197d2ad8836511")
+timestamp:2021-09-22T06:03:33.875+00:00
+level: "error"
+message:"token is not defined"
+meta: Object
+_____________________________________________________________________
+	
+
+
+
+
+
+
+
+ (6)  Putem Seta 'Nivelul de Afisare' - 'Error'  in MongoDB
+	=>din 'index.js'
+_____________________________________________________________________
+
+// DACA DORIM DOAR SA 'AFISAM  EROAREA' IN 'MONGODB'
+// (2) FARA A 'STOCA MESAJUL INFORMATIV'
+// ADAUGAM SI PROP. 'LEVEL'
+winston.add(winston.transports.MongoDB, {
+    db: 'mongodb://localhost/video-renting',
+    level: 'error'
+});
+_____________________________________________________________________
+
+
+
