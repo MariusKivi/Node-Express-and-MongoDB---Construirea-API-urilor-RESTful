@@ -1,0 +1,100 @@
+
+	Ce Este 'Testarea Automata'
+
+
+
+
+  (1) Ce Este 'Testarea Atomata'?
+----------------------------------------------------------------------------------------------------------
+
+    Este 'Practica Scrierii Codului' 
+	=> pentru a 'Testa Codul' nostru 
+	=> și pentru a 'Rula Testul' Respectiv 
+	=> într-un 'Mod Automat'.
+    
+----------------------------------------------------------------------------------------------------------
+
+
+
+
+ (2) In Ce Consta 'Testarea Atomata'?
+----------------------------------------------------------------------------------------------------------
+
+   Testarea 'Automata'  Consta in:
+	(1) 'Codul de Productie'  ( 'Codul Aplicatiei')
+	(2) 'Codul de Testare'
+----------------------------------------------------------------------------------------------------------
+
+
+
+
+ (3) Exemplu:
+	=> Avem o Functie in Codul nistru, precum:
+_____________________________________________________________________
+
+public float CalculareImpozit(int input)
+{
+	if (x) return ...;
+	if (y) return ...;
+	return ...;
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------
+  (i) Testarea 'Manuala' a acestei Functii presupune:
+	(1) Lansați Aplicația în browser;
+	(2) Conectarea la Aplicație;
+	(3) Navigare - pentru a ajunge la Pagina unde este utilizată Funcția;
+	(4) Completarea unui Frmular;
+	(5) Trimiterea Formularului;
+	(6) Verificați rezultatul.
+
+  >> Apoi Toti acesti 'Pasi' 
+	=> trebuiesc 'Repetati'
+	=> utilizand 'Valori Diferite' in 'Formular', de fiecare data.
+
+
+
+
+   >> Intr-o 'Aplicatie Reala
+	=> pot exista 'Zeci' sau 'Sute' de 'Functii' precum cea 'Exemplificata'.
+
+  >> Odata cu Cresterea Aplicatiei
+	=> Costurile de Testare cresc Exponential.
+---------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------
+ [II] Testarea 'Automata'
+
+	=> Scriem o 'Functie'
+	=> si 'Apelam' Direct 'Functia '
+	=> cu 'Inputuri Diferite'
+	=> si 'Verificam' daca Functia Returneaza 'Iesirile Corecte' 
+
+
+	
+  >> Acest 'Test' poate fi 'Rulat'  in  'Mai Putin de  1 Secunda' 
+	=> la fiecare Schimbare de Cod,
+	=> la fiecare Salvare a Codului intr-un Depozit,
+	=> si inaintea 'Implementari Aplicatiei' 
+ 
+ >> PERMITE  Scrierea a 'Mai Multor SUTE sau MII'
+	=> de 'Teste Automate'
+	=> pentru Diferite Parti ale Aplicatiei
+	=> si Rularea Tuturor in doar 'Cateva Secunde'
+---------------------------------------------------------------------------------------------------------
+
+
+
