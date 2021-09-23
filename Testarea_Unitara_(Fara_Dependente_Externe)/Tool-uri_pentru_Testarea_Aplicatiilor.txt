@@ -1,0 +1,77 @@
+
+	Tool-uri pentru 'Testarea Aplicatiilor'
+
+
+
+
+   <> Pentru a 'Scrie Teste' avem Nevoie 
+	=> de un 'Framework  de  Testare'.
+
+
+
+   <> 'Framework'-ul  de  'Testare' ne ofera:
+
+	(1) Biblioteca (Library)
+	       => care include o gramada de 'Functii Utile'
+	       => pe care le utilizam pt a 'Scrie Teste'
+
+
+	(2) Executor de Test  ('Test Runner')
+	       => care este un 'Program'
+	       => pe care il 'Executam' din 'Linia de Comanda'
+	       => el 'Efectueaza Testul'
+	       => si ne Ofera un 'Raport' 
+	       => cu 'Cate Teste' au 'Trecut' sau au 'Esuat'
+
+
+
+
+   <> Cele mai Populare 'Framework'-uri de 'Testare' sunt:
+---------------------------------------------------------------------------------------------------------------------------	
+          (1) Jeasmine;
+          (2) Mocha;
+          (3) Jest;
+---------------------------------------------------------------------------------------------------------------------------
+
+
+
+  (1) Jeasmine:
+---------------------------------------------------------------------------------------------------------------------------
+  >> Este cel mai recent.
+  >> Include Toate 'Caracteristicile Necesare' ale unui 'Framework de Testare'
+
+---------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+ (2) Mocha:
+---------------------------------------------------------------------------------------------------------------------------
+   >> Este cea mai Populara 'Biblioteca de Testare' pentru 'npm'
+  >>  Nu contine toate 'Caracteristicile Necesare' ale unui 'Framework de Testare'
+   >> Mocha  -> necesita unele 'Plugin'-uri, precum:
+	(1) Chai
+	(2) Sinon
+
+---------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+ (3) Jest:
+---------------------------------------------------------------------------------------------------------------------------
+   >> Este cel mai Nou Framework
+   >> Pe care 'Facebook' il utilizeaza in 'Tesarea  Aplicatiilor React'
+   >> 'Jest' este practic un 'Impachetator' al lui 'Jeasmine'
+   >> Iar toate 'Functiile Utile' din 'Jeasmine' functioneaza si in 'Jest'
+---------------------------------------------------------------------------------------------------------------------------
+	=> Noi vom utiliza Framework-ul  'Jest'.
+
+
