@@ -1,0 +1,197 @@
+
+
+	Framework-ul 'Just' & Scrierea Primului 'Test de Unitate'
+
+
+
+
+
+  (0.1) Cream Proiectul  'Teste_de_Unitate'  in care Adaugam Fisierele:
+	=> db.js
+	=> exercise1.js
+	=> lib.js
+	=> mail.js
+	=> package.json
+
+
+
+
+
+ (0.2) Crean Fisierul  'jest.config.js'
+	=> in Folder-ul 'Teste_de_Unitate':
+_____________________________________________________________________
+
+// jest.config.js
+module.exports = {
+    testURL: 'http://localhost:3000'
+};
+_____________________________________________________________________
+	
+
+
+
+
+
+  (1) Instalam 'Jest' versiune '22.2.2'
+	=> in Folder-ul 'Teste_de_Unitate':
+_____________________________________________________________________
+
+	npm i jest@22.2.2 --save-dev
+_____________________________________________________________________
+	
+
+
+ >> Afisarea in PowerShell:
+_____________________________________________________________________
+
++ jest@22.2.2
+added 327 packages in 104.133s
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+
+ (2) Modificam Valoarea Parametrului 'test'
+	=> al Obiectului 'script'
+	=> din Fisierul 'package.json':
+_____________________________________________________________________
+
+{
+    "name": "teste-de-unitate",
+    "version": "1.0.0",
+    "description": "Teste de nitate",
+    "main": "db.js",
+    "directories": {
+        "test": "tests"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "jest": "^22.2.2"
+    },
+    "scripts": {
+        "test": "jest"
+    },
+    "keywords": [],
+    "author": "Marius Chivu",
+    "license": "ISC"
+}
+_____________________________________________________________________
+	=> "jest" --> este 'Interfata Liniei de Comanda'
+	=> utilizata pentru' Executarea Testului'.
+
+
+
+
+
+
+
+ (3) Rularea 'Testului' in PowerShell
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+ >> Afisarea in PowerShell:
+_____________________________________________________________________
+
+No tests found
+In C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\Teste_de_Unitate
+  6 files checked.
+  testMatch: **/__tests__/**/*.js?(x),**/?(*.)(spec|test).js?(x) - 0 matches
+  testPathIgnorePatterns: \\node_modules\\ - 6 matches
+Pattern:  - 0 matches
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (4.1) Cream  in Proiect
+	=> Folder-ul 'tests'
+	=> in care cream Fisierul 'lib.test.js'
+_____________________________________________________________________
+
+// APELAM FUNC. 'TEST('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+test('Primul meu Test', () => {
+
+});
+_____________________________________________________________________
+
+
+
+
+ >> Afisare:
+_____________________________________________________________________
+
+> jest
+
+ PASS  tests\lib.test.js
+  √ Primul meu Test (2ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        1.964s
+Ran all test suites.
+_____________________________________________________________________
+
+
+
+
+
+
+(4.2) Aruncam in Fisierul 'lib.test.js'
+	=> exceptie:	
+_____________________________________________________________________
+
+// APELAM FUNC. 'TEST('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+test('Primul meu Test', () => {
+    // ARUNCAM O EXCEPTIE:
+    throw new Error('Ceva a esuat!');
+});
+_____________________________________________________________________
+
+
+
+
+ >> Afisare:
+_____________________________________________________________________
+
+> jest
+
+ FAIL  tests\lib.test.js
+  × Primul meu Test (17ms)
+
+  ● Primul meu Test
+
+    Ceva a esuat!
+
+       2 | test('Primul meu Test', () => {
+       3 |     // ARUNCAM O EXCEPTIE:
+    > 4 |     throw new Error('Ceva a esuat!');
+       5 | });
+
+      at Object.<anonymous>.test (tests/lib.test.js:4:11)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 1 total
+Snapshots:   0 total
+Time:        2.761s
+Ran all test suites.
+_____________________________________________________________________
+	> ne apare si Linia pe care se afla Eroarea.
+
+
+
+
+

@@ -16,5 +16,9 @@
     "bugs": {
         "url": "https://github.com/MariusKivi/Node-Express-and-MongoDB---Construirea-API-urilor-RESTful/issues"
     },
-    "homepage": "https://github.com/MariusKivi/Node-Express-and-MongoDB---Construirea-API-urilor-RESTful#readme"
+    "homepage": "https://github.com/MariusKivi/Node-Express-and-MongoDB---Construirea-API-urilor-RESTful#readme",
+    "dependencies": {},
+    "devDependencies": {
+        "jest": "^27.2.1"
+    }
 }

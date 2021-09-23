@@ -1,0 +1,19 @@
+{
+    "name": "teste-de-unitate",
+    "version": "1.0.0",
+    "description": "Teste de nitate",
+    "main": "db.js",
+    "directories": {
+        "test": "tests"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "jest": "^22.2.2"
+    },
+    "scripts": {
+        "test": "jest"
+    },
+    "keywords": [],
+    "author": "Marius Chivu",
+    "license": "ISC"
+}
