@@ -1,0 +1,189 @@
+
+	Testarea 'Matricilor'
+
+
+
+
+  (1.1) Cream Functia 'obtinereValuta'
+	=> in 'lib.js'
+_____________________________________________________________________
+
+// TESTAREA  'MATRICILOR' 
+module.exports.obtinereValuta = function() {
+    return ['USD', 'LEI', 'EURO'];
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (1.2)  Cream un Nou Bloc 'describe()'
+	=> pentru Func. 'obtinereValuta'
+	=> in Fisierul 'lib.test.js':
+_____________________________________________________________________
+
+// (3) TESTAREA  MATRICILOR
+// BLOCUL 'DESCRIBE(SALUT)' PT. 'GRUPAREA  TESTELOR CONEXE':
+describe('obtinereValuta', () => {
+
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să returneze valute acceptate', () => {
+
+        // APELAREA FUNC. 'OBTINEREVALUTA()':
+        const rezultat = lib.obtinereValuta();
+
+        // (1) 'CALEA' FORTE 'GENERAL':   
+        // FUNC. DE POTRIVIRE 'TOBEDEFINED()'       
+        expect(rezultat).toBeDefined();
+        // FUNC. DE POTRIVIRE 'NOT.TOBENULL()'           
+        expect(rezultat).not.toBeNull();
+
+
+        // (2) 'CALEA' FORTE 'SPECIFICE': 
+        // FUNC. DE POTRIVIRE 'TOBE()'           
+        expect(rezultat[0]).toBe('USD');
+        expect(rezultat[1]).toBe('LEI');
+        expect(rezultat[2]).toBe('EURO');
+        expect(rezultat.length).toBe(3);
+
+        // (3) 'CALEA' CEA MAI 'OPTIMA' 
+        // ESTE SA 'VERIFICAM EXISTENTA' UNUI 'ANUMIT ELEMENT' IN 'MATRICE':
+        expect(rezultat).toContain('USD');
+        expect(rezultat).toContain('LEI');
+        expect(rezultat).toContain('EURO');
+    });
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (1.3) Rulam Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+ >> Afisare:
+_____________________________________________________________________
+
+> jest
+
+ PASS  tests\lib.test.js
+  absolut
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este pozitivă (9ms)
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este negativă (1ms)
+    √ Ar trebui să returneze 0 dacă intrarea este 0 (1ms)
+  salut
+    √ Ar trebui să returneze mesajul de salut (2ms)
+  obtinereValuta
+    √ Ar trebui să returneze valute acceptate (2ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       5 passed, 5 total
+Snapshots:   0 total
+Time:        4.007s
+Ran all test suites.
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+  (2.1) Calea Ideala de Testare
+	=> este prin Func. '.toEqual(expect.arrayContaining([...]))'
+	=> in 'lib.test.js'
+_____________________________________________________________________
+
+// (3) TESTAREA  MATRICILOR
+// BLOCUL 'DESCRIBE(SALUT)' PT. 'GRUPAREA  TESTELOR CONEXE':
+describe('obtinereValuta', () => {
+
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să returneze valute acceptate', () => {
+
+        // APELAREA FUNC. 'OBTINEREVALUTA()':
+        const rezultat = lib.obtinereValuta();
+
+        // (1) 'CALEA' FORTE 'GENERAL':   
+        // FUNC. DE POTRIVIRE 'TOBEDEFINED()'       
+        expect(rezultat).toBeDefined();
+        // FUNC. DE POTRIVIRE 'NOT.TOBENULL()'           
+        expect(rezultat).not.toBeNull();
+
+
+        // (2) 'CALEA' FORTE 'SPECIFICE': 
+        // FUNC. DE POTRIVIRE 'TOBE()'           
+        expect(rezultat[0]).toBe('USD');
+        expect(rezultat[1]).toBe('LEI');
+        expect(rezultat[2]).toBe('EURO');
+        expect(rezultat.length).toBe(3);
+
+        // (3) 'CALEA' MAI 'OPTIMA' 
+        // ESTE SA 'VERIFICAM EXISTENTA' UNUI 'ANUMIT ELEMENT' IN 'MATRICE':
+        expect(rezultat).toContain('USD');
+        expect(rezultat).toContain('LEI');
+        expect(rezultat).toContain('EURO');
+
+
+        // (4) 'CALEA' - 'IDEALA' 
+        expect(rezultat).toEqual(expect.arrayContaining(['LEI', 'EURO', 'USD']));
+
+    });
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+ 
+ (2.2) Rulam Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+ >> Afisare:
+_____________________________________________________________________
+
+> jest
+
+ PASS  tests\lib.test.js
+  absolut
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este pozitivă (6ms)
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este negativă (1ms)
+    √ Ar trebui să returneze 0 dacă intrarea este 0
+  salut
+    √ Ar trebui să returneze mesajul de salut (1ms)
+  obtinereValuta
+    √ Ar trebui să returneze valute acceptate (3ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       5 passed, 5 total
+Snapshots:   0 total
+Time:        3.018s
+Ran all test suites.
+_____________________________________________________________________
+
+
+
+
