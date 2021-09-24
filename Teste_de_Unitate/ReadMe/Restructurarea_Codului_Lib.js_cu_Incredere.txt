@@ -1,0 +1,108 @@
+
+	Restructurarea Codului 'lib.js' cu 'Incredere'
+
+
+
+
+  (1.1) Modificam 'Conditiile' Func. 'absolut()'
+	=> din Fisierul 'lib.js':
+_____________________________________________________________________
+
+// TESTAREA 'NUMERELOR'
+// FUNC. 'ABSOLUT': 
+module.exports.absolut = function(numar) {
+
+    // DACA 'NR. ESTE >= 0' 
+    // RETURNEAZA 'NUMARUL':
+    if (numar >= 0) return numar;
+
+    // ALTFEL RETURNEAZA 'NR NEGATIV': 
+    return -numar;
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (1.2) Rulam Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+ >> Afisare in Powershell
+_____________________________________________________________________
+> jest
+
+ PASS  tests\lib.test.js
+  absolut
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este pozitivă (9ms)
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este negativă (1ms)
+    √ Ar trebui să returneze 0 dacă intrarea este 0
+
+Test Suites: 1 passed, 1 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        3.588s
+Ran all test suites.
+_____________________________________________________________________
+
+
+
+
+
+
+
+(2.1) Modificam Func. 'absolut()'
+	=> Utilizand 'Declaratia Conditionala' cu 'Operatorul Ternar'
+	=> in Fisierul 'lib.js':
+_____________________________________________________________________
+
+// TESTAREA 'NUMERELOR'
+// FUNC. 'ABSOLUT': 
+module.exports.absolut = function(numar) {
+
+    // DECLARATIA CONDITIONALA 
+    // CU 'OP. TERNAR':
+    return (numar >= 0) ? numar : -numar;
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2.2) Rulam Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+ >> Afisare in Powershell
+_____________________________________________________________________
+> jest
+
+ PASS  tests\lib.test.js
+  absolut
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este pozitivă (4ms)
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este negativă
+    √ Ar trebui să returneze 0 dacă intrarea este 0 (1ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        2.867s
+Ran all test suites.
+_____________________________________________________________________
+
+
+
