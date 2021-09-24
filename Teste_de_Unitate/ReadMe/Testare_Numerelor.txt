@@ -1,0 +1,234 @@
+
+	Testare 'Numerelor'
+
+
+
+
+
+   NB!
+-----------------------------------------------------------------------------------------------------------
+   <> Numarul de 'Teste de Unitate' 
+	=> Necesare pentru o 'Functie Regulara'
+	=> trebuie sa fie 'Mai Mare' sau 'Egal' 
+	=> cu 'Numarul Cailor de Executie' sau 'Iesirilor din Functie'
+
+
+  <> Deci intr-un 'Teste de Unitate' 
+	=> ne Asiguram ca Acoperim 
+	=> Toare 'Caile de Executie'.
+
+
+  <> Functii de Potrivire in Jest:
+
+	https://jestjs.io/docs/using-matchers
+
+
+	>> 'toBeNull'  -->  potrivește doar 'null'
+	>> 'toBeUndefined'  -->  potrivește doar  'undefined'
+	>> 'toBeDefined'  -->  este opusul lui 'toBeUndefined'
+	>> 'toBeTruthy'  -->  potrivește tot ceea ce o declarație 'if' trateaza ca 'adevărat'
+	>> 'toBeFalsy'  -->  potrivește tot ceea ce o declarație 'if' trateaza ca 'fals'
+-----------------------------------------------------------------------------------------------------------
+
+
+
+
+
+  (0)  Scriere Functia 'absolut' in Fisierul 'lib.js':	
+_____________________________________________________________________
+
+// TESTAREA 'NUMERELOR'
+// FUNC. 'ABSOLUT': 
+module.exports.absolut = function(numar) {
+
+    // DACA 'NR. ESTE POZITIV' 
+    // RETURNEAZA 'ACELASI NR':
+    if (numar > 0) return numar; 
+
+    // DACA 'NR. ESTE NEGATIV' 
+    // RETURNEAZA 'NR NEGATIV': 
+    if (numar < 0) return -numar;
+
+    // IN 'CAZ  CONTRAR'
+    // RETURNEAZA 'ZERO':
+    return 0;
+}
+_____________________________________________________________________
+	=>  'Numarul Cailor de Executie' = 3
+
+
+
+
+
+
+
+  (1.1)  Scriere 'Test de Unitate 1'  - daca 'Numerele Se Potrivesc'  (1=1)
+	=> pt. Functia 'absolut'
+	=> din 'lib.test.js':
+_____________________________________________________________________
+
+// IMPORTAM MODULUL 'LIB.JS'
+const lib = require('../lib')
+
+
+// CAZUL 1: PT. 'INPUT  POZITIV & POZITIV' (1=1)
+// TESTAREA 'NUMERELOR'  FUNC. 'ABSOLUT'
+// APELAM FUNC. 'TEST('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+test('absolut - ar trebui să returneze un număr pozitiv dacă intrarea este pozitivă', () => {
+    // APELAREA FUNC. 'ABSOLUTE':
+    const rezultat = lib.absolut(1);
+
+    // VERIFICAM DACA 'NR' ESTE 'CORECT'
+   // APELAM FUNC. UTILITARA 'EXPECT()' (AE FK. 'JEST')
+    //  & FUNC. DE POTRIVIRE 'TOBE()' (A FK. 'JEST'):
+    expect(rezultat).toBe(1);
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (1.2) Rulam Testul in Powershell:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+ >> Afisare  in Powershell:
+_____________________________________________________________________
+
+> jest
+
+ PASS  tests\lib.test.js
+  √ absolut - ar trebui să returneze un număr pozitiv dacă intrarea este pozitivă (4ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        57.497s
+Ran all test suites.
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2.1)  Scriere 'Test de Unitate 2'  - daca 'Numerele Nu Se Potrivesc'  (-1=0)
+	=> pt. Functia 'absolut'
+	=> din 'lib.test.js':
+_____________________________________________________________________
+
+// CAZUL 2: PT. 'INPUT  NEGATIV & POZITIVV'  (-1=1)
+// TESTAREA 'NUMERELOR'  FUNC. 'ABSOLUT'
+// APELAM FUNC. 'TEST('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+test('absolut - ar trebui să returneze un număr pozitiv dacă intrarea este negativă', () => {
+    // APELAREA FUNC. 'ABSOLUTE':
+    const rezultat = lib.absolut(-1);
+
+    // VERIFICAM DACA 'NR' ESTE 'INCORECT'
+    // APELAM FUNC. UTILITARA 'EXPECT()' (AE FK. 'JEST')
+    //  & FUNC. DE POTRIVIRE 'TOBE()' (A FK. 'JEST'):
+    expect(rezultat).toBe(1);
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2.2) Rulam Testul in Powershell:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+ >> Afisare  in Powershell:
+_____________________________________________________________________
+
+> jest
+
+ PASS  tests\lib.test.js
+  √ absolut - ar trebui să returneze un număr pozitiv dacă intrarea este pozitivă (4ms)
+  √ absolut - ar trebui să returneze un număr pozitiv dacă intrarea este negativă
+
+Test Suites: 1 passed, 1 total
+Tests:       2 passed, 2 total
+Snapshots:   0 total
+Time:        2.805s
+Ran all test suites.
+PS C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\Teste_de_Unitate>
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (3.1)  Scriere 'Test de Unitate 3'  - daca 'Numerele Se Potrivesc'  (0=0)
+	=> pt. Functia 'absolut'
+	=> din 'lib.test.js':
+_____________________________________________________________________
+
+// CAZUL 3: PT. 'INPUT  ZERO & ZERO' (0=0)
+// TESTAREA 'NUMERELOR'  FUNC. 'ABSOLUT'
+// APELAM FUNC. 'TEST('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+test('absolut - ar trebui să returneze 0 dacă intrarea este 0', () => {
+    // APELAREA FUNC. 'ABSOLUTE':
+    const rezultat = lib.absolut(0);
+
+    // VERIFICAM DACA 'NR' ESTE 'CORECT' CEL 'ASTEPTAT'
+    // APELAM FUNC. UTILITARA 'EXPECT()' (AE FK. 'JEST')
+    //  & FUNC. DE POTRIVIRE 'TOBE()' (A FK. 'JEST'):
+    expect(rezultat).toBe(0);
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (3.2) Rulam Testul in Powershell:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+ >> Afisare  in Powershell:
+_____________________________________________________________________
+
+__> jest
+
+ PASS  tests\lib.test.js
+  √ absolut - ar trebui să returneze un număr pozitiv dacă intrarea este pozitivă (7ms)
+  √ absolut - ar trebui să returneze un număr pozitiv dacă intrarea este negativă
+  √ absolut - ar trebui să returneze 0 dacă intrarea este 0
+
+Test Suites: 1 passed, 1 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        4.125s
+Ran all test suites.
+___________________________________________________________________
+
+
+

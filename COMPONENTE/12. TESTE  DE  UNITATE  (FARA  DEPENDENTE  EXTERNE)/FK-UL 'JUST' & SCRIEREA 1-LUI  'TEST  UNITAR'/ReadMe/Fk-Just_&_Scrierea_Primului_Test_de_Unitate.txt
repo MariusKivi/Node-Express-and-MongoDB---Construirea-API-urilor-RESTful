@@ -7,14 +7,10 @@
 
 
   (0.1) Cream Proiectul  'Teste_de_Unitate'  in care Adaugam Fisierele:
-	=> db.js
-	=> exercise1.js
-	=> lib.js
-	=> mail.js
+	=> lib.js	
 	=> package.json
 
-
-
+        
 
 
  (0.2) Crean Fisierul  'jest.config.js'
