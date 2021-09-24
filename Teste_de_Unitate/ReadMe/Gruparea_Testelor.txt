@@ -1,8 +1,39 @@
-// IMPORTAM MODULUL 'LIB.JS'
-const lib = require('../lib')
+
+	Gruparea Testelor
 
 
 
+
+  NB!
+-----------------------------------------------------------------------------------------------------------
+
+       Testele sunt 'Cetățeni' de 'Primă Clasă' în 'Codul Sursă'.
+
+ <> Curatam Codul si-l facem mai Mentenabil
+	=> utilizand Func. 'described()'
+	=> pt. Gruparea 'Testelor Conexe'.
+
+  <> In 'Jest' si in 'Jeasmine' 
+	=> avem Func. 'it()'
+	=> care este asemanatoare cu Func. 'test()'
+-----------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+ 
+
+
+
+ (1) Cream Functia 'describe()'
+	=> ce va Include Functia 'absolut()' 
+	=> cu toate 'Testelor Conexe'
+	=> includem Testele in aceasta functie
+	=> si inlocuim 'test()' cu 'it()'
+	=> in 'tests/lib.test.js':
+_____________________________________________________________________
 
 // FUNC. 'DESCRIBE()' PT. 'GRUPAREA  TESTELOR CONEXE':
 describe('absolut', () => {
@@ -52,3 +83,6 @@ describe('absolut', () => {
         expect(rezultat).toBe(0);
     });
 });
+_____________________________________________________________________
+
+
