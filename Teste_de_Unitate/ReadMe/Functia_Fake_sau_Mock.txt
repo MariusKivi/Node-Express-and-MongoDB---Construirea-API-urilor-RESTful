@@ -1,0 +1,168 @@
+
+	Functia 'Fake' / 'Mock' (Functie Setata cu alta Functie)
+
+
+
+
+  (1.1) Cream Fisierul  'db.js':
+_____________________________________________________________________
+
+// FUNC. EXPORTATA SINCRONIZATA 'OBTINECLIENTSYNC':
+module.exports.obtineClientSync = function(id) {
+    // SIMULAREA CITIRII APELULUI CATRE 'MONGODB':
+    console.log('Citirea unui client de pe MongoDB ...');
+
+    // RETURNARE OBIECT CU '2 PROP.':
+    return { id: id, puncte: 11 };
+}
+
+
+
+
+
+// FUNC. EXPORTATA ASINCRONIZATA 'OBTINECLIENT':
+module.exports.obtineClient = async function(id) {
+    return new Promise((resolve, reject) => {
+        // SIMULAREA CITIRII APELULUI CATRE 'MONGODB':
+        console.log('Citirea unui client de pe MongoDB ...');
+
+        // RETURNARE OBIECT CU '2 PROP.':
+        resolve({ id: id, puncte: 11 });
+    });
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (1.2) Cream Func. "aplicaDiscount"
+	=> in Fisierul 'lib.js'
+_____________________________________________________________________
+
+//  IMPORTAM 'FISIERE':
+const db = require('./db');
+
+// FUNC. EXPORTATA  'APLICAREDISCOUNT'
+module.exports.aplicaDiscount = function(comanda) {
+
+    // MET. 'OBTINECLIENTSYNC()':
+    const client = db.obtineClientSync(comanda.idClient);
+
+    // DACA 'CLIENTUL  ARE  MAI MULT DE 10 PUNCTE'
+    // 'PRETUL TOTAL ESTE REDUS CU 10% DIN VALOAREA COMENZII':
+    if (client.puncte > 10)
+        comanda.pretTotal *= 0.9;
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+
+ (1.3) Cream Blocul 'aplicaDiscount'
+	=>in Fisierul 'lib.test.js'
+	=> in care Implementam 'Fake'/'Mock':
+_____________________________________________________________________
+
+// (6) TESTAREA  'FUNC. 'FAKE'/'MOCK':
+// BLOCUL DE 'GRUPAREA  TESTELOR CONEXE' - 'DESCRIBE(APLICADISCOUNT)':
+describe('aplicaDiscount', () => {
+
+    // TEST 1:
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să aplice 10% reducere, dacă clientul are mai mult de 10 puncte', () => {
+
+        // CREAM  OBIECTUL 'COMANDA':
+        const comanda = { idClient: 1, pretTotal: 10 };
+
+        // APELAREA FUNC. 'APLICADISCOUNT({OBIECT_COMANDA})':
+        lib.aplicaDiscount(comanda);
+
+        // 'ASTEPTAM' CA 'REZUTATUL' SA 'FIE':   
+        // FUNC. DE POTRIVIRE 'TOBE()'       
+        expect(comanda.pretTotal).toBe(9);
+    });
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (2)  Trebuie sa Inlocuim 
+	=> Implementarea Reala a Metodi 'obtineClientSync'
+	=> din Fisierul 'db.js'
+	=> cu o Implementare 'Fake'/'Mock':
+
+
+        (2.1) Importam in 'tests/lib.test.js':
+_____________________________________________________________________
+
+//  IMPORTAM FISIERUL 'DB.JS':
+const db = require('../db');
+_____________________________________________________________________
+
+
+
+
+
+        (2.2) Setam in Blocul 'describe(aplicaDiscount)' 
+	=>  din 'tests/lib.test.js'
+	=> Func. 'obtineClientSync' 
+	=> cu o Noua Functie - care nu 'Comunica' cu 'Baza de Date':
+_____________________________________________________________________
+
+        // FUNC. 'FAKE'/'MOCK'
+        // PRIN SETAREA FUNC. 'OBTINECLIENTSYNC'
+        // CATRE O 'NOUA FUNCTIE' CARE 'NU VORBESTE' CU O 'BAZA DE DATE':
+        db.obtineClientSync = function(idClient) {
+
+            // AFISARE:
+            console.log('Client fals citit...');
+
+            // RETURNARE OBIECT CU '2 PROPS':
+            return { id: idClient, puncte: 20 }
+        }
+_____________________________________________________________________
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________
+
+ PASS  tests\ex_fizzbuss.test.js
+ PASS  tests\lib.test.js
+  ● Console
+
+    console.log tests\lib.test.js:217
+      Client fals citit...
+
+
+Test Suites: 2 passed, 2 total
+Tests:       14 passed, 14 total
+Snapshots:   0 total
+Time:        0.535s, estimated 1s
+Ran all test suites.
+
+Watch Usage: Press w to show more.
+_____________________________________________________________________
+
+
+
+   >> Inlocuirea unei Functii sau Metode in JavaScript este foarte Simpla
+	=> tot ce trebuie facut este sa o Setam catre o Noua Functie
+	=> pe care o numim 'Functie Fake/Mock'
+
+
+
