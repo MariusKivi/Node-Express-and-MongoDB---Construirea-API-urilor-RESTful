@@ -1,0 +1,148 @@
+
+	Testari cu 'Rulare Continua'
+
+
+
+
+  (1) Pentru a face Framework-ul 'Jest'
+	=> sa 'Ruleze Testarea Automat'
+	=> dupa fiecare 'Schimbare in Cod'
+	=> in Fisierul 'package.json'
+	=> Modificam Valoarea Prop. "test":
+_____________________________________________________________________
+
+"scripts": {
+        "test": "jest --watchAll"
+    },
+_____________________________________________________________________
+
+
+
+
+
+
+ (1.2) Rulam Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+>> Afisare in Powershel
+_____________________________________________________________________
+
+ PASS  tests\lib.test.js
+  absolut
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este pozitivă (1ms)
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este negativă (1ms)
+    √ Ar trebui să returneze 0 dacă intrarea este 0
+  salut
+    √ Ar trebui să returneze mesajul de salut (1ms)
+  obtinereValuta
+    √ Ar trebui să returneze valute acceptate (1ms)
+  obtineProdus
+    √ Ar trebui să returneze produsul cu id-ul dat (1ms)
+  inregistrareUtilizator
+    √ Ar trebui să arunce o exceptie, dacă numele de utilizator este fals (1ms)
+    √ Ar trebui să returneze un obiect utilizator dacă este trecut un nume de utilizator valid
+
+Test Suites: 1 passed, 1 total
+Tests:       8 passed, 8 total
+Snapshots:   0 total
+Time:        0.449s, estimated 1s
+Ran all test suites.
+
+Watch Usage: Press w to show more.
+_____________________________________________________________________
+	=> 'Jest' a Rulat Toate 'Testele'
+	=> iar Acum 'Priveste Fisierele' pt. 'Schimbari'.
+
+
+
+
+
+
+ (2.1) Daca Modificam Conditia 'if(!(nume_uilizator) )'
+	=> si Stergem Semnul '!'
+	=> in Fisierul "ib.test.js":
+_____________________________________________________________________
+
+// TESTAREA  'EXCEPTIILOR'
+// (NECESITA CEL PUTIN '2 TESTE DE UNITATE')
+module.exports.inregistrareUtilizator = function(nume_uilizator) {
+
+    // DACA 'NUMELE_UTILIZATOR ESTE FALS'
+    // ARUNCAM O EXCEPTIE:
+    if (nume_uilizator) throw new Error('Numele de utilizator este solicitat.');
+
+    // ALTFEL SE RETURNEAZA UN 'OBIECT' U '2 PROPRIETATI':
+    return { id: new Date().getTime(), nume_uilizator: nume_uilizator }
+}
+_____________________________________________________________________
+
+
+
+
+>> Afisare 'Watch' in Powershell
+_____________________________________________________________________
+ FAIL  tests\lib.test.js
+  absolut
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este pozitivă (1ms)
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este negativă
+    √ Ar trebui să returneze 0 dacă intrarea este 0 (1ms)
+  salut
+    √ Ar trebui să returneze mesajul de salut
+  obtinereValuta
+    √ Ar trebui să returneze valute acceptate (2ms)
+  obtineProdus
+    √ Ar trebui să returneze produsul cu id-ul dat
+  inregistrareUtilizator
+    × Ar trebui să arunce o exceptie, dacă numele de utilizator este fals (8ms)
+    × Ar trebui să returneze un obiect utilizator dacă este trecut un nume de utilizator valid (4ms)
+
+  ● inregistrareUtilizator › Ar trebui să arunce o exceptie, dacă numele de utilizator este fals
+
+    expect(function).toThrow(undefined)
+
+    Expected the function to throw an error.
+    But it didn't throw anything.
+
+      161 |         // 'ASTEPTAM' CA 'FUNC. CALLBACK' SA 'ARUNCE' PRIN FUNC. 'TOTHROW()':
+      162 |         // FUNC. CALLBACK 'INREGISTRAREUTILIZATOR(NULL)':
+    > 163 |         expect(() => { lib.inregistrareUtilizator(null) }).toThrow();
+      164 |
+      165 |
+      166 |         // ABORDAREA 2:
+
+      at Object.it (tests/lib.test.js:163:60)
+
+  ● inregistrareUtilizator › Ar trebui să returneze un obiect utilizator dacă este trecut un nume de utilizator valid
+
+    Numele de utilizator este solicitat.
+
+      49 |     // DACA 'NUMELE_UTILIZATOR ESTE FALS'
+      50 |     // ARUNCAM O EXCEPTIE:
+    > 51 |     if (nume_uilizator) throw new Error('Numele de utilizator este solicitat.');
+      52 |
+      53 |     // ALTFEL SE RETURNEAZA UN 'OBIECT' U '2 PROPRIETATI':
+      54 |     return { id: new Date().getTime(), nume_uilizator: nume_uilizator }
+
+      at Object.inregistrareUtilizator (lib.js:51:31)
+      at Object.it (tests/lib.test.js:186:30)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 6 passed, 8 total
+Snapshots:   0 total
+Time:        0.524s, estimated 1s
+Ran all test suites.
+
+Watch Usage: Press w to show more.
+_____________________________________________________________________
+
+
+  >> Recorectam Codul dupa testare.
+
+
+
