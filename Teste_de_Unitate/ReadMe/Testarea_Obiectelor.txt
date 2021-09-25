@@ -1,0 +1,409 @@
+
+	Testarea 'Obiectelor'
+
+
+
+
+  (1.1) Cream Func. Exportata 'obtineProdus'
+	=> in Fisierul 'lib.js':
+_____________________________________________________________________
+
+// TESTAREA  'OBIECTE': 
+module.exports.obtineProdus = function(idProdus) {
+    return { id: idProdus, pret: 10 };
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (1.2) Cream Blocul 'describe('obtineProdus')'
+	=> in Fisierul "tests/lib.test.js":
+_____________________________________________________________________
+
+// (4) TESTAREA  'OBIECTELOR':
+// BLOCUL DE 'GRUPAREA  TESTELOR CONEXE' - 'DESCRIBE(OBTINEPRODUS)':
+describe('obtineProdus', () => {
+    // TEST 1:
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să returneze produsul cu id-ul dat', () => {
+
+        // APELAREA FUNC. 'OBTINEPRODUS()':
+        const rezultat = lib.obtineProdus(1);
+
+        // (1) 'ASTEPTAM' CA 'REZUTATUL' SA 'FIE' UN 'OBIECT':   
+        // FUNC. DE POTRIVIRE 'TOBE()'       
+        expect(rezultat).toBe({ id: 1, pret: 10 });
+    });
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (1.3) Rulam Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+>> Afisare in Powershel
+_____________________________________________________________________
+
+> teste-de-unitate@1.0.0 test C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\Teste_de_Unitate
+> jest
+
+ FAIL  tests\lib.test.js (5.841s)
+  absolut
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este pozitivă (8ms)
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este negativă (1ms)
+    √ Ar trebui să returneze 0 dacă intrarea este 0 (1ms)
+  salut
+    √ Ar trebui să returneze mesajul de salut (2ms)
+  obtinereValuta
+    √ Ar trebui să returneze valute acceptate (5ms)
+  obtineProdus
+    × Ar trebui să returneze produsul cu id-ul dat (22ms)
+
+  ● obtineProdus › Ar trebui să returneze produsul cu id-ul dat
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected value to be:
+      {"id": 1, "pret": 10}
+    Received:
+      {"id": 1, "pret": 10}
+
+    Difference:
+
+    Compared values have no visual difference. Looks like you wanted to test for object/array equality with strict `toBe` matcher. You probably need to use `toEqual` instead.
+
+       133 |         // (1) 'ASTEPTAM' CA 'REZUTATUL' SA 'FIE' UN 'OBIECT':
+       134 |         // FUNC. DE POTRIVIRE 'TOBE()'
+    > 135 |         expect(rezultat).toBe({ id: 1, pret: 10 });
+       136 |     });
+       137 | });
+
+      at Object.it (tests/lib.test.js:135:26)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 5 passed, 6 total
+Snapshots:   0 total
+Time:        14.767s
+Ran all test suites.
+npm ERR!
+_____________________________________________________________________
+	=> 'Testul' a 'Esuat' datorita faptului ca
+	=> cele '2 Obiecte' ('rezultat' si '{id:..}')
+	=> au 'Locatii Diferite' in 'Memorie'.
+
+  >> Functia Potrivitoare  'toBe()'
+	=> Compara 'Referintele' celor '2 Obiecte' in 'Memorie'.
+
+
+
+
+
+
+
+ (2.1) Utilizarea Functiei Potrivitoare  'toEqual()' in locul   'toBe()'
+	=> in Fisierul "tests/lib.test.js":
+_____________________________________________________________________
+
+// (4) TESTAREA  'OBIECTELOR':
+// BLOCUL DE 'GRUPAREA  TESTELOR CONEXE' - 'DESCRIBE(OBTINEPRODUS)':
+describe('obtineProdus', () => {
+    // TEST 1:
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să returneze produsul cu id-ul dat', () => {
+
+        // APELAREA FUNC. 'OBTINEPRODUS()':
+        const rezultat = lib.obtineProdus(1);
+
+        // (1) 'ASTEPTAM' CA 'REZUTATUL' SA 'FIE' UN 'OBIECT':   
+        // FUNC. DE POTRIVIRE 'TOBE()'       
+        // expect(rezultat).toBe({ id: 1, pret: 10 });
+
+        // (2) 'ASTEPTAM' CA 'REZUTATUL' SA 'FIE EGALA' CU UN 'OBIECT':   
+        // FUNC. DE POTRIVIRE 'TOEQUAL()'       
+        expect(rezultat).toEqual({ id: 1, pret: 10 });
+    });
+});
+_____________________________________________________________________
+	=> Atat 'Sursa' cat su 'Obiectul Tintit'
+	       -> trebuie 'sa Aiba Exact' - '2 Proprietati' ('id' si 'pret')
+
+
+
+
+
+ (2.2) Rulam Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+>> Afisare in Powershel
+_____________________________________________________________________
+
+> jest
+
+ PASS  tests\lib.test.js
+  absolut
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este pozitivă (4ms)
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este negativă (1ms)
+    √ Ar trebui să returneze 0 dacă intrarea este 0
+  salut
+    √ Ar trebui să returneze mesajul de salut (1ms)
+  obtinereValuta
+    √ Ar trebui să returneze valute acceptate (2ms)
+  obtineProdus
+    √ Ar trebui să returneze produsul cu id-ul dat (1ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       6 passed, 6 total
+Snapshots:   0 total
+Time:        2.883s, estimated 6s
+Ran all test suites.
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (3.1) O alta Functie de Potrivire  'toMatchObject()' 
+	=> in Fisierul "tests/lib.test.js":
+_____________________________________________________________________
+
+// (4) TESTAREA  'OBIECTELOR':
+// BLOCUL DE 'GRUPAREA  TESTELOR CONEXE' - 'DESCRIBE(OBTINEPRODUS)':
+describe('obtineProdus', () => {
+    // TEST 1:
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să returneze produsul cu id-ul dat', () => {
+
+        // APELAREA FUNC. 'OBTINEPRODUS()':
+        const rezultat = lib.obtineProdus(1);
+
+        // 'ASTEPTAM' CA 'REZUTATUL' SA 'FIE EGALA' CU UN 'OBIECT':   
+        // FUNC. DE POTRIVIRE 'TOBE()'       
+        // expect(rezultat).toBe({ id: 1, pret: 10 });
+
+        // (1) FUNC. DE POTRIVIRE 'TOEQUAL()'       
+        expect(rezultat).toEqual({ id: 1, pret: 10 });
+        
+        // (2) FUNC. DE POTRIVIRE 'TOMATCHOBJSECL()'       
+        expect(rezultat).toMatchObject({ id: 1, pret: 10 });
+    });
+});
+_____________________________________________________________________
+	=> In care 'Sursa' si 'Obiectul Tintit'
+	       -> Nu trebuie 'sa Aiba' Exact 'Acelasi Nr. de  Proprietati' .
+
+
+
+
+
+
+
+  (3.2) Adaugam in Func. Exportata 'obtineProdus'
+	=> Proprietatea 'categorie'
+	=> in Fisierul 'lib.js':
+
+_____________________________________________________________________
+// TESTAREA  'OBIECTE': 
+module.exports.obtineProdus = function(idProdus) {
+    return { id: idProdus, pret: 10, categorie: 'a' };
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (3.3) Rulam Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+>> Afisare in Powershel
+_____________________________________________________________________
+
+> jest
+
+ FAIL  tests\lib.test.js
+  absolut
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este pozitivă (9ms)
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este negativă (1ms)
+    √ Ar trebui să returneze 0 dacă intrarea este 0 (12ms)
+  salut
+    √ Ar trebui să returneze mesajul de salut (3ms)
+  obtinereValuta
+    √ Ar trebui să returneze valute acceptate (6ms)
+  obtineProdus
+    × Ar trebui să returneze produsul cu id-ul dat (19ms)
+
+  ● obtineProdus › Ar trebui să returneze produsul cu id-ul dat
+
+    expect(received).toEqual(expected)
+
+    Expected value to equal:
+      {"id": 1, "pret": 10}
+    Received:
+      {"categorie": "a", "id": 1, "pret": 10}
+
+    Difference:
+
+    - Expected
+    + Received
+
+      Object {
+    +   "categorie": "a",
+        "id": 1,
+        "pret": 10,
+      }
+
+       136 |
+       137 |         // (1) FUNC. DE POTRIVIRE 'TOEQUAL()'
+    > 138 |         expect(rezultat).toEqual({ id: 1, pret: 10 });
+       139 |
+       140 |         // (2) FUNC. DE POTRIVIRE 'TOMATCHOBJSECL()'
+       141 |         expect(rezultat).toMatchObject({ id: 1, pret: 10 });
+
+      at Object.it (tests/lib.test.js:138:26)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 5 passed, 6 total
+Snapshots:   0 total
+Time:        2.885s
+Ran all test suites.
+_____________________________________________________________________
+	=> Test Esuat la Apelarea Met. 'toEqual()'
+
+
+
+
+
+
+
+ (4.1) O alta Functie de Potrivire  'toHaveProperty('Cheie', Valoare)' 	
+	=> in Fisierul "tests/lib.test.js":
+_____________________________________________________________________
+
+// (4) TESTAREA  'OBIECTELOR':
+// BLOCUL DE 'GRUPAREA  TESTELOR CONEXE' - 'DESCRIBE(OBTINEPRODUS)':
+describe('obtineProdus', () => {
+    // TEST 1:
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să returneze produsul cu id-ul dat', () => {
+
+        // APELAREA FUNC. 'OBTINEPRODUS()':
+        const rezultat = lib.obtineProdus(1);
+
+        // 'ASTEPTAM' CA 'REZUTATUL' SA 'FIE EGALA' CU UN 'OBIECT':   
+        // FUNC. DE POTRIVIRE 'TOBE()'       
+        // expect(rezultat).toBe({ id: 1, pret: 10 });
+
+        // (1) FUNC. DE POTRIVIRE 'TOEQUAL()'       
+        // expect(rezultat).toEqual({ id: 1, pret: 10 });
+
+        // (2) FUNC. DE POTRIVIRE 'TOMATCHOBJSECL()'       
+        expect(rezultat).toMatchObject({ id: 1, pret: 10 });
+
+        // (3) FUNC. DE POTRIVIRE 'TOHAVEPROPERTY('CHEIE', VALOARE)'       
+        expect(rezultat).toHaveProperty('id', '1');
+    });
+});
+_____________________________________________________________________
+	=> in care Cautam o Singura Proprietate
+	=> aici Tipul de Date al Proprietatii este Foarte Important
+	      -> daca Schimbam Valoarea 'Number' cu 'String'
+	     -> Testul Esueaza.
+
+
+
+
+
+
+ (4.2) Rulam Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+>> Afisare in Powershel
+_____________________________________________________________________
+
+> jest
+
+ FAIL  tests\lib.test.js
+  absolut
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este pozitivă (9ms)
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este negativă (1ms)
+    √ Ar trebui să returneze 0 dacă intrarea este 0 (1ms)
+  salut
+    √ Ar trebui să returneze mesajul de salut (2ms)
+  obtinereValuta
+    √ Ar trebui să returneze valute acceptate (4ms)
+  obtineProdus
+    × Ar trebui să returneze produsul cu id-ul dat (14ms)
+
+  ● obtineProdus › Ar trebui să returneze produsul cu id-ul dat
+
+    expect(object).toHaveProperty(path, value)
+
+    Expected the object:
+      {"categorie": "a", "id": 1, "pret": 10}
+    To have a nested property:
+      "id"
+    With a value of:
+      "1"
+    Received:
+      1
+
+    Difference:
+
+      Comparing two different types of values. Expected string but received number.
+
+       142 |
+       143 |         // (3) FUNC. DE POTRIVIRE 'TOHAVEPROPERTY('CHEIE', VALOARE)'
+    > 144 |         expect(rezultat).toHaveProperty('id', '1');
+       145 |     });
+       146 | });
+
+      at Object.it (tests/lib.test.js:144:26)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 5 passed, 6 total
+Snapshots:   0 total
+Time:        2.866s
+Ran all test suites.	
+_____________________________________________________________________
+	=> Test Esuat - datorita Tipului de Date Diferit ('String' in loc de 'Number').
+
+
+
