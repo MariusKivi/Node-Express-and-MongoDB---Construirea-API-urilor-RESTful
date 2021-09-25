@@ -1,0 +1,318 @@
+
+	Exercitiu: Testarea 'FizzBuss'
+
+
+
+
+  (1.1) Cream Fisierul 'ex_fizzbuss.js'
+_____________________________________________________________________
+
+//________________________________________________________________________
+// FUNCTIA 'FIZZBUZZ' 
+module.exports.fizzBuzz = function(input) {
+
+    // (1) DACA 'TIPUL INPUT-ULUI NU ESTE NUMAR'
+    // ARNCA 'EROAREA'
+    if (typeof input !== 'number')
+        throw new Error('Input-ul ar trebui să fie un număr.');
+
+    // (2) DACA 'INPUT-ULUI ESTE DIVIZIBIL LA 3 & 5'
+    // RETURNEAZA 'FIZBUZZ'
+    if ((input % 3 === 0) && (input % 5) === 0)
+        return 'FizzBuzz';
+
+    // (3) DACA 'INPUT-ULUI ESTE DIVIZIBIL LA 3'
+    // RETURNEAZA 'FIZ'
+    if (input % 3 === 0)
+        return 'Fizz';
+
+    // (4) DACA 'INPUT-ULUI ESTE DIVIZIBIL LA 5'
+    // RETURNEAZA 'BUZZ'
+    if (input % 5 === 0)
+        return 'Buzz';
+
+    // AFTFEL 'RETURNEAZA INPUT-UL':
+    return input;
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (1.2)   Cream Testarea in Fisierul  'tests/ex_fizzbuss.test.js'
+_____________________________________________________________________
+
+// IMPORTAM MODULUL 'EX_FIZZBUZZ.JS'
+const lib = require('../ex_fizzbuss')
+
+
+
+// BLOCUL DE 'GRUPAREA  TESTELOR CONEXE' - 'DESCRIBE(FIZZBUZZ)':
+describe('fizzBuzz', () => {
+
+    // TEST 1: 
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să arunce o excepție dacă input-ul nu este un număr', () => {
+        // ABORDAREA 1:  ' TREBUIE REPETATA PT TOATE ARGUMENTELE TESTATE'
+        // 'ASTEPTAM' CA 'FUNC. CALLBACK' SA 'ARUNCE' PRIN FUNC. 'TOTHROW()':   
+        // FUNC. CALLBACK 'FIZZBUZZ('STRING')':
+        expect(() => { lib.fizzBuzz('a') }).toThrow();
+
+    });
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (1.3) Pornim Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________
+
+ PASS  tests\ex_fizzbuss.test.js
+ PASS  tests\lib.test.js
+
+Test Suites: 2 passed, 2 total
+Tests:       9 passed, 9 total
+Snapshots:   0 total
+Time:        0.536s, estimated 1s
+Ran all test suites.
+
+Watch Usage: Press w to show more.
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+
+  (1.4)   Adaugam alte Argumente pt. Testare
+	=> in Fisierul  'tests/ex_fizzbuss.test.js'
+_____________________________________________________________________
+
+// BLOCUL DE 'GRUPAREA  TESTELOR CONEXE' - 'DESCRIBE(FIZZBUZZ)':
+describe('fizzBuzz', () => {
+
+    // TEST 1: 
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să arunce o excepție dacă input-ul nu este un număr', () => {
+        // ABORDAREA 1:  ' TREBUIE REPETATA PT TOATE ARGUMENTELE TESTATE'
+        // 'ASTEPTAM' CA 'FUNC. CALLBACK' SA 'ARUNCE' PRIN FUNC. 'TOTHROW()':   
+        // FUNC. CALLBACK 'FIZZBUZZ('STRING')':
+        expect(() => { lib.fizzBuzz('a') }).toThrow();
+        expect(() => { lib.fizzBuzz(null) }).toThrow();
+        expect(() => { lib.fizzBuzz(undefined) }).toThrow();
+        expect(() => { lib.fizzBuzz({}) }).toThrow();
+
+    });
+});
+
+_____________________________________________________________________
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________
+
+ PASS  tests\ex_fizzbuss.test.js
+ PASS  tests\lib.test.js
+
+Test Suites: 2 passed, 2 total
+Tests:       9 passed, 9 total
+Snapshots:   0 total
+Time:        0.541s, estimated 1s
+Ran all test suites.
+
+Watch Usage: Press w to show more.
+
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2)   Cream Cazul 2 de Testare
+	=>  in Fisierul  'tests/ex_fizzbuss.test.js'
+_____________________________________________________________________
+
+ // TEST 2: 
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să returneze FizzBuzz dacă input-ul este divizibil cu 3 și 5', () => {
+
+        // APELAREA FUNC. 'FIZZBUZZ()':
+        const rezultat = lib.fizzBuzz(15);
+
+        // VERIFICAM DACA 'NR' ESTE 'CORECT'
+        // APELAM FUNC. UTILITARA 'EXPECT()' (AE FK. 'JEST')
+        //  & FUNC. DE POTRIVIRE 'TOBE()' (A FK. 'JEST'):
+        expect(rezultat).toBe('FizzBuzz');
+    });
+_____________________________________________________________________
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________
+
+ PASS  tests\ex_fizzbuss.test.js
+ PASS  tests\lib.test.js
+
+Test Suites: 2 passed, 2 total
+Tests:       10 passed, 10 total
+Snapshots:   0 total
+Time:        0.655s, estimated 1s
+Ran all test suites.
+
+Watch Usage: Press w to show more.
+_____________________________________________________________________
+
+
+
+
+
+
+ (3)   Cream Cazul 3 de Testare
+	=>  in Fisierul  'tests/ex_fizzbuss.test.js'
+_____________________________________________________________________
+
+ // TEST 3: 
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să returneze FizzBuzz dacă intrarea este divizibilă cu 3', () => {
+
+        // APELAREA FUNC. 'FIZZBUZZ()':
+        const rezultat = lib.fizzBuzz(3);
+
+        // VERIFICAM DACA 'NR' ESTE 'CORECT'
+        // APELAM FUNC. UTILITARA 'EXPECT()' (AE FK. 'JEST')
+        //  & FUNC. DE POTRIVIRE 'TOBE()' (A FK. 'JEST'):
+        expect(rezultat).toBe('Fizz');
+    });
+_____________________________________________________________________
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________
+
+ PASS  tests\ex_fizzbuss.test.js
+ PASS  tests\lib.test.js
+
+Test Suites: 2 passed, 2 total
+Tests:       11 passed, 11 total
+Snapshots:   0 total
+Time:        0.55s, estimated 1s
+Ran all test suites.
+
+Watch Usage: Press w to show more.
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (4)   Cream Cazul 4 de Testare
+	=>  in Fisierul  'tests/ex_fizzbuss.test.js'
+_____________________________________________________________________
+
+// TEST 4: 
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să returneze FizzBuzz dacă input-ul este divizibil cu 5', () => {
+
+        // APELAREA FUNC. 'FIZZBUZZ()':
+        const rezultat = lib.fizzBuzz(5);
+
+        // VERIFICAM DACA 'NR' ESTE 'CORECT'
+        // APELAM FUNC. UTILITARA 'EXPECT()' (AE FK. 'JEST')
+        //  & FUNC. DE POTRIVIRE 'TOBE()' (A FK. 'JEST'):
+        expect(rezultat).toBe('Buzz');
+    });
+_____________________________________________________________________
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________
+
+ PASS  tests\ex_fizzbuss.test.js
+ PASS  tests\lib.test.js
+
+Test Suites: 2 passed, 2 total
+Tests:       12 passed, 12 total
+Snapshots:   0 total
+Time:        0.582s, estimated 1s
+Ran all test suites.
+
+Watch Usage: Press w to show more.
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (5)   Cream Cazul 5 de Testare
+	=>  in Fisierul  'tests/ex_fizzbuss.test.js'
+_____________________________________________________________________
+
+    // TEST 5: 
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să returneze input-ul dacă nu este divizibil cu 3 sau 5', () => {
+
+        // APELAREA FUNC. 'FIZZBUZZ()':
+        const rezultat = lib.fizzBuzz(1);
+
+        // VERIFICAM DACA 'NR' ESTE 'CORECT'
+        // APELAM FUNC. UTILITARA 'EXPECT()' (AE FK. 'JEST')
+        //  & FUNC. DE POTRIVIRE 'TOBE()' (A FK. 'JEST'):
+        expect(rezultat).toBe(1);
+    });
+_____________________________________________________________________
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________
+
+ PASS  tests\ex_fizzbuss.test.js
+ PASS  tests\lib.test.js
+
+Test Suites: 2 passed, 2 total
+Tests:       13 passed, 13 total
+Snapshots:   0 total
+Time:        0.555s, estimated 1s
+Ran all test suites.
+
+Watch Usage: Press w to show more.
+_____________________________________________________________________
+ 	=> Toate Testele au Trecut.
+
+
