@@ -1,0 +1,290 @@
+
+	Testarea 'Exceptiilor'
+
+
+
+
+------------------------------------------------------------------------------------------------------------
+ NB!
+
+    <> 'Valorile False' in 'JavaScript' sunt:
+	<>  null;
+	<>  undefined;
+	<>  NaN (Not a Number);
+	<>  ''  (Sir Gol);
+	<>  0;
+	<>  false
+	
+------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+  (1.1) Cream Func. Exportata 'inregistrareUtilizator'
+	=> ce Necesita cel putin '2 Teste de Unitate'
+	=> in Fisierul 'lib.js':
+_____________________________________________________________________
+
+// TESTAREA  'EXCEPTIILOR'
+// (NECESITA CEL PUTIN '2 TESTE DE UNITATE')
+module.exports.inregistrareUtilizator = function(nume_uilizator) {
+    
+    // DACA 'NUMELE_UTILIZATOR ESTE FALS'
+    // ARUNCAM O EXCEPTIE:
+    if (!nume_uilizator) throw new Error('Numele de utilizator este solicitat.');
+
+    // ALTFEL SE RETURNEAZA UN 'OBIECT' U '2 PROPRIETATI':
+    return { id: new Date().getTime(), nume_uilizator: nume_uilizator }
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (1.2) Cream Blocul 'describe('inregistrareUtilizator')'
+	=> in Fisierul "tests/lib.test.js":
+_____________________________________________________________________
+
+// (5) TESTAREA  'EXCEPTIILOR':
+// BLOCUL DE 'GRUPAREA  TESTELOR CONEXE' - 'DESCRIBE(INREGISTRAREUTILIZATOR)':
+describe('inregistrareUtilizator', () => {
+    // TEST 1:
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să arunce o exceptie, dacă numele de utilizator este fals', () => {
+
+        // 'ASTEPTAM' CA 'FUNC. CALLBACK' SA 'ARUNCE' PRIN FUNC. 'TOTHROW()':   
+        // FUNC. CALLBACK 'INREGISTRAREUTILIZATOR(NULL)':
+        expect(() => { lib.inregistrareUtilizator(null) }).toThrow();
+    });
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (1.3) Rulam Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+>> Afisare in Powershel
+_____________________________________________________________________
+
+> jest
+
+ PASS  tests\lib.test.js
+  absolut
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este pozitivă (9ms)
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este negativă (1ms)
+    √ Ar trebui să returneze 0 dacă intrarea este 0
+  salut
+    √ Ar trebui să returneze mesajul de salut (1ms)
+  obtinereValuta
+    √ Ar trebui să returneze valute acceptate (3ms)
+  obtineProdus
+    √ Ar trebui să returneze produsul cu id-ul dat (2ms)
+  inregistrareUtilizator
+    √ Ar trebui să arunce o exceptie, dacă numele de utilizator este fals
+
+Test Suites: 1 passed, 1 total
+Tests:       7 passed, 7 total
+Snapshots:   0 total
+Time:        4.33s
+Ran all test suites.
+_____________________________________________________________________
+	
+
+
+
+
+
+
+
+ (2.1)  O alta Abordare presupune
+	=> Crearea unei 'Matrici' cu 'Toate Argumentele'
+	=> pe care 'Dorim' sa le' Testam' pt. Metoda 'inregistrareUtilizator',
+	=> in Fisierul "tests/lib.test.js":
+_____________________________________________________________________
+
+
+// (5) TESTAREA  'EXCEPTIILOR':
+// BLOCUL DE 'GRUPAREA  TESTELOR CONEXE' - 'DESCRIBE(INREGISTRAREUTILIZATOR)':
+describe('inregistrareUtilizator', () => {
+    // TEST 1:
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să arunce o exceptie, dacă numele de utilizator este fals', () => {
+
+        // ABORDAREA 1:  ' TREBUIE REPETATA PT TOATE ARGUMENTELE TESTATE'
+        // 'ASTEPTAM' CA 'FUNC. CALLBACK' SA 'ARUNCE' PRIN FUNC. 'TOTHROW()':   
+        // FUNC. CALLBACK 'INREGISTRAREUTILIZATOR(NULL)':
+        expect(() => { lib.inregistrareUtilizator(null) }).toThrow();
+
+
+        // ABORDAREA 2:
+        // DEF. 'MATRICEA' DE 'ARGUMENTE' 
+        // CU TOATE ARGUMENTELE PE CARE DORIM SA LE TESTAM:
+        const argumente = [null, undefined, NaN, '', 0, false];
+
+        // BUCLA 'FOREACH':
+        argumente.forEach(arg => {
+
+            // 'ASTEPTAM' CA 'FUNC. CALLBACK' SA 'ARUNCE' PRIN FUNC. 'TOTHROW()':   
+            // FUNC. CALLBACK 'INREGISTRAREUTILIZATOR(NULL)':
+            expect(() => { lib.inregistrareUtilizator(arg) }).toThrow();
+        });
+    });
+});
+_____________________________________________________________________
+	
+
+
+
+
+
+ (2.2) Rulam Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+>> Afisare in Powershel
+_____________________________________________________________________
+> jest
+
+ PASS  tests\lib.test.js
+  absolut
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este pozitivă (13ms)
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este negativă (1ms)
+    √ Ar trebui să returneze 0 dacă intrarea este 0 (1ms)
+  salut
+    √ Ar trebui să returneze mesajul de salut (2ms)
+  obtinereValuta
+    √ Ar trebui să returneze valute acceptate (6ms)
+  obtineProdus
+    √ Ar trebui să returneze produsul cu id-ul dat (4ms)
+  inregistrareUtilizator
+    √ Ar trebui să arunce o exceptie, dacă numele de utilizator este fals (4ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       7 passed, 7 total
+Snapshots:   0 total
+Time:        2.873s
+Ran all test suites.
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (3.1) Cream Testul 2
+	=> in Blocul 'describe('inregistrareUtilizator')'
+	=> din Fisierul "tests/lib.test.js":
+_____________________________________________________________________
+
+// (5) TESTAREA  'EXCEPTIILOR':
+// BLOCUL DE 'GRUPAREA  TESTELOR CONEXE' - 'DESCRIBE(INREGISTRAREUTILIZATOR)':
+describe('inregistrareUtilizator', () => {
+
+    // TEST 1:
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să arunce o exceptie, dacă numele de utilizator este fals', () => {
+
+        // ABORDAREA 1:  ' TREBUIE REPETATA PT TOATE ARGUMENTELE TESTATE'
+        // 'ASTEPTAM' CA 'FUNC. CALLBACK' SA 'ARUNCE' PRIN FUNC. 'TOTHROW()':   
+        // FUNC. CALLBACK 'INREGISTRAREUTILIZATOR(NULL)':
+        expect(() => { lib.inregistrareUtilizator(null) }).toThrow();
+
+
+        // ABORDAREA 2:
+        // DEF. 'MATRICEA' DE 'ARGUMENTE' 
+        // CU TOATE ARGUMENTELE PE CARE DORIM SA LE TESTAM:
+        const argumente = [null, undefined, NaN, '', 0, false];
+
+        // BUCLA 'FOREACH':
+        argumente.forEach(arg => {
+
+            // 'ASTEPTAM' CA 'FUNC. CALLBACK' SA 'ARUNCE' PRIN FUNC. 'TOTHROW()':   
+            // FUNC. CALLBACK 'INREGISTRAREUTILIZATOR(NULL)':
+            expect(() => { lib.inregistrareUtilizator(arg) }).toThrow();
+        });
+    });
+
+
+    // TEST 2:
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să returneze un obiect utilizator dacă este trecut un nume de utilizator valid', () => {
+
+        // APELAREA FUNC. 'INREGISTRAREUTILIZATOR()':
+        const rezultat = lib.inregistrareUtilizator('Marius');
+
+        // 'ASTEPTAM' CA 'REZUTATUL' SA 'POTRIVEASCA OBIECTUL' CU UN 'OBIECT':   
+        // FUNC. DE POTRIVIRE 'TOBMATCHOBJECT()' & 'TOBEGREATER()'      
+        expect(rezultat).toMatchObject({ nume_uilizator: 'Marius' });
+        expect(rezultat.id).toBeGreaterThan(0);
+
+    });
+});
+_____________________________________________________________________
+	=> Ambele 'Asteptari' sunt pt. Acelasi Concept.
+	=> A 2-a 'Asteptare' este 'Suficienta'
+	=> pt. a sti ca avem un 'Numar Pozitiv'.
+
+
+
+
+
+ (3.2) Rulam Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+>> Afisare in Powershel
+_____________________________________________________________________
+
+> jest
+
+ PASS  tests\lib.test.js
+  absolut
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este pozitivă (5ms)
+    √ Ar trebui să returneze un număr pozitiv dacă intrarea este negativă
+    √ Ar trebui să returneze 0 dacă intrarea este 0 (1ms)
+  salut
+    √ Ar trebui să returneze mesajul de salut (1ms)
+  obtinereValuta
+    √ Ar trebui să returneze valute acceptate (4ms)
+  obtineProdus
+    √ Ar trebui să returneze produsul cu id-ul dat (2ms)
+  inregistrareUtilizator
+    √ Ar trebui să arunce o exceptie, dacă numele de utilizator este fals (1ms)
+    √ Ar trebui să returneze un obiect utilizator dacă este trecut un nume de utilizator valid (1ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       8 passed, 8 total
+Snapshots:   0 total
+Time:        2.898s
+Ran all test suites.
+_____________________________________________________________________
+	
+
+
