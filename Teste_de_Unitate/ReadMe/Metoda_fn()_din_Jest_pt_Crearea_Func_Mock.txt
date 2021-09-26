@@ -1,0 +1,240 @@
+
+	Metoda '.fn()' din Fk. 'Jest' pt Crearea Func. 'Mock'
+
+
+
+
+
+   <> Cea mai 'Buna Cale' de a 'Crea Interactiuni' intre '2 Obiecte' cu Functii 'Mack'/'Fake'
+	=> o constituie utilizarea 'Metodei' Framework-ului 'Jest' 
+	=> si anume Metoda '.fn()'  (abr. a lui 'function()')
+
+------------------------------------------------------------------------------------------------------------
+
+        // MET. '.FN()' DIN FK. 'JEST' PT. CREAREA FUNC. 'FALSA'/'MOCK'/'FAKE':
+        const mockFunction = jest.fn();
+
+        // APELARI MET. 'MOCKRETURNVALUE()':
+        // mockFunction.mockReturnValue(1);
+
+        // APELARI MET. 'MOCKRESOLVEDVALUE()'
+        // & PRIMIM O 'PROMISIUNE':
+        // mockFunction.mockResolvedValue(1);
+
+        // SIMULARE  UNEI 'ERORI'
+        // PRIN APELARI MET. 'MOCKREJECTEDVEVALUE()'
+        // & PRIMIM O 'PROMISIUNE':
+        mockFunction.mockRejectedValue(new Error('...'));
+
+
+        // PUNEM 'PROMISIUNEA' IN 'ASTEPTARE' - 'AWAIT':
+        // APELAREA FUNC.'FUNCTIEFALSE()'
+        // CARE ESTE O 'FUNC. FARA IMPLEMENTARE' (FUNC. FARA COD):
+        const rezultat = await mockFunction();
+------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+  (1) Implementarea Metodei 'Jest' - '.fn()'
+	=> in Functia 'describe(notificaClient)'
+	=> in Testul 1 'it()'
+	=> din Fisierul 'tests/lib.test.js':
+
+  >> Inlocuim Condul:
+_____________________________________________________________________
+
+// (7) TESTAREA  'FUNC. 'FAKE'/'MOCK' - INTERACTIUNEA DINTRE '2 OBIECTE':
+// BLOCUL DE 'GRUPAREA  TESTELOR CONEXE' - 'DESCRIBE(NOTIFICACLIENT)':
+describe('notificaClient', () => {
+
+    // TEST 1:
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să trimită un e-mail clientului', () => {
+
+        // FUNC. 'FAKE'/'MOCK'
+        // PRIN SETAREA FUNC. 'OBTINECLIENTSYNC'
+        // CATRE O 'NNOUA FUNCTIE' CARE 'NU VORBESTE' CU O 'BAZA DE DATE':
+        db.obtineClientSync = function(idClient) {
+
+            // RETURNARE OBIECT CU PROP. 'EMAIL':
+            return { email: 'a' };
+        }
+
+
+
+        // VARIABILA BOOLEANA:
+        let mailTrimis = false;
+
+        // FUNC. 'FAKE'/'MOCK' (INLOCUIRE 'FUNC' CU O 'NOUA FUNC')
+        // PRIN SETAREA FUNC. 'SEND'
+        mail.send = function(email, mesaj) {
+            // SETARE VARIABILA:
+            mailTrimis = true;
+        }
+
+        // APELAREA FUNC. 'NOTIFICACLIENT'
+        lib.notificaClient({ idClient: 1 });
+
+        // 'ASTEPTAM' CA 'MAILUL TRIMIS' SA 'FIE' - 'ADEVARAT':   
+        // FUNC. DE POTRIVIRE 'TOBE()'       
+        expect(mailTrimis).toBe(true);
+    });
+});
+_____________________________________________________________________
+
+
+
+
+
+
+  >> Cu Condul:
+_____________________________________________________________________
+
+// (7) TESTAREA  'FUNC. 'FAKE'/'MOCK' - INTERACTIUNEA DINTRE '2 OBIECTE':
+// BLOCUL DE 'GRUPAREA  TESTELOR CONEXE' - 'DESCRIBE(NOTIFICACLIENT)':
+describe('notificaClient', () => {
+
+    // TEST 1:
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să trimită un e-mail clientului', () => {
+
+        // MET. '.FN()' DIN FK. 'JEST' (FUNC. 'FAKE'/'MOCK')
+        // PRIN SETAREA FUNC. 'OBTINECLIENTSYNC'
+        // CATRE O 'NNOUA FUNCTIE' CARE 'NU VORBESTE' CU O 'BAZA DE DATE':
+        db.obtineClientSync = jest.fn().mockReturnValue({ email: 'a' });
+
+        // MET. '.FN()' DIN FK. 'JEST' (FUNC. 'FAKE'/'MOCK')
+        // PRIN SETAREA FUNC. 'SEND'
+        mail.send = jest.fn();
+
+        // APELAREA FUNC. 'NOTIFICACLIENT'
+        lib.notificaClient({ idClient: 1 });
+
+        // 'ASTEPTAM' CA 'TRIMISTEREA MAIL-ULUI SA 'FI FOST APELAT' - 'ADEVARAT':   
+        // FUNC. DE POTRIVIRE 'TOHAVEBEENCALLED()'       
+        expect(mail.send).toHaveBeenCalled();
+    });
+});
+_____________________________________________________________________
+
+
+
+
+
+
+ (2) Pornim Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+ >> Afisarea in PowerShell:
+_____________________________________________________________________
+
+ PASS  tests\ex_fizzbuss.test.js
+
+Test Suites: 2 passed, 2 total
+Tests:       15 passed, 15 total
+Snapshots:   0 total
+Time:        0.579s, estimated 1s
+Ran all test suites.
+
+Watch Usage: Press w to show more.
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+
+ (3) Utilizarea Potrivirii 'toMatch()':
+_____________________________________________________________________
+
+// (7) TESTAREA  'FUNC. 'FAKE'/'MOCK' - INTERACTIUNEA DINTRE '2 OBIECTE':
+// BLOCUL DE 'GRUPAREA  TESTELOR CONEXE' - 'DESCRIBE(NOTIFICACLIENT)':
+describe('notificaClient', () => {
+
+    // TEST 1:
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să trimită un e-mail clientului', () => {
+
+        // MET. '.FN()' DIN FK. 'JEST' (FUNC. 'FAKE'/'MOCK')
+        // PRIN SETAREA FUNC. 'OBTINECLIENTSYNC'
+        // CATRE O 'NNOUA FUNCTIE' CARE 'NU VORBESTE' CU O 'BAZA DE DATE':
+        db.obtineClientSync = jest.fn().mockReturnValue({ email: 'a' });
+        // MET. '.FN()' DIN FK. 'JEST' (FUNC. 'FAKE'/'MOCK')
+        // PRIN SETAREA FUNC. 'SEND'
+        mail.send = jest.fn();
+
+
+        // APELAREA FUNC. 'NOTIFICACLIENT'
+        lib.notificaClient({ idClient: 1 });
+
+
+        // VERIFICAM: 'ARGUMENTELE TRECUTE CU METODA' 
+        // PRIN  FUNC. DE POTRIVIRE 'TOHAVEBEENCALLEDWITH()'
+        // 'ASTEPTAM' CA 'TRIMISTEREA MAIL-ULUI SA 'FI FOST APELAT CU EMAIL SI MESAJ':   
+        // ACEASTA MET. ESTE BUNA PT. 'NUMERE', 'VALORI BOOLEAN
+        // expect(mail.send).toHaveBeenCalledWith('a', '...');
+
+        // VERIFICAM: 'ARGUMENTELE TRECUTE CU METODA' 
+        // PRIN  FUNC. DE POTRIVIRE 'TOHAVEBEENCALLEDWITH()'
+        // 'ASTEPTAM' CA 'TRIMISTEREA MAIL-ULUI SA 'FI FOST APELAT:   
+        expect(mail.send).toHaveBeenCalled();
+        
+        // VERIFICAM: 'FIECARUI ARGUMENT TRECUT CU METODA' 
+        // PRIN  FUNC. DE POTRIVIRE 'TOHAVEBEENCALLEDWITH()'
+        // 'ASTEPTAM' CA 'ELEM. 1 AL MATRICEI DE ARG. TRIMISE PRIN MAIL-ULUI SA 'FI EMAILUL':   
+        // expect(email.send.mock.calls[0][0]).toBe('a');
+        
+        // POTRIVIRE CU 'EXPRESIE REGULARA':
+        expect(mail.send.mock.calls[0][1]).toMatch(/Comanda/);
+    });
+});
+_____________________________________________________________________
+
+
+
+
+
+ (2) Pornim Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+ >> Afisarea in PowerShell:
+_____________________________________________________________________
+
+ PASS  tests\lib.test.js
+  ● Console
+
+    console.log tests\lib.test.js:220
+      Client fals citit...
+
+ PASS  tests\ex_fizzbuss.test.js
+
+Test Suites: 2 passed, 2 total
+Tests:       15 passed, 15 total
+Snapshots:   0 total
+Time:        0.541s, estimated 1s
+Ran all test suites.
+
+Watch Usage: Press w to show more.
+_____________________________________________________________________
+
+
+
+
