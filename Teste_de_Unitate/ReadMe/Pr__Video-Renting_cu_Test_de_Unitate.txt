@@ -1,0 +1,153 @@
+
+	Prroiectul 'Video-Renting' cu 'Test de Unitate'
+
+
+
+
+  (1) Instalam Framework-ul 'Jest'  Versiunea '@22.2.2'
+	=> in Proiectul 'video-renting':
+_____________________________________________________________________
+
+	npm i jest@22.2.2 --savedev
+_____________________________________________________________________
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________
++ jest@22.2.2
+added 484 packages in 124.813s
+
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (2) Modificam Scriptul "test"
+	=> din Fisierul 'package.json':
+_____________________________________________________________________
+
+"scripts": {
+        "test": "jest --watchAll"
+    },
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (3) Cream Fisierul 'confif/test.json'
+	=>
+_____________________________________________________________________
+
+{
+    "cheiaPrivataJWT": "1234"
+}
+_____________________________________________________________________
+
+
+
+
+
+
+  (4) Cream Fisierul 'jest.config.js'
+_____________________________________________________________________
+
+// jest.config.js
+module.exports = {
+    testURL: 'http://localhost:3000'
+};
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (5) Cream Folder-ul 'tests'
+	=> in care cream Folder-ul 'unit'	
+	=> in care cream Folder-ul 'modules'
+	=> in care cream Fisierul  'utilizator..test.js'
+_____________________________________________________________________
+
+// IMPORTAM:
+const { Utilizator } = require('../../../models/utilizator');
+const jwt = require('jsonwebtoken');
+const config = require('config');
+const mongoose = require('mongoose');
+
+
+// 'UTILIZATOR.GENERARETOKENAUTENTIFICARE'
+// BLOCUL 'DESCRIBE()' DE 'GRUPAREA  TESTELOR CONEXE SUIT':
+describe('utilizator.generareTokenAutentificare', () => {
+
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('ar trebui să returneze un JWT Valid', () => {
+
+        // CREAM OBIECTUL 'PAYLOAD':
+        const payload = {
+            _id: new mongoose.Types.ObjectId().toHexString(),
+            esteAdministrator: true
+        };
+
+        // CREARE OBIECT 'UTILIZATOR':
+        const utilizator = new Utilizator(payload);
+
+        // OBTINEM 'TOKEN' = APELAM FUNC. 'GENERARETOKENAUTENTIFICARE()'
+        const token = utilizator.generareTokenAutentificare();
+
+        // VALIDAM 'TOKEN'-UL
+        const decodat = jwt.verify(token, config.get('cheiaPrivataJWT'));
+
+        // ASTEPTAM CA OBICTUL 'DECODAT'
+        // SA 'SE POTRIVESCA CU OBIECTUL PAYLOAD':
+        expect(decodat).toMatchObject(payload);
+    });
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (6) Rulam Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________
+
+> jest --watchAll
+ PASS  tests\unit\models\utilizator.test.js
+  utilizator.generareTokenAutentificare
+    √ ar trebui să returneze un JWT Valid (21ms)
+
+  console.warn node_modules\mongoose\lib\helpers\printJestWarning.js:4
+    Mongoose: looks like you're trying to test a Mongoose app with Jest's default jsdom test environment. Please make sure you read Mongoose's docs on configuring Jest to test Node.js apps: http://mongoosejs.com/docs/jest.html
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        4.388s
+Ran all test suites.
+_____________________________________________________________________
+
+
+
