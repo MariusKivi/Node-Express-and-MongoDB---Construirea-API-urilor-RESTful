@@ -1,0 +1,154 @@
+
+	Testarea 'Interactiunii' dintre '2 Obiecte'
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------
+  NB!
+
+      <> In 'Node' Modulele/Fisierele  Incarcate/Importate
+	=> sunt Stocate in Nemoria Cache / RAM (Temporara)
+  
+
+     <> 'Memoria RAM' utilizată pentru 'Stocarea Temporară' 
+	=> este cunoscută sub numele de 'Cache'.
+-----------------------------------------------------------------------------------------------------------
+
+
+
+
+
+  (1.1) Cream Fisierul 'mail.js':
+_____________________________________________________________________
+
+// FUNC. EXPORTATA  'SEND'
+module.exports.send = function(catre, subiect) {
+    // SIMULAM 'TRIMITEREA EMAIL-U;UI':
+    console.log('Se trimite un email ...');
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (1.2) Cream Functia Exportata Mock/Fake - 'notificaClient'
+	=> si Importam 'mail.js'
+	=> in fisierul 'lib.js'
+_____________________________________________________________________
+
+const mail = require('./mail');
+
+
+
+// FUNC. 'MOCK/FAKE' EXPORTATA  'notificaclient()'
+module.exports.notificaClient = function(comanda) {
+
+    // MET. 'OBTINECLIENTSYNC()' PRELUATA DIN 'DB.JS':
+    const client = db.obtineClientSync(comanda.idClient);
+
+    // UTILIZAM OBIECTUL 'MAIL'
+    // APELAM MET. 'SEND()' PT. A TRIMITE UN 'EMAIL':
+    mail.send(client.email, 'Comanda dvs. a fost plasată cu succes.');
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (1.3) Cream Functia 'notificaClient'
+	=> si ii Importam Fisierul 'mail.js'
+	=> in Fisierul 'tests/lib.test.js':
+_____________________________________________________________________
+
+//  IMPORTAM FISIERUL 'MAIL.JS':
+const mail = require('../mail');
+
+
+// (7) TESTAREA  'FUNC. 'FAKE'/'MOCK' - INTERACTIUNEA DINTRE '2 OBIECTE':
+// BLOCUL DE 'GRUPAREA  TESTELOR CONEXE' - 'DESCRIBE(NOTIFICACLIENT)':
+describe('notificaClient', () => {
+
+    // TEST 1:
+    // APELAM FUNC. 'IT('NUME_TEST', FUNC_IN_CARE_IMPLEMENTAM_TESTUL)':
+    it('Ar trebui să trimită un e-mail clientului', () => {
+
+        // FUNC. 'FAKE'/'MOCK'
+        // PRIN SETAREA FUNC. 'OBTINECLIENTSYNC'
+        // CATRE O 'NNOUA FUNCTIE' CARE 'NU VORBESTE' CU O 'BAZA DE DATE':
+        db.obtineClientSync = function(idClient) {
+
+            // RETURNARE OBIECT CU PROP. 'EMAIL':
+            return { email: 'a' };
+        }
+
+
+
+        // VARIABILA BOOLEANA:
+        let mailTrimis = false;
+
+        // FUNC. 'FAKE'/'MOCK' (INLOCUIRE 'FUNC' CU O 'NOUA FUNC')
+        // PRIN SETAREA FUNC. 'SEND'
+        mail.send = function(email, mesaj) {
+            // SETARE VARIABILA:
+            mailTrimis = true;
+        }
+
+        // APELAREA FUNC. 'NOTIFICACLIENT'
+        lib.notificaClient({ idClient: 1 });
+
+        // 'ASTEPTAM' CA 'MAILUL TRIMIS' SA 'FIE' - 'ADEVARAT':   
+        // FUNC. DE POTRIVIRE 'TOBE()'       
+        expect(mailTrimis).toBe(true);
+    });
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (1.4) Rulam Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________
+
+ PASS  tests\ex_fizzbuss.test.js
+ PASS  tests\lib.test.js
+  ● Console
+
+    console.log tests\lib.test.js:220
+      Client fals citit...
+
+
+Test Suites: 2 passed, 2 total
+Tests:       15 passed, 15 total
+Snapshots:   0 total
+Time:        0.582s, estimated 1s
+Ran all test suites.
+
+Watch Usage: Press w to show more.
+_____________________________________________________________________
+
+
+
+
