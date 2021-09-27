@@ -1,0 +1,138 @@
+
+	Testarea 'Integrarii' prin Biblioteca 'SuperTest'
+
+
+
+  Biblioteca:
+---------------------------------------------------------------------------------------------------------
+https://www.npmjs.com/package/supertest
+---------------------------------------------------------------------------------------------------------
+
+
+
+
+  (1) Instalam Pachetul 'SuperTest' ca Dependenta de Dezvoltare:
+_____________________________________________________________________
+
+	npm i supertest --save-dev
+_____________________________________________________________________
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________
+
++ supertest@6.1.6
+added 14 packages in 21.281s
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Modificam 'Ascultarea Portului'
+	=> pt a 'Exporta' Obiectul 'Server'
+	=> in Fisierul 'index.js':
+_____________________________________________________________________
+
+// PRELUAREA 'REZULTATULUI' NUMIT 'SERVER'
+// MET. 'LISTEN(NR_PORT, CALLBACK FUNC*())' 
+// ASCULTAREA 'VARIABILEI ENVIRONMENT':
+const server = app.listen(port, () => winston.info(`Port de Ascultare ${port}...`));
+
+// EXPORTAREA OBIECTULUI 'SERVER':
+module.exports = server;
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (3) Cream in Folder-ul 'tests'
+	=> Folder-ul 'integration'
+	=>in care cream Folder-ul 'routes'	
+	=> in care Cream Fisierul 'genuri.test.js'
+_____________________________________________________________________
+
+// IMPORTARE - BIBLIOTECA 'SUPERTEST':
+const request = require('supertest');
+
+
+
+// DECLARARE VARIABILA:
+let server;
+
+
+
+// 
+// SUITA DE TEST 'DESCRIBE('/API/GENURI')':
+describe('/api/genuri', () => {
+
+    // FUNC. UTILITARA 'BEFOREEACH(CALLBACK)' DIN FK. 'JAST' & 'JESMIN'
+    // PRIN CARE 'JEST' VA APELA ACEASTA FUNC. INAINTE DE FIECARE 'TEST'
+    // SOLICITA 'PORNIREA SERVER'-ULUI:
+    beforeEach(() => { server = require('../../../index'); })
+
+    // FUNC. UTILITARA 'AFTEREACH(CALLBACK)' DIN FK. 'JAST' & 'JESMIN'
+    // SOLICITA 'OPRIREA SERVER'-ULUI::
+    afterEach(() => { server.close(); });
+
+
+    // (1.1) SUITA DE TEST: 'GET /'
+    describe('GET /', () => {
+
+        // TEST 1
+        it('ar trebui să returneze toate genurile', async() => {
+
+            // PRELUAREA 'GENURILOR'
+            const res = await request(server).get('/api/genuri');
+
+            // ASTEPTAM CA 'STATUS'-UL SA 'FIE 200'
+            expect(res.status).toBe(200);
+        });
+    });
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (4) Rulam Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________
+
+ PASS  tests\integration\routes\genuri.test.js (5.18s)e-Express-and-MongoDB---Cons
+  /api/genuri
+    GET /
+      √ ar trebui să returneze toate genurile (3891ms)
+
+
+ RUNS  tests/integration/routes/genuri.test.js
+
+Test Suites: 2 passed, 2 total
+Tests:       2 passed, 2 total
+Snapshots:   0 total
+Time:        7.61s
+Ran all test suites.
+_____________________________________________________________________
+
+
+
+
