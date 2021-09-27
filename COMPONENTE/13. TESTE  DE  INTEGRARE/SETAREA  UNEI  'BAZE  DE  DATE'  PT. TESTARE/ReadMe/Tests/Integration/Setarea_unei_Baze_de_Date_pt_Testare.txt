@@ -1,0 +1,147 @@
+
+	Setarea unei 'Bazei de Date'  pentru Testare
+
+
+
+
+  > > Facem Testul de Integrare pe o 'Baza de Date' ce se afla in Zona de 'Dezvoltare'
+	=> nu pe cea aflata in 'Productie',
+	=> intrucat vom 'Adauga' si 'Sterge Documente'.
+
+
+
+  (1) Adaugam Cheia 'db' 
+	=> in Fisierul 'config/default.json'
+	=> si Decupam URL-ul din  Fisierul 'startup/db.js'
+	=> si il Plasam aici:
+_____________________________________________________________________
+
+{
+    "cheiaPrivataJWT": "",
+    "db": "mongodb://localhost/video-renting"
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+  (2) Adaugam Cheia 'db' 
+	=> si in Fisierul 'config/test.json'
+	=> si Schimbam Numele Bazei de Date:
+_____________________________________________________________________
+
+{
+    "cheiaPrivataJWT": "1234",
+    "db": "mongodb://localhost/video-renting_test"
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+
+ (3) In Fisierul 'startup/db.js'
+	=> importam Modulul 'config'
+	=> si apio Citim in Mod 'Dinamic' - 'Sirul de Conexiune'
+	=> Bazata pe Mediul/Environment-ul in care Aplicatia noastra Ruleaza
+	=> si Modificam si Mesajul de Afisare
+	=> Adaugand 'Template String':
+_____________________________________________________________________
+
+// (IMP-12 IMPORTAREA  BIBLIOTECiI 'WINSTON'
+//  ('IMPLICIT' ESTE PT. 'LOGAREA' - 'TRANSPORTULUI' IN 'CONSOLA'):
+const winston = require('winston');
+const mongoose = require('mongoose');
+const config = require('config');
+
+
+
+// EXPORTAM FUNCTIA ANONIMA:
+module.exports = function() {
+
+    // CONSTANTA 'DB':
+    const db = config.get('db');
+
+    // CONECTAREA DINAMICA LA  'BAZA DE DATE' - 'MONGODB'
+    // BAZATA PE 'ENVIRONMENT'-UL IN CARE APLICATIA 'RULEAZA':
+    mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+        // 'PROMISIUNE' - IN 'CAZ DE SUCCES':
+        // .then(() => console.log('Conectat cu succes la Baza de Date MongoDB'))
+        .then(() => winston.info(`Conectat cu succes la ${db}...`));
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (4) Rulam Aplicatia:
+_____________________________________________________________________
+
+	node index.js
+_____________________________________________________________________
+
+
+
+ >> Afisarea in Windows Comand  Line:
+_____________________________________________________________________
+
+info: Port de Ascultare 3000...
+info: Conectat cu succes la Baza de Date mongodb://localhost/video-renting...
+_____________________________________________________________________
+
+
+
+
+
+
+
+  (5)  Instalam Global Mediul pt. Node  'win-node-env':
+
+____________________________________________________________________
+
+	npm install -g win-node-env
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (5) Rulam Testul
+	=> si ne  vom Conecta la Baza de Date 'test'
+	=> Setand 'NODE_ENV=test'
+	=> si Ruland Fisierul 'index.js':
+_____________________________________________________________________
+
+	NODE_ENV=test node index.js
+_____________________________________________________________________
+
+
+
+
+
+
+
+ >> Afisarea in Windows Comand  Line:
+_____________________________________________________________________
+
+info: Port de Ascultare 3000...
+info: Conectat cu succes la mongodb://localhost/video-renting_test...
+_____________________________________________________________________
+
+	=> in MongoDB Compass 
+	=> a fost Generata Baza de Date 'video-renting_test'
+
+
