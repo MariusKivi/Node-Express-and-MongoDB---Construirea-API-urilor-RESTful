@@ -1,0 +1,65 @@
+
+	Pregatirea Aplicatiei pt. 'Testul de Integrare'
+
+
+
+
+  (1) Adaugarea Apelarii Functiei 'login'
+	=>in Fisierul Proiectului - 'index.js'
+_____________________________________________________________________
+
+require('./startup/login')();
+
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Schimbarea Comenzii 'test'
+	=> din "scripts" 
+	=> din Fisierul 'package.json'
+	=> Adaugand Flag-ul  '--verbose':
+_____________________________________________________________________
+
+"scripts": {
+        "test": "jest --watchAll --verbose"
+    },
+_____________________________________________________________________
+
+
+  >> Prin Flag-ul  '--verbose'
+	=> Fk. 'Jest' afiseaza' Informatii Suplimentare' in 'Consola'
+	=> iar daca ceva este Gresit
+	=> putem 'Utiliza' acele 'Informatii'
+	=> pentru a putea 'Solutiona' cu Usurinta 'Pronlema'.
+
+
+
+
+
+
+
+ (3) Dezactivam Plugin-ul 'Winston' 
+	=> din Fisierul 'startup/login.js'
+	=> pt. a putea Rula 'Testul de Integrare'
+	=> Comentam Momentan Importul 'winston-mongodb':
+	=> si Mai Comentam Momentan 'winston.add()'
+_____________________________________________________________________
+
+// (IMP-13 IMPORTAREA  BIBLIOTECiI 'WINSTON-MONGODB'
+// PT 'INREGISTRAREA MESAJELOR' IN 'MONGODB':
+//require('winston-mongodb');
+
+
+
+   // winston.add(winston.transports.MongoDB, {
+    //     db: 'mongodb://localhost/video-renting',
+    //     level: 'error'
+    // });
+_____________________________________________________________________
+
+
+
