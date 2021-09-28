@@ -1,0 +1,4 @@
+{
+    "cheiaPrivataJWT": "1234",
+    "db": "mongodb://localhost/video-renting_test"
+}

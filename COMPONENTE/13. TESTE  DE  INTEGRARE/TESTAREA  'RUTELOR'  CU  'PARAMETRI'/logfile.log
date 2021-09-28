@@ -211,5 +211,3 @@
 {"level":"info","message":"Conectat cu succes la mongodb://localhost/video-renting_test...","timestamp":"2021-09-28T13:35:13.573Z"}
 {"level":"info","message":"Port de Ascultare 3000...","timestamp":"2021-09-28T13:35:45.698Z"}
 {"level":"info","message":"Conectat cu succes la mongodb://localhost/video-renting_test...","timestamp":"2021-09-28T13:35:45.797Z"}
-{"level":"info","message":"Port de Ascultare 3000...","timestamp":"2021-09-28T13:38:44.854Z"}
-{"level":"info","message":"Conectat cu succes la mongodb://localhost/video-renting_test...","timestamp":"2021-09-28T13:38:45.010Z"}

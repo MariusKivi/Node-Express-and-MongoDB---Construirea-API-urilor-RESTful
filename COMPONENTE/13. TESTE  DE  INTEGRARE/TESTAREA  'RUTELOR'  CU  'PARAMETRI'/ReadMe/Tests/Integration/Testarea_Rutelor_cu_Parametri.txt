@@ -1,0 +1,56 @@
+
+	Testarea 'Rutelor' cu 'Parametri'
+
+
+
+
+  (1) Cream  Suita de Testare 'GET / :id'
+_____________________________________________________________________
+
+// (1.2) SUITA DE TEST: 'GET /:ID'
+    describe('GET /:id', () => {
+
+        // TEST 1
+        it('ar trebui să returneze un gen dacă este trecut un id valid', async() => {
+
+            // CREAM UN 'NOU GEN':
+            const gen = new Gen({ nume: 'genul1' });
+            // SALVAM GENUL:
+            await gen.save();
+
+            // RASPUNSUL = APELAREA SERVERULUI & PRELUAREA 'ID'-ULUI:
+            const res = await request(server).get('/api/genuri/' + gen._id);
+
+            // ASTEPTAM CA 'STATUS'-UL SA 'FIE 200'
+            expect(res.status).toBe(200);
+            // ASTEPTAM CA 'CORPUL RASPUNSULUI' - 'SA AIBA PROP. NUME'
+            expect(res.body).toHaveProperty('nume', gen.nume);
+
+        });
+    });
+_____________________________________________________________________
+
+
+
+
+ >> Afisarea Testului:
+_____________________________________________________________________
+
+ PASS  tests\integration\routes\genuri.test.js
+  /api/genuri
+    GET /
+      √ ar trebui să returneze toate genurile (1361ms)
+    GET /:id
+      √ ar trebui să returneze un gen dacă este trecut un id valid (35ms)
+
+Test Suites: 2 passed, 2 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        8.055s
+Ran all test suites.
+
+Watch Usage: Press w to show more.
+_____________________________________________________________________
+
+
+
