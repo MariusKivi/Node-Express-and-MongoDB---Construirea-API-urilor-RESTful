@@ -1,0 +1,96 @@
+
+	Restructurarea Validarii  'ObjectId'
+
+
+
+
+  (1) Ctram Fisierul 'middleware/validateObjectId.js'
+	=>  Mutam Logica Validari 'ObjectId'
+	=> din 'routes/genuri.js'
+	=> in 'middleware/'
+	=> pt. a pute fi Utilizat in mai multe locuri:
+_____________________________________________________________________
+
+// IMP. \MONGOOSE\
+const mongoose = require('mongoose');
+
+
+
+// FUNCTIA EXPORTATA 'VALIDATEOBJECTID':
+module.exports = function(req, res, next) {
+
+    // DACA 'NU ESTE VALIDA' - APELAM TIPULUI 'OBJECTID' DIN 'MONGOOSE'
+    if (!mongoose.Types.ObjectId.isValid(req.params.id))
+        return res.status(404).send('ID-ul este invalid.');
+
+    // ALTFEL 'TRECEM CONTROLUL' CATRE FUNC. MIDDLEWARE 'URMATOARE':
+    next();
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2.1) Importam Fisierul 'middleware/validateObjectId.js'
+	=> in 'routes/genuri.js'
+_____________________________________________________________________
+
+// (IMP-7) IMPORTAREA 'MIDDLEWARE/VALIDATEOBJECTID.JS'
+const validateObjectId = require('../middleware/validateObjectId');
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+(2.1) Aplicam  Validarea 'validateObjectId.js'
+	=> in 'routes/genuri.js'
+	=> in Semnatura Func. 'get / :id':
+_____________________________________________________________________
+
+// RUTA 1.2: '/:ID' 
+// 'CITIREA' PRIN MET. 'GET()'
+router.get('/:id', validateObjectId, async(req, res) => {
+
+    // GASIREA UNUI SINGUR GEN DUPA ID:
+    const gen = await Gen.findById(req.params.id);
+    // DACA 'NU EXISTA GEN' PT. UN 'ID' DAT:
+    if (!gen) return res.status(404).send('Genul cu ID-ul dat nu a fost găsit.');
+
+    // RETURNAM 'RASPUNSULUI' CATRE 'GEN'
+    res.send(gen);
+});
+_____________________________________________________________________
+
+
+
+
+
+
+ >> Afisarea Testului:
+_____________________________________________________________________
+
+ PASS  tests\integration\routes\genuri.test.js (6.169s)
+  /api/genuri
+    GET /
+      √ ar trebui să returneze toate genurile (1598ms)
+    GET /:id
+      √ ar trebui să returneze un gen dacă este trecut un id valid (40ms)
+      √ ar trebui să returneze 404 dacă este trecut un id invalid (9ms)
+
+Test Suites: 2 passed, 2 total
+Tests:       4 passed, 4 total
+Snapshots:   0 total
+Time:        9.616s
+Ran all test suites.
+
+Watch Usage: Press w to show more.
+_____________________________________________________________________
+
+
