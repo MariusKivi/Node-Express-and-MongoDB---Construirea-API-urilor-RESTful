@@ -1,3 +1,32 @@
+
+	Popularea 'Bazei de Date' - 'video-renting_test'
+
+
+
+
+   >> Pentru a Popula Baza de Date 
+	=> avem nevoie de Modelul 'gen'.
+
+
+  (1.1) I,portam Modelul  'gen.js'
+	=> in Fisierrul 'genuri.test.js' :
+_____________________________________________________________________
+
+// IMP. MODEL 'GEN/JS'
+const { Gen } = require('../../../models/gen');
+_____________________________________________________________________
+
+
+
+
+
+
+
+  (1.2) Adaugam in Fisierul 'genuri.test.js' 
+	=> In Func 'afterEach' --> 'Gen.remove()'
+	=> adaugam in Test 1 'it()' -> Matricea 'Gen.collection.insertMany([])'
+_____________________________________________________________________
+
 // IMP. BIBLIOTECA 'SUPERTEST':
 const request = require('supertest');
 // IMP. MODEL 'GEN/JS'
@@ -67,3 +96,33 @@ describe('/api/genuri', () => {
         });
     });
 });
+_____________________________________________________________________
+
+
+
+
+
+ >> Afisare Test:
+_____________________________________________________________________
+
+ RUNS  tests/integration/routes/genuri.test.js
+
+Test Suites: 1 passed, 1 of 2 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+ PASS  tests\integration\routes\genuri.test.js (6.894s)
+  /api/genuri
+    GET /
+      √ ar trebui să returneze toate genurile (1585ms)
+
+Test Suites: 2 passed, 2 total
+Tests:       2 passed, 2 total
+Snapshots:   0 total
+Time:        11.249s
+Ran all test suites.
+
+Watch Usage: Press w to show more.
+_____________________________________________________________________
+
+
+
