@@ -1,0 +1,128 @@
+
+	Testarea 'Salvari Genului' in 'Baza de Date'
+
+
+
+  (1) Cream Testul 4
+	=> in 'genres.test.js'
+	=> in Suita de Teste 'POST/':
+_____________________________________________________________________
+
+  // TEST 4:
+        it('should save the genre if it is valid', async() => {
+
+            // CREAM 'TOKEN'-UL
+            // CREAM UN NOU OBIECT 'UTILIZATOR':
+            const token = new User().generateAuthToken();
+
+            // APELAM FUNC. 'REQUEST(SERVRT)'
+            // ADAUGAREA OBIECTULUI '' IN COLECTIA 'GENURI':
+            const res = await request(server)
+                .post('/api/genres')
+                // SETAM 'HEADER'
+                .set('x-auth-token', token)
+                .send({ name: 'genre1' });
+
+            // INTEROGAREA 'DB' PRIN MODELUL 'GENURI'
+            const genre = await Genre.find({ name: 'genre1' });
+
+            // ASTEPTAM CA 'GENUL' SA 'NU FIE NUL'
+            expect(genre).not.toBeNull();
+        });
+_____________________________________________________________________
+
+
+
+
+ >> Afisare Test:
+_____________________________________________________________________
+
+ RUNS  tests/integration/genres.test.js
+ RUNS  tests/integration/genres.test.js
+ PASS  tests\integration\genres.test.js (8.994s)
+  /api/genres
+    GET /
+      √ should return all genres (5333ms)
+    GET /:id
+      √ should return a genre if valid id is passed (41ms)
+      √ should return 404 if invalid id is passed (8ms)
+    POST /
+      √ should return 401 if client is not logged in (41ms)
+      √ should return 400 if genre is less than 5 characters (24ms)
+      √ should return 400 if genre is more than 50 characters (7ms)
+      √ should save the genre if it is valid (19ms)
+
+Test Suites: 2 passed, 2 total
+Tests:       8 passed, 8 total
+Snapshots:   0 total
+Time:        12.244s
+Ran all test suites.
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+  (2) Cream Testul 5   
+	=> in 'genres.test.js'
+	=> in Suita de Teste 'POST/'
+	=> Ne Asiguram ca 'Genul' se Afla in 'Corpul Raspunsului'
+_____________________________________________________________________
+
+// TEST 5:
+        it('should return the genre if it is valid', async() => {
+
+            // CREAM 'TOKEN'-UL
+            // CREAM UN NOU OBIECT 'UTILIZATOR':
+            const token = new User().generateAuthToken();
+
+            // APELAM FUNC. 'REQUEST(SERVRT)'
+            // ADAUGAREA OBIECTULUI '' IN COLECTIA 'GENURI':
+            const res = await request(server)
+                .post('/api/genres')
+                // SETAM 'HEADER'
+                .set('x-auth-token', token)
+                .send({ name: 'genre1' });
+
+
+            // ASTEPTAM CA IN 'CORPUL RASP.' SA 'AVEM PROP.'
+            expect(res.body).toHaveProperty('_id');
+            expect(res.body).toHaveProperty('name', 'genre1');
+        });
+_____________________________________________________________________
+
+
+
+
+ >> Afisare Test:
+_____________________________________________________________________
+
+ RUNS  tests/integration/genres.test.js
+ RUNS  tests/integration/genres.test.js
+ PASS  tests\integration\genres.test.js (8.269s)
+  /api/genres
+    GET /
+      √ should return all genres (5143ms)
+    GET /:id
+      √ should return a genre if valid id is passed (43ms)
+      √ should return 404 if invalid id is passed (5ms)
+    POST /
+      √ should return 401 if client is not logged in (35ms)
+      √ should return 400 if genre is less than 5 characters (19ms)
+      √ should return 400 if genre is more than 50 characters (7ms)
+      √ should save the genre if it is valid (14ms)
+      √ should return the genre if it is valid (8ms)
+
+Test Suites: 2 passed, 2 total
+Tests:       9 passed, 9 total
+Snapshots:   0 total
+Time:        10.747s, estimated 11s
+Ran all test suites.
+_____________________________________________________________________
+
+
+
+
