@@ -1,0 +1,121 @@
+
+	Testarea 'Input'-urilor 'Invalide'
+
+
+
+
+
+
+  (0) Corectam in Modelul 'genre.js' in Functia 'validateGenre'
+	=> Met. 'Min()' 
+	=> si adaugam Met. 'max()':
+_____________________________________________________________________
+function validateGenre(genre) {
+    const schema = {
+        name: Joi.string().min(5).nax(50).required()
+    };
+
+    return Joi.validate(genre, schema);
+}
+_____________________________________________________________________
+
+
+
+
+
+
+  (1) Importam in 'genres.test.js':
+_____________________________________________________________________
+
+const { User } = require('../../models/user');
+const mongoose = require('mongoose');
+
+_____________________________________________________________________
+
+
+
+
+
+
+
+   (2) Cream Testul 2 si 3
+	=> in care 'Utilizatorul' este 'Autentificat' 
+	=> si Trimite un 'Gen Invalid'
+	=> cream testul  in Ruta 'POST /'
+	=> in 'genuri.test.js'
+_____________________________________________________________________
+
+ // TEST 2:
+        it('should return 400 if genre is less than 5 characters', async() => {
+
+            // CREAM 'TOKEN'-UL
+            // CREAM UN NOU OBIECT 'UTILIZATOR':
+            const token = new User().generateAuthToken();
+
+            // APELAM FUNC. 'REQUEST(SERVRT)'
+            // ADAUGAREA OBIECTULUI '' IN COLECTIA 'GENURI':
+            const res = await request(server)
+                .post('/api/genres')
+                // SETAM 'HEADER'
+                .set('x-auth-token', token)
+                .send({ name: '1234' });
+
+            // ASTEPTAM CA 'STATUS'-UL SA 'FIE 400'
+            expect(res.status).toBe(400);
+        });
+
+
+        // TEST 3:
+        it('should return 400 if genre is more than 50 characters', async() => {
+
+            // CREAM 'TOKEN'-UL
+            // CREAM UN NOU OBIECT 'UTILIZATOR':
+            const token = new User().generateAuthToken();
+
+            //GENERARE MATRICE DE '52 ELEMENTE':
+            name = new Array(52).join('a');
+
+
+            // APELAM FUNC. 'REQUEST(SERVRT)'
+            // ADAUGAREA OBIECTULUI '' IN COLECTIA 'GENURI':
+            const res = await request(server)
+                .post('/api/genres')
+                // SETAM 'HEADER'
+                .set('x-auth-token', token)
+                .send({ name: name });
+
+            // ASTEPTAM CA 'STATUS'-UL SA 'FIE 400'
+            expect(res.status).toBe(400);
+        });
+_____________________________________________________________________
+
+
+
+
+
+ >> Afisare Test:
+_____________________________________________________________________
+
+ /api/genres
+    GET /
+      √ should return all genres (5461ms)
+    GET /:id
+      √ should return a genre if valid id is passed (40ms)
+      √ should return 404 if invalid id is passed (6ms)
+    POST /
+      √ should return 401 if client is not logged in (39ms)
+      √ should return 400 if genre is less than 5 characters (29ms)
+      √ should return 400 if genre is more than 50 characters (10ms)
+
+Test Suites: 2 passed, 2 total
+Tests:       7 passed, 7 total
+Snapshots:   0 total
+Time:        12.63s
+Ran all test suites.
+
+Watch Usage: Press w to show more.
+_____________________________________________________________________
+
+
+
+
