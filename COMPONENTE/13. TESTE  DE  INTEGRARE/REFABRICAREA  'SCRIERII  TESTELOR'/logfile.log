@@ -405,5 +405,3 @@
 {"level":"info","message":"Conectat cu succes la mongodb://localhost/video-renting_test...","timestamp":"2021-09-29T18:25:53.572Z"}
 {"level":"info","message":"Listening on port 3000...","timestamp":"2021-09-29T18:26:10.726Z"}
 {"level":"info","message":"Conectat cu succes la mongodb://localhost/video-renting_test...","timestamp":"2021-09-29T18:26:12.936Z"}
-{"level":"info","message":"Listening on port 3000...","timestamp":"2021-09-29T18:27:13.855Z"}
-{"level":"info","message":"Conectat cu succes la mongodb://localhost/video-renting_test...","timestamp":"2021-09-29T18:27:16.336Z"}

@@ -1,0 +1,354 @@
+
+	Refabricarea 'Scrieri Testelor'
+
+
+
+
+--------------------------------------------------------------------------------------------------------------
+Procedura:
+
+    <>  Definiți Cai de Salvare 
+	=> și apoi în Fiecare Test, 
+	=> Schimbăm un Parametru
+    	=> care se Aliniază în Mod Clar 
+	=> cu Numele   Testului.
+--------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+  (1.1) Cream Functia 'execute()'
+	=> in Suita 'POST /'
+	=> In care Mutam Raspunsull din Testul 4
+	=> pe care il Returnam
+_____________________________________________________________________
+
+       // FUNC. 'EXECUTE()'
+        const exec = async() => {
+            // APELAM FUNC. 'REQUEST(SERVRT)'
+            // ADAUGAREA OBIECTULUI '' IN COLECTIA 'GENURI':
+            return await request(server)
+                .post('/api/genres')
+                // SETAM 'HEADER'
+                .set('x-auth-token', token)
+                .send({ name: 'genre1' });
+        }
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (1.2) Adaugam in Locul Raspunsului
+	=> Apelarea Func. 'execute()':
+_____________________________________________________________________
+
+
+            // APELAREA FUNC. 'EXEC()' PT. REFABRICAREA TESTELOR
+            await exec();
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (2.1)  Adaugam in Testul 1 Func. 'exec()'
+_____________________________________________________________________
+
+            // APELAREA FUNC. 'EXEC()' PT. REFABRICAREA TESTELOR
+            await exec();
+_____________________________________________________________________
+
+
+
+
+
+ (2.2) Definim Variabila:
+_____________________________________________________________________
+
+        // DECLARARE VARIABILE:
+        let token;
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (2.3) Cream Blocul 'beforeEach' pt. Adaugarea inainte de Fiecare Test:
+_____________________________________________________________________
+
+        // INAINTEA FIECARUI TEST:
+        beforeEach(() => {
+            // SETAREA 'TOKEN'-ULUI CATE UN 'JWT VALID' INAINTEA FIECARUI 'TEST'
+            token = new User().generateAuthToken();           
+        })
+_____________________________________________________________________
+
+
+
+
+
+
+ (2.4) Adaugam in Testul 1 
+	=> Token-ul cu String Gol:
+_____________________________________________________________________
+
+           // SIMULAM SCENARIUL IN CARE 'CLIENTUL NU ESTE AUTENTIFICAT'
+            // SETAREA 'TOKEN'-ULUI CA 'STRING GOL'
+            token = '';
+
+_____________________________________________________________________
+
+
+
+
+
+ (3.1)  Adaugam in Testul 2 Func. 'exec()'
+_____________________________________________________________________
+
+             // APELAREA FUNC. 'EXEC()' PT. REFABRICAREA TESTELOR
+            const res = await exec();
+_____________________________________________________________________
+
+
+
+
+ (3.2) Definim Variabila:
+_____________________________________________________________________
+
+        // DECLARARE VARIABILE:
+       let name;
+_____________________________________________________________________
+
+
+
+
+
+
+  (3.3) In Functia 'execute()'
+	=> in Suita 'POST /'
+	=> inlocuim Valoarea 'genre1'
+	=> cu 'name':
+_____________________________________________________________________
+
+       // FUNC. 'EXECUTE()'
+        const exec = async() => {
+            // APELAM FUNC. 'REQUEST(SERVRT)'
+            // ADAUGAREA OBIECTULUI '' IN COLECTIA 'GENURI':
+            return await request(server)
+                .post('/api/genres')
+                // SETAM 'HEADER'
+                .set('x-auth-token', token)
+                .send({ name });
+        }
+_____________________________________________________________________
+	=> ES6 permite Scrierea daoar a Proprietatii, 
+
+
+
+
+ (3.4) Adaugam Prop. 'name' in  Blocul 'beforeEach' pt. Adaugarea inainte de Fiecare Test:
+_____________________________________________________________________
+
+       // INAINTEA FIECARUI TEST:
+        beforeEach(() => {
+            // SETAREA 'TOKEN'-ULUI CATE UN 'JWT VALID' INAINTEA FIECARUI 'TEST'
+            token = new User().generateAuthToken();
+            name = 'genre1';
+        })
+_____________________________________________________________________
+
+	=> daca Valoarea are aceeasi denumire.
+
+
+
+  (3.5) Adaugam in Testul 2
+	=> Setarea Numelui:
+_____________________________________________________________________
+
+            // SETAM 'NUMELE':
+            name = '1234';
+_____________________________________________________________________
+
+
+
+
+
+  (4) In Testul 3 
+	=> Stergem 'token'-ul,
+	=> Inlocuim 'Raspunsul' cu Func. 'exec()'
+_____________________________________________________________________
+
+            // APELAREA FUNC. 'EXEC()' PT. REFABRICAREA TESTELOR
+            const res = await exec();
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+  (5) In Testul 4 
+	=> Stergem 'token'-ul.
+
+
+
+  (6) In Testul 5 
+	=> Stergem 'token'-ul, 
+	=> si Inlocuim 'Raspunsul' cu Func. 'exec()'
+_____________________________________________________________________
+
+            // APELAREA FUNC. 'EXEC()' PT. REFABRICAREA TESTELOR
+            const res = await exec();
+_____________________________________________________________________
+
+
+
+
+
+  (7) Obtinem  Ruta 'POST/' Refabricata:
+_____________________________________________________________________
+
+ // (2) SUITA DE TEST: 'POST /'
+    describe('POST /', () => {
+
+        // REFABRICAREA TESTELOR:
+        // DECLARARE VARIABILE:
+        let token;
+        let name;
+
+
+        // FUNC. 'EXEC()'
+        const exec = async() => {
+
+            // APELAM FUNC. 'REQUEST(SERVRT)'
+            // ADAUGAREA OBIECTULUI '' IN COLECTIA 'GENURI':
+            return await request(server)
+                .post('/api/genres')
+                // SETAM 'HEADER'
+                .set('x-auth-token', token)
+                .send({ name });
+        }
+
+
+        // INAINTEA FIECARUI TEST:
+        beforeEach(() => {
+            // SETAREA 'TOKEN'-ULUI CATE UN 'JWT VALID' INAINTEA FIECARUI 'TEST'
+            token = new User().generateAuthToken();
+            name = 'genre1';
+        })
+
+
+        // TEST 1:
+        it('should return 401 if client is not logged in', async() => {
+
+            // SIMULAM SCENARIUL IN CARE 'CLIENTUL NU ESTE AUTENTIFICAT'
+            // SETAREA 'TOKEN'-ULUI CA 'STRING GOL'
+            token = '';
+
+            // APELAREA FUNC. 'EXEC()' PT. REFABRICAREA TESTELOR
+            const res = await exec();
+
+            // ASTEPTAM CA 'STATUS'-UL SA 'FIE 401'
+            expect(res.status).toBe(401);
+        });
+
+
+        // TEST 2:
+        it('should return 400 if genre is less than 5 characters', async() => {
+
+            // SETAM 'NUMELE':
+            name = '1234';
+
+            // APELAREA FUNC. 'EXEC()' PT. REFABRICAREA TESTELOR
+            const res = await exec();
+
+            // ASTEPTAM CA 'STATUS'-UL SA 'FIE 400'
+            expect(res.status).toBe(400);
+        });
+
+
+        // TEST 3:
+        it('should return 400 if genre is more than 50 characters', async() => {
+
+            //GENERARE MATRICE DE '52 ELEMENTE':
+            name = new Array(52).join('a');
+
+            // APELAREA FUNC. 'EXEC()' PT. REFABRICAREA TESTELOR
+            const res = await exec();
+
+            // ASTEPTAM CA 'STATUS'-UL SA 'FIE 400'
+            expect(res.status).toBe(400);
+        });
+
+
+        // TEST 4:
+        it('should save the genre if it is valid', async() => {
+
+            // APELAREA FUNC. 'EXEC()' PT. REFABRICAREA TESTELOR
+            await exec();
+
+            // INTEROGAREA 'DB' PRIN MODELUL 'GENURI'
+            const genre = await Genre.find({ name: 'genre1' });
+
+            // ASTEPTAM CA 'GENUL' SA 'NU FIE NUL'
+            expect(genre).not.toBeNull();
+        });
+
+
+        // TEST 5:
+        it('should return the genre if it is valid', async() => {
+
+            // APELAM FUNC. 'REQUEST(SERVRT)'
+            // APELAREA FUNC. 'EXEC()' PT. REFABRICAREA TESTELOR
+            const res = await exec();
+
+            // ASTEPTAM CA IN 'CORPUL RASP.' SA 'AVEM PROP.'
+            expect(res.body).toHaveProperty('_id');
+            expect(res.body).toHaveProperty('name', 'genre1');
+        });
+
+    });
+_____________________________________________________________________
+
+
+
+ >> Afisarea Testului:
+_____________________________________________________________________
+
+
+ RUNS  tests/integration/genres.test.js
+ RUNS  tests/integration/genres.test.js
+ PASS  tests\integration\genres.test.js (9.275s)
+  /api/genres
+    GET /
+      √ should return all genres (5377ms)
+    GET /:id
+      √ should return a genre if valid id is passed (41ms)
+      √ should return 404 if invalid id is passed (7ms)
+    POST /
+      √ should return 401 if client is not logged in (49ms)
+      √ should return 400 if genre is less than 5 characters (24ms)
+      √ should return 400 if genre is more than 50 characters (8ms)
+      √ should save the genre if it is valid (18ms)
+      √ should return the genre if it is valid (10ms)
+
+Test Suites: 2 passed, 2 total
+Tests:       9 passed, 9 total
+Snapshots:   0 total
+Time:        11.955s
+Ran all test suites.
+_____________________________________________________________________
+
+
