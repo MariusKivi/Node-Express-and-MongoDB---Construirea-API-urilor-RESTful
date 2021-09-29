@@ -1,0 +1,66 @@
+
+	Testarea 'Autorizarii' -- Creare 'Gen Nou'
+
+
+
+
+  (1) Cream Suta de Teste 'POST('/API/GENURI')'
+	=> si Adaugam un 'Gen Nou' in DB.
+	=> din Fisierul 'genuri.test.js'
+_____________________________________________________________________
+
+ // (2) SUITA DE TEST: 'POST /'
+    describe('POST/', () => {
+
+        // TEST 1
+        it('ar trebui să returneze 401 dacă clientul nu este conectat', async() => {
+
+            // APELAM FUNC. 'REQUEST(SERVRT)'
+            // ADAUGAREA OBIECTULUI '' IN COLECTIA 'GENURI':
+            const res = await request(server)
+                .post('/api/genuri')
+                .send({ nume: 'genul1' });
+
+            // ASTEPTAM CA 'STATUS'-UL SA 'FIE 401'
+            expect(res.status).toBe(401);
+        });
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Rulam Testarea:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+ >> Afisarea Testului:
+_____________________________________________________________________
+
+ PASS  tests\integration\routes\genuri.test.js (5.228s)
+  /api/genuri
+    GET /
+      √ ar trebui să returneze toate genurile (1456ms)
+    GET /:id
+      √ ar trebui să returneze un gen dacă este trecut un id valid (38ms)
+      √ ar trebui să returneze 404 dacă este trecut un id invalid (10ms)
+    POST/
+      √ ar trebui să returneze 401 dacă clientul nu este conectat (57ms)
+
+Test Suites: 2 passed, 2 total
+Tests:       5 passed, 5 total
+Snapshots:   0 total
+Time:        7.853s
+Ran all test suites.
+
+Watch Usage: Press w to show more.
+_____________________________________________________________________
+
+

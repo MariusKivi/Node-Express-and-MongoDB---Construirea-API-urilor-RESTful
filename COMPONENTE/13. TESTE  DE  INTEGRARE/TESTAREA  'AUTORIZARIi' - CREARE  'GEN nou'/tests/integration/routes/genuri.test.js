@@ -111,7 +111,7 @@ describe('/api/genuri', () => {
 
 
     // (2) SUITA DE TEST: 'POST /'
-    describe('POST /', () => {
+    describe('POST/', () => {
 
         // TEST 1
         it('ar trebui să returneze 401 dacă clientul nu este conectat', async() => {
