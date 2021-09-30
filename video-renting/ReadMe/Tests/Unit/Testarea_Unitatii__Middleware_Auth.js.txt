@@ -1,0 +1,82 @@
+
+	Testarea nitatii 'Middleware/ Auth.js'
+
+
+
+
+  (1) Cream Fisierul 'auth.test.js'
+	=> in Folder-ul 'tests/ unit / middleware':
+_____________________________________________________________________
+
+const { User } = require('../../../models/user');
+const auth = require('../../../middleware/auth');
+const mongoose = require('mongoose');
+
+
+// BLOCUL DE DESCRIERE 'AUTH MIDDLEWARE':
+describe('auth middleware', () => {
+    // TEST 1 - POPULAREA 'CERERI USER-ULUI' CU UN 'SWT VALID'
+    it('should populate req.user with the payload of a valid JWT', () => {
+        // CREARE OBIECT 'USER'
+        const user = {
+            _id: mongoose.Types.ObjectId().toHexString(),
+            isAdmin: true
+        };
+
+        // GENERARE 'TOKEN' VALID:
+        const token = new User(user).generateAuthToken();
+
+        // CREAM OBIECTUL 'REQ':
+        const req = {
+            header: jest.fn().mockReturnValue(token)
+        };
+
+        // OBIECTUL 'RAS' TRECUT CA ARGUMENT CATRE FUNC 'AUTH()'
+        const res = {};
+
+        // MEXT:
+        const next = jest.fn();
+
+        // APELAM 'AUTH()':
+        auth(req, res, next);
+
+        // ASTEMPAM CA 'USER-UL CERUT' SA 'SE POTRIVEASCA CU OBIECTUL USER'
+        expect(req.user).toMatchObject(user);
+    });
+});
+_____________________________________________________________________
+
+
+
+
+ >> Afisare Test de Unitate:
+_____________________________________________________________________
+
+
+ RUNS  tests/integration/genres.test.js
+
+ RUNS  tests/integration/genres.test.js
+ PASS  tests\integration\genres.test.js (10.071s)
+  /api/genres
+    GET /
+      √ should return all genres (5290ms)
+    GET /:id
+      √ should return a genre if valid id is passed (50ms)
+      √ should return 404 if invalid id is passed (11ms)
+    POST /
+      √ should return 401 if client is not logged in (62ms)
+      √ should return 400 if genre is less than 5 characters (30ms)
+      √ should return 400 if genre is more than 50 characters (12ms)
+      √ should save the genre if it is valid (23ms)
+      √ should return the genre if it is valid (15ms)
+
+Test Suites: 3 passed, 3 total
+Tests:       10 passed, 10 total
+Snapshots:   0 total
+Time:        13.336s
+Ran all test suites.
+
+Watch Usage: Press w to show more.
+_____________________________________________________________________
+
+

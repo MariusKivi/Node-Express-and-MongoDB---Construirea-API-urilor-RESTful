@@ -873,5 +873,3 @@
 {"level":"info","message":"Connected to mongodb://localhost/video-renting_test...","timestamp":"2021-09-30T10:07:57.568Z"}
 {"level":"info","message":"Listening on port 3000...","timestamp":"2021-09-30T10:08:08.786Z"}
 {"level":"info","message":"Connected to mongodb://localhost/video-renting_test...","timestamp":"2021-09-30T10:08:10.863Z"}
-{"level":"info","message":"Listening on port 3000...","timestamp":"2021-09-30T10:15:18.613Z"}
-{"level":"info","message":"Connected to mongodb://localhost/video-renting_test...","timestamp":"2021-09-30T10:15:20.935Z"}
