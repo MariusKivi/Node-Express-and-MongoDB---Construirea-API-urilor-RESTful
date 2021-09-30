@@ -1,0 +1,123 @@
+
+	Raportu de 'Acoperire cu Teste' a 'Codului'
+
+
+
+
+  >> Utilizam 'Jest'
+	=> pt. a vedea cat  de mul Cod
+	=> este accoperit prin Teste.
+
+
+ 
+  (1) Modificam Comanda 'test'
+	=> din 'package.json'
+	=> adaugamd Flag-ul '--coverage':
+_____________________________________________________________________
+
+"scripts": {
+        "test": "jest --watchAll --verbose --coverage"
+    },
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Rulam Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+
+ >> Afisarea:
+_____________________________________________________________________
+
+
+--------------------------|----------|----------|----------|----------|-------------------|
+File                      |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
+--------------------------|----------|----------|----------|----------|-------------------|
+                All files                 |    58.58 |    15.63 |       35 |    63.44 |                   |
+         video-renting            |      100 |      100 |      100 |      100 |                   |
+                index.js                |      100 |      100 |      100 |      100 |                   |
+ video-renting/middleware |    79.17 |    66.67 |       50 |    81.82 |                   |
+               admin.js                |       25 |        0 |        0 |    33.33 |               6,8 |
+                 auth.js                 |      100 |      100 |      100 |      100 |                   |
+                 error.js                |       50 |      100 |        0 |       50 |              4,13 |
+     validateObjectId.js     |      100 |      100 |      100 |      100 |                   |
+ video-renting/models     |    81.82 |      100 |    33.33 |    81.82 |                   |
+           customer.js             |    71.43 |      100 |        0 |    71.43 |             24,30 |
+               genre.js                |      100 |      100 |      100 |      100 |                   |
+               movie.js                |       75 |      100 |        0 |       75 |             32,39 |
+                rental.js               |    71.43 |      100 |        0 |    71.43 |             59,64 |
+                 user.js                 |    84.62 |      100 |       50 |    84.62 |             37,43 |
+  video-renting/routes     |    40.84 |     5.56 |    13.64 |    46.34 |                   |
+                 auth.js                 |    40.91 |        0 |        0 |    47.37 |... 17,19,20,24,29 |
+          customers.js            |     30.3 |        0 |        0 |    35.71 |... 44,46,50,52,54 |
+              genres.js               |    66.67 |       30 |       60 |    70.97 |... 39,45,47,49,60 |
+              movies.js               |     27.5 |        0 |        0 |    33.33 |... 59,61,65,67,69 |
+               rentals.js              |    35.29 |        0 |        0 |    41.38 |... 49,52,57,59,61 |
+                users.js                |    46.15 |        0 |        0 |       50 |... 24,25,26,28,29 |
+  video-renting/startup    |    94.74 |       50 |    85.71 |    94.74 |                   |
+                config.js               |          75 |       50 |      100 |       75 |                 5 |
+                    db.js                   |       100 |    100 |      100 |      100 |                   |
+               logging.js              |    85.71 |    100 |       50 |    85.71 |           11 |
+                routes.js               |       100 |     100 |      100 |      100 |                   |
+              validation.js           |       100 |     100 |      100 |      100 |                   |
+------------------------------------|----------|-----------|----------|-----------|--------------|
+Test Suites: 4 passed, 4 total
+Tests:       13 passed, 13 total
+Snapshots:   0 total
+Time:        24.301s
+Ran all test suites.
+_____________________________________________________________________
+
+
+  >> In Proiect a fost Generat Folder-ul 'coverage'
+	=> in care avem Subfolder-ul 'lcov-report'
+	=> in care avem Fisierul Web 'index.html'.
+
+
+
+
+
+
+  (3) Adaugam in 'genres.test.js'
+	=> In Ruta 'GET /id'
+	=> Testul 3:
+_____________________________________________________________________
+
+ // TEST 3
+        it('should return 404 if no genre with the given id exists', async() => {
+            // TRIMITEM UN 'OBJECTID' VALID:
+            const id = mongoose.Types.ObjectId();
+            // PRELUARE RASPUNS:
+            const res = await request(server).get('/api/genres/' + id);
+
+            // ASTEPTAM CA 'STATUSUL RASP.' SA 'FIE 404':
+            expect(res.status).toBe(404);
+        });
+_____________________________________________________________________
+
+
+	=> 'Jest' va ReGenera 'Raportul de Acoperire cu Teste'  de fiecare data.
+
+
+
+  >>  Excludem Incarcarea pe Git  a Folder-ului 'Coverage'
+	=> din fisierul '.gitIgnore':
+
+_____________________________________________________________________
+
+coverage/
+_____________________________________________________________________
+
+
+
+

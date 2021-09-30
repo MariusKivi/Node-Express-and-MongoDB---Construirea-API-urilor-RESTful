@@ -1019,9 +1019,3 @@
 {"level":"info","message":"Listening on port 3000...","timestamp":"2021-09-30T14:10:49.449Z"}
 {"level":"info","message":"Connected to mongodb://localhost/video-renting_test...","timestamp":"2021-09-30T14:10:51.725Z"}
 {"level":"info","message":"Connected to mongodb://localhost/video-renting_test...","timestamp":"2021-09-30T14:10:52.150Z"}
-{"level":"info","message":"Listening on port 3000...","timestamp":"2021-09-30T14:23:29.450Z"}
-{"level":"info","message":"Listening on port 3000...","timestamp":"2021-09-30T14:23:29.665Z"}
-{"level":"info","message":"Connected to mongodb://localhost/video-renting_test...","timestamp":"2021-09-30T14:23:31.816Z"}
-{"level":"info","message":"Connected to mongodb://localhost/video-renting_test...","timestamp":"2021-09-30T14:23:32.143Z"}
-{"level":"info","message":"Listening on port 3000...","timestamp":"2021-09-30T14:23:55.951Z"}
-{"level":"info","message":"Listening on port 3000...","timestamp":"2021-09-30T14:23:56.702Z"}
