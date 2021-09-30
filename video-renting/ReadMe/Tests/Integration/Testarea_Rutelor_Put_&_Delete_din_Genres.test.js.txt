@@ -1,0 +1,223 @@
+
+	Testarea Rutelor 'Put' & 'Delete' din 'Genres.test.js'
+
+
+
+
+  (1) Cream Suita de Teste 'PUT/:id'
+	=> in 'integration/genres.test.js'
+_____________________________________________________________________
+
+ // (3) SUITA DE TEST: 'PUT /'
+    describe('PUT /:id', () => {
+        let token;
+        let newName;
+        let genre;
+        let id;
+
+        const exec = async() => {
+            return await request(server)
+                .put('/api/genres/' + id)
+                .set('x-auth-token', token)
+                .send({ name: newName });
+        }
+
+        beforeEach(async() => {
+            // Before each test we need to create a genre and 
+            // put it in the database.      
+            genre = new Genre({ name: 'genre1' });
+            await genre.save();
+
+            token = new User().generateAuthToken();
+            id = genre._id;
+            newName = 'updatedName';
+        })
+
+        it('should return 401 if client is not logged in', async() => {
+            token = '';
+
+            const res = await exec();
+
+            expect(res.status).toBe(401);
+        });
+
+        it('should return 400 if genre is less than 5 characters', async() => {
+            newName = '1234';
+
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 400 if genre is more than 50 characters', async() => {
+            newName = new Array(52).join('a');
+
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 404 if id is invalid', async() => {
+            id = 1;
+
+            const res = await exec();
+
+            expect(res.status).toBe(404);
+        });
+
+        it('should return 404 if genre with the given id was not found', async() => {
+            id = mongoose.Types.ObjectId();
+
+            const res = await exec();
+
+            expect(res.status).toBe(404);
+        });
+
+        it('should update the genre if input is valid', async() => {
+            await exec();
+
+            const updatedGenre = await Genre.findById(genre._id);
+
+            expect(updatedGenre.name).toBe(newName);
+        });
+
+        it('should return the updated genre if it is valid', async() => {
+            const res = await exec();
+
+            expect(res.body).toHaveProperty('_id');
+            expect(res.body).toHaveProperty('name', newName);
+        });
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+
+   (2) Cream Suita de Teste 'DELETE/:id'
+	=> in 'integration/genres.test.js'
+_____________________________________________________________________
+
+// (4) SUITA DE TEST: 'DELETE /'
+    describe('DELETE /:id', () => {
+        let token;
+        let genre;
+        let id;
+
+        const exec = async() => {
+            return await request(server)
+                .delete('/api/genres/' + id)
+                .set('x-auth-token', token)
+                .send();
+        }
+
+        beforeEach(async() => {
+            // Before each test we need to create a genre and 
+            // put it in the database.      
+            genre = new Genre({ name: 'genre1' });
+            await genre.save();
+
+            id = genre._id;
+            token = new User({ isAdmin: true }).generateAuthToken();
+        })
+
+        it('should return 401 if client is not logged in', async() => {
+            token = '';
+
+            const res = await exec();
+
+            expect(res.status).toBe(401);
+        });
+
+        it('should return 403 if the user is not an admin', async() => {
+            token = new User({ isAdmin: false }).generateAuthToken();
+
+            const res = await exec();
+
+            expect(res.status).toBe(403);
+        });
+
+        it('should return 404 if id is invalid', async() => {
+            id = 1;
+
+            const res = await exec();
+
+            expect(res.status).toBe(404);
+        });
+
+        it('should return 404 if no genre with the given id was found', async() => {
+            id = mongoose.Types.ObjectId();
+
+            const res = await exec();
+
+            expect(res.status).toBe(404);
+        });
+
+        it('should delete the genre if input is valid', async() => {
+            await exec();
+
+            const genreInDb = await Genre.findById(id);
+
+            expect(genreInDb).toBeNull();
+        });
+
+        it('should return the removed genre', async() => {
+            const res = await exec();
+
+            expect(res.body).toHaveProperty('_id', genre._id.toHexString());
+            expect(res.body).toHaveProperty('name', genre.name);
+        });
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+ >> Afisare Test cu Coverage:
+_____________________________________________________________________
+
+--------------------------|----------|----------|----------|----------|-------------------|
+File                      |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
+--------------------------|----------|----------|----------|----------|-------------------|
+All files                 |    64.08 |    29.69 |       45 |     68.1 |                   |
+ video-renting            |      100 |      100 |      100 |      100 |                   |
+  index.js                |      100 |      100 |      100 |      100 |                   |
+ video-renting/middleware |      100 |      100 |      100 |      100 |                   |
+  admin.js                |      100 |      100 |      100 |      100 |                   |
+  auth.js                 |      100 |      100 |      100 |      100 |                   |
+  error.js                |      100 |      100 |      100 |      100 |                   |
+  validateObjectId.js     |      100 |      100 |      100 |      100 |                   |
+ video-renting/models     |    81.82 |      100 |    33.33 |    81.82 |                   |
+  customer.js             |    71.43 |      100 |        0 |    71.43 |             24,30 |
+  genre.js                |      100 |      100 |      100 |      100 |                   |
+  movie.js                |       75 |      100 |        0 |       75 |             32,39 |
+  rental.js               |    71.43 |      100 |        0 |    71.43 |             59,64 |
+  user.js                 |    84.62 |      100 |       50 |    84.62 |             37,43 |
+ video-renting/routes     |    47.12 |    18.52 |    22.73 |    51.83 |                   |
+  auth.js                 |    40.91 |        0 |        0 |    47.37 |... 17,19,20,24,29 |
+  customers.js            |     30.3 |        0 |        0 |    35.71 |... 44,46,50,52,54 |
+  genres.js               |      100 |      100 |      100 |      100 |                   |
+  movies.js               |     27.5 |        0 |        0 |    33.33 |... 59,61,65,67,69 |
+  rentals.js              |    35.29 |        0 |        0 |    41.38 |... 49,52,57,59,61 |
+  users.js                |    46.15 |        0 |        0 |       50 |... 24,25,26,28,29 |
+ video-renting/startup    |    94.74 |       50 |    85.71 |    94.74 |                   |
+  config.js               |       75 |       50 |      100 |       75 |                 5 |
+  db.js                   |      100 |      100 |      100 |      100 |                   |
+  logging.js              |    85.71 |      100 |       50 |    85.71 |                11 |
+  routes.js               |      100 |      100 |      100 |      100 |                   |
+  validation.js           |      100 |      100 |      100 |      100 |                   |
+--------------------------|----------|----------|----------|----------|-------------------|
+Test Suites: 4 passed, 4 total
+Tests:       27 passed, 27 total
+Snapshots:   0 total
+Time:        15.256s
+Ran all test suites.
+
+Watch Usage: Press w to show more.
+_____________________________________________________________________
+
+
