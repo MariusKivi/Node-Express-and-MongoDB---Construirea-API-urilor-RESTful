@@ -1,0 +1,19 @@
+
+	Implementarea Rutei 'Returnarilor'
+
+
+
+
+  (*) Cream in Folder-ul 'models' 
+	=> Fisierul 'x.js'
+	=>in care cream  Returnarea 'Filmelor'
+	=> printr-un 'End-Point' / 'Ruta':
+_____________________________________________________________________
+
+	// POST /api/returns { customerId, movieId}
+_____________________________________________________________________
+	> Aceasta este Ruta pe care o vom Expune Clientilor
+	=> putem Scrie Cazuri  de Testare,
+	=> pentru Modul de Comportare a acestei Rute.
+
+
