@@ -1,0 +1,140 @@
+
+	Populare 'Bazei de Date'
+
+
+  (1) Cream in Folderul 'test/integration'
+	=> Fisierul 'returns.test.js'
+_____________________________________________________________________
+
+// IMPORTAM:
+const { Rental } = require('../../models/rental');
+const mongoose = require('mongoose');
+
+
+
+// SUITA DE TESTE '/API/RETURNS'
+describe('/api/returns', () => {
+    // DECLARAREA 'VARIABILELOR':
+    let server;
+    let customerId;
+    let movieId;
+    let rental;
+
+
+    // INCARCAREA 'SERVER'-ULUI 
+    beforeEach(async() => {
+        // PORNIRE SERVER DIN 'INDEX.JS':
+        server = require('../../index');
+
+
+        // PRELUAREA UNUI 'OBJECTID' DIN 'MONGOOSE':
+        customerId = mongoose.Types.ObjectId();
+        movieId = mongoose.Types.ObjectId();
+
+
+        // CREAM OBIECTUL 'INCHIRIERE':
+        rental = new Rental({
+            // 'INITIALIZAREA' PROP. 'CLIENT':
+            customer: {
+                _id: customerId,
+                name: '12345',
+                phone: '12345'
+            },
+
+            // 'INITIALIZAREA' PROP. 'FILM':
+            movie: {
+                _id: movieId,
+                title: '12345',
+                dailyRentalRate: 2
+            }
+        });
+
+        // SALVAREA 'INCHIRIERI' IN 'DB':
+        await rental.save();
+    });
+
+
+    afterEach(async() => {
+        // 'INCHIDEREA' SERVERULUI: 
+        server.close();
+        // STERGEREA 'INCHIRIERI':
+        await Rental.remove({});
+    });
+
+
+
+    // TEST 0: 
+    it('should work!', async() => {
+        // 'CAUTARE INCHIRIERI IN DB'
+        const result = await Rental.findById(rental._id);
+
+        // ASTEPTAM CA 'REZULTATUL' SA 'NU FIE NUL'
+        exports(result).not.toBeNull();
+    });
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Rulam testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+
+
+ >> Afisare Test:
+_____________________________________________________________________
+
+ PASS  tests\integration\genres.test.js (14.337s)ss-and-Mong
+  /api/genres
+    GET /
+      √ should return all genres (2228ms)
+    GET /:id
+      √  should return a genre if valid id is passed (6306ms)
+      √  should return 404 if invalid id is passed (24ms)
+      √ should return 404 if no genre with the given id exists (14ms)
+    POST /
+      √ should return 401 if client is not logged in (66ms)
+      √ should return 400 if genre is less than 5 characters (34ms)
+      √ should return 400 if genre is more than 50 characters (12ms)
+      √ should save the genre if it is valid (27ms)
+      √ should return the genre if it is valid (13ms)
+    PUT /:id
+      √  should return 401 if client is not logged in (27ms)
+      √ should return 400 if genre is less than 5 characters (12ms)
+      √ should return 400 if genre is more than 50 characters (11ms)
+      × should return 404 if id is invalid (24ms)
+      √ should return 404 if genre with the given id was not found (16ms)
+      √ should update the genre if input is valid (19ms)
+      √ should return the updated genre if it is valid (14ms)
+    DELETE /:id
+      √ should return 401 if client is not logged in (11ms)
+      √ should return 403 if the user is not an admin (23ms)
+      √  should return 404 if id is invalid (17ms)
+      √ should return 404 if no genre with the given id was found (15ms)
+      √ should delete the genre if input is valid (43ms)
+      √ should return the removed genre (35ms)
+
+
+ PASS  tests\unit\models\user.test.js
+  user.generateAuthToken
+    √ should return a valid JWT (9ms)
+
+Test Suites: 5 passed, 5 total
+Tests:       28 passed, 28 total
+Snapshots:   0 total
+Time:        18.34s
+Ran all test suites.
+_____________________________________________________________________
+
+
+
+
