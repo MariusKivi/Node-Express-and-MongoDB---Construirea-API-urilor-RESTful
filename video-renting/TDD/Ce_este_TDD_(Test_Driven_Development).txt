@@ -1,0 +1,67 @@
+
+	Ce_este 'TDD' (Test Driven Development)?
+
+
+---------------------------------------------------------------------------------------------------------------------------
+
+  <> 'TDD' 
+	=> abr. 'Test Driven Development' sau 'Test First'  ('Dezvoltarea Bazata pe Test' / 'Testeaza mai Intai')
+	=> este o 'Abordare'
+	=> pt. a Construi 'Software'.
+
+
+
+   <> Prin 'TDD'
+	=> 'Testul' este Scris 'Inaintea' Scrieri 'Aplicatiei'
+	=> sau a 'Codului de Productie'.
+
+   <>  'Code First'  ('Cod mai Intai')	
+	=>  in care se Incepe cu Scrierea 'Codului Aplicatiei',
+	=> iar apoi sunt Scrise 'Testele'.
+	
+---------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+  (A)  Modul de Functionare al 'TDD':
+---------------------------------------------------------------------------------------------------------------------------
+
+     (1) Scriem  un 'Test Esuat'
+	=> acest Test 'Esuaza', pentru ca Nu Avem 'Codul Aplicatiei'
+	=> care l-ar Face sa 'Treaca'.
+
+
+     (2) Scriem 'cel mai Simplu Cod'
+	=> care face 'Testul' sa 'Treaca'.
+
+
+     (3) Refabricam 'Codul' daca este 'Necesar'.
+---------------------------------------------------------------------------------------------------------------------------
+	=> Acesti 'Pasi' sunt Repetati
+	=> pana la construirea 'Caracteristicilor Complete'
+
+
+
+
+
+
+ (B) Avantajele TDD:
+---------------------------------------------------------------------------------------------------------------------------
+
+     (1) Cod Sursa Testabil
+	=> nu mai trebuiesc facute alte Modificari in Cod
+	=> pt. a-l face 'Testabil'.
+
+
+     (2) Acoperirea cu Teste a tuturor Liniilor de Cod
+	=> care permite Refabricarea
+	=> si Implementarea Aplicatiei cu Incredere.
+
+
+     (3) Implementare Simpla
+	
+---------------------------------------------------------------------------------------------------------------------------
+
+
