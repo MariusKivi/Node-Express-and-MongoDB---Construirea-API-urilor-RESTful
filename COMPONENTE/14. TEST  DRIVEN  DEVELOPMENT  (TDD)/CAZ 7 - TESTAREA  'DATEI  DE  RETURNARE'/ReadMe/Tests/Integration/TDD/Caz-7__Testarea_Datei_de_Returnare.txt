@@ -1,0 +1,61 @@
+
+	Caz 7 - Testarea 'Datei de Returnare'
+
+
+
+
+  (1) Cream Cazul 7 de Testare
+	=> "Seteza Data Returnari  dacă Intrarea este Validă"
+	=> in 'returns.test.js'
+_____________________________________________________________________
+
+//(CAZ 7) SETAREA  'DATEI  RETURNARII'
+    it('should set the returnDate if input is valid', async() => {
+
+        // APELARE FUNC.'EXEC()':
+        const res = await exec();
+
+        // 'CAUTAREA IN DB' DUPA 'ID'
+        const rentalInDb = await Rental.findById(rental._id);
+
+        // CALCULAREA DIFERENTEI: 
+        // 'TIMP CURENT' - 'DATA DE RETURNARE':
+        const diff = new Date() - rentalInDb.dateReturned;
+
+        // ASTEPTAM CA 'DIFERENTA' SA 'FIE MAI MICA DE 10 SECUNDE':
+        expect(diff).toBeLessThan(10 * 1000);
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Modificam Fisierul 'routes/returns.js'	
+	=> Adaugam Data Returnari Inchirieri
+	=> si o Salvam:
+_____________________________________________________________________
+
+  // DATA 'RETURNARII INCHIRIERI':
+    rental.dateReturned = new Date();
+    
+    // SALVAM 'INCHIRIEREA':
+    await rental.save();
+_____________________________________________________________________
+
+
+
+
+ >> Afisare Test 7:
+_____________________________________________________________________
+
+Test Suites: 5 passed, 5 total
+Tests:       34 passed, 34 total
+Snapshots:   0 total
+Time:        17.682s
+Ran all test suites.
+_____________________________________________________________________
+
+
