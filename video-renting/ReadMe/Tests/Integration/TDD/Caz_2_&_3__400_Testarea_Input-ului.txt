@@ -1,0 +1,149 @@
+
+	Caz 2 & 3 - '400'  Testarea 'Input-ului'
+
+
+
+
+  (1.1.1) Importam Modelul  'User' 
+	=> In 'returns.test.js'
+	=> pt. a putea Genera un Token de Autentificare:
+_____________________________________________________________________
+
+const {User} = require('../../models/user');
+____________________________________________________________________
+
+
+
+
+
+
+
+ (1.1.2) Cream Cazul 2 de Testare  
+	=> "Returneza  400 dacă ID-ul Clientului nu este furnizat”t”"
+_____________________________________________________________________
+
+ //(CAZ 1) RETURNARE '401' - DACA 'CLIENTUL' NU ESTE 'AUTENTIFICAT'
+    it('should return 401 if client is not logged in', async() => {
+
+        // CREAM UN NOU OBIECT 'USER'
+        // GENERAM 'TOKEN DE AUTENTIFICARE': 
+        const token = new User().generateAuthToken();
+
+        // ADAUGAREA 'ID FILM' IN ''DB
+        const res = await request(server)
+            .post('/api/returns')
+            // SETAM 'HEADER'-UL CERERII:
+            .set('x-auth-token', token)
+            .send({ movieId });
+
+        // ASTEPTAM CA 'STATUSUL RASP.' SA 'FIE 400':
+        expect(res.status).toBe(400);
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (1.2) Modificam Continutul Rutei 'post()'
+	=> din 'routes/returns.js':
+_____________________________________________________________________
+
+// RUTA 'POST('/')'
+router.post('/', async(req, res) => {
+    // DACA ('ID CLIENT' DIN 'CORPUL RASP' NU ARE 'O VALOARE')
+    // RETURNAM 'RASP.' CU STATUS '400'
+    // CU MESAJUL:
+    if (!req.body.customerId) return res.status(400).send('customerId not provided.');
+
+    // RASPUNS: 'NEAUTORIZAT'
+    res.status(401).send('Unauthorized.');
+});
+
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (1.3) Pornim Testare
+_____________________________________________________________________
+
+	nom test
+_____________________________________________________________________
+
+
+
+
+ >> Afisare Cazul 2 de Testar:
+_____________________________________________________________________
+
+Test Suites: 5 passed, 5 total
+Tests:       27 passed, 27 total
+Snapshots:   0 total
+Time:        18.745s
+Ran all test suites.
+_____________________________________________________________________
+
+
+
+
+
+
+
+  (2.1) Cream Cazul 3 de Testare  
+	=> "Returneza  400 dacă ID-ul Filmului nu este furnizat”t”"
+_____________________________________________________________________
+
+ //(CAZ 3) RETURNARE '400' - DACA 'ID'-UL 'FILMULUI' NU ESTE 'FURNIZAT'
+    it('should return 400 if movieId is not provided', async() => {
+
+        // ADAUGAREA 'ID'-URI 'CLIENT' SI 'FILM' IN ''DB
+        const res = await request(server)
+            .post('/api/returns')
+            .send({ customerId });
+
+        // ASTEPTAM CA 'STATUSUL RASP.' SA 'FIE 401':
+        expect(res.status).toBe(400);
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+  (2.2) Modificam Continutul Rutei 'post()'
+	=> din 'routes/returns.js':
+_____________________________________________________________________
+
+    if (!req.body.movieId) return res.status(400).send('movieId not provided.');
+
+_____________________________________________________________________
+
+
+
+
+
+
+ >> Afisare Cazul 3 de Testare:
+_____________________________________________________________________
+
+
+Test Suites: 5 passed, 5 total
+Tests:       30 passed, 30 total
+Snapshots:   0 total
+Time:        20.101s
+Ran all test suites.
+_____________________________________________________________________
+
+
+
