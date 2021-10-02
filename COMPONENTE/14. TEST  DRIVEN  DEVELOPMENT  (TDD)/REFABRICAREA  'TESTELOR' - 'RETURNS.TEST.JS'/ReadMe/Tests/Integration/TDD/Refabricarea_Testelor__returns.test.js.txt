@@ -1,0 +1,299 @@
+
+	Refabricarea 'Testelor' - 'return.test.js"
+
+
+
+   >> Refabricam Testele pentru a elimina Duplicarile existente in cod.
+
+
+
+  (1) Definim Constanta  'exec':
+_____________________________________________________________________
+
+ // FUNC. 'EXEC(){}'
+    const exec = () => {
+        // ADAUGARE DATE IN 'DB':
+        return request(server)
+            .post('/api/returns')
+            .set('x-auth-token', token)
+            .send({ customerId, movieId });
+    };
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2.1) Definim Variabila:
+_____________________________________________________________________
+
+  let token;
+
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (2.2)  Adaugam  Setarea 'Token'-ului
+	=>  in 'beforeEach()'
+_____________________________________________________________________
+
+       // SETARE TOKEN - PT. UN 'USER NOU'
+        // & GENERAREA 'TOKEN'-ULUI DE 'AUTENTIFICARE'
+        token = new User().generateAuthToken();
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (3.1) Modificam Testul 1
+	=> Stergem Raspunsul 'const res'
+	=> si Adaugam Functia 'exec()'
+
+	=> Setam Parametrul 'token'
+	=> ca si 'String Gol':
+_____________________________________________________________________
+
+    //(CAZ 1) RETURNARE '401' - DACA 'CLIENTUL' NU ESTE 'AUTENTIFICAT'
+    it('should return 401 if client is not logged in', async() => {
+        // SETAM PARAMETRUL 'TOKEN' CA 'CA SIR GOL':
+        token = '';
+
+        // APELARE FUNC.:
+        const res = await exec();
+
+        // ASTEPTAM CA 'STATUSUL RASP.' SA 'FIE 400':
+        expect(res.status).toBe(400);
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+
+ (3.2) Modificam Testul 2
+	=> Stergem Raspunsul 'const res'
+	=> si Adaugam Functia 'exec()'
+
+	=> Setam Parametrul 'customerId'
+	=> ca si 'String Gol':
+_____________________________________________________________________
+
+ //(CAZ 2) RETURNARE '400' - DACA 'ID'-UL 'CLIENTULUI AUTENTIFICAT' NU ESTE 'FURNIZAT'
+    it('should return 400 if customerId is not provided', async() => {
+        // SETAM PARAMETRUL 'CUSTOMERID' CA 'CA SIR GOL':
+        customerId = '';
+        
+        // ALTA ABORDARE:
+        // delete payload.customerId;
+
+        
+        // APELARE FUNC.'EXEC()':
+        const res = await exec();
+
+        // ASTEPTAM CA 'STATUSUL RASP.' SA 'FIE 400':
+        expect(res.status).toBe(400);
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (3.3) Modificam Testul 3
+	=> Stergem Raspunsul 'const res'
+	=> si Adaugam Functia 'exec()'
+
+	=> Setam Parametrul 'movieId'
+	=> ca si 'String Gol':
+_____________________________________________________________________
+
+//(CAZ 3) RETURNARE '400' - DACA 'ID'-UL 'FILMULUI' NU ESTE 'FURNIZAT'
+    it('should return 400 if movieId is not provided', async() => {
+        // SETAM PARAMETRUL 'MOVIEID' CA 'CA SIR GOL':
+        movieId = '';
+
+        // APELARE FUNC.'EXEC()':
+        const res = await exec();
+
+        // ASTEPTAM CA 'STATUSUL RASP.' SA 'FIE 401':
+        expect(res.status).toBe(400);
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (4) Fisierul Complet 'returns.test.js':
+_____________________________________________________________________
+
+// IMPORTAM:
+const request = require('supertest');
+const { Rental } = require('../../models/rental');
+const { User } = require('../../models/user');
+const mongoose = require('mongoose');
+
+
+
+// SUITA DE TESTE '/API/RETURNS'
+describe('/api/returns', () => {
+    // DECLARAREA 'VARIABILELOR':
+    let server;
+    let customerId;
+    let movieId;
+    let rental;
+    let token;
+
+
+    // FUNC. 'EXEC(){}'
+    const exec = () => {
+        // ADAUGARE DATE IN 'DB':
+        return request(server)
+            .post('/api/returns')
+            .set('x-auth-token', token)
+            .send({ customerId, movieId });
+    };
+
+
+    // INCARCAREA 'SERVER'-ULUI 
+    beforeEach(async() => {
+        // PORNIRE SERVER DIN 'INDEX.JS':
+        server = require('../../index');
+
+
+        // PRELUAREA UNUI 'OBJECTID' DIN 'MONGOOSE':
+        customerId = mongoose.Types.ObjectId();
+        movieId = mongoose.Types.ObjectId();
+
+        // SETARE TOKEN - PT. UN 'USER NOU'
+        // & GENERAREA 'TOKEN'-ULUI DE 'AUTENTIFICARE'
+        token = new User().generateAuthToken();
+
+        // CREAM OBIECTUL 'INCHIRIERE':
+        rental = new Rental({
+            // 'INITIALIZAREA' PROP. 'CLIENT':
+            customer: {
+                _id: customerId,
+                name: '12345',
+                phone: '12345'
+            },
+
+            // 'INITIALIZAREA' PROP. 'FILM':
+            movie: {
+                _id: movieId,
+                title: '12345',
+                dailyRentalRate: 2
+            }
+        });
+
+        // SALVAREA 'INCHIRIERI' IN 'DB':
+        await rental.save();
+    });
+
+
+    afterEach(async() => {
+        // 'INCHIDEREA' SERVERULUI: 
+        await server.close();
+        // STERGEREA 'INCHIRIERI':
+        await Rental.remove({});
+    });
+
+
+
+    // ---------------------------------------------------------------------------------
+    //(CAZ 1) RETURNARE '401' - DACA 'CLIENTUL' NU ESTE 'AUTENTIFICAT'
+    it('should return 401 if client is not logged in', async() => {
+        // SETAM PARAMETRUL 'TOKEN' CA 'CA SIR GOL':
+        token = '';
+
+        // APELARE FUNC.'EXEC()':
+        const res = await exec();
+
+        // ASTEPTAM CA 'STATUSUL RASP.' SA 'FIE 400':
+        expect(res.status).toBe(400);
+    });
+
+
+
+
+    // ---------------------------------------------------------------------------------
+    //(CAZ 2) RETURNARE '400' - DACA 'ID'-UL 'CLIENTULUI AUTENTIFICAT' NU ESTE 'FURNIZAT'
+    it('should return 400 if customerId is not provided', async() => {
+        // SETAM PARAMETRUL 'CUSTOMERID' CA 'CA SIR GOL':
+        customerId = '';
+
+        // ALTA ABORDARE:
+        // delete payload.customerId;
+
+
+        // APELARE FUNC.'EXEC()':
+        const res = await exec();
+
+        // ASTEPTAM CA 'STATUSUL RASP.' SA 'FIE 400':
+        expect(res.status).toBe(400);
+    });
+
+
+
+
+    // ---------------------------------------------------------------------------------
+    //(CAZ 3) RETURNARE '400' - DACA 'ID'-UL 'FILMULUI' NU ESTE 'FURNIZAT'
+    it('should return 400 if movieId is not provided', async() => {
+        // SETAM PARAMETRUL 'MOVIEID' CA 'CA SIR GOL':
+        movieId = '';
+
+        // APELARE FUNC.'EXEC()':
+        const res = await exec();
+
+        // ASTEPTAM CA 'STATUSUL RASP.' SA 'FIE 401':
+        expect(res.status).toBe(400);
+    });
+});
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (5) Rulam Testarea:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+ >> Afisarea Testari:
+_____________________________________________________________________
+
+Test Suites: 5 passed, 5 total
+Tests:       30 passed, 30 total
+Snapshots:   0 total
+Time:        18.146s
+Ran all test suites.
+_____________________________________________________________________
+
+
