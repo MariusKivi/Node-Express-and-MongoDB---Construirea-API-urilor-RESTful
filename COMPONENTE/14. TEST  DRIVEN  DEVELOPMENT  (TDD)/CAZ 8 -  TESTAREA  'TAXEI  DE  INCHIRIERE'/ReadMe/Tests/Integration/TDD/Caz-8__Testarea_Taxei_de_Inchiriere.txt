@@ -1,0 +1,155 @@
+
+	Caz 8  -  Testarea 'Taxei de Inchiriere'
+
+
+
+
+  (0) Instalarea Bibliotecii 'Moment'
+	=> pt. lucrul cu 'Data' si 'Ora':
+	
+_____________________________________________________________________
+
+	npm i moment
+_____________________________________________________________________
+
+
+
+ >> Afisare Terminal:
+_____________________________________________________________________
+
++ moment@2.29.1
+added 1 package in 14.888s
+_____________________________________________________________________
+
+
+
+
+
+
+
+   (1.1) Importam Biblioteca 'Moment'	
+	=> in 'returns.test.js'
+
+_____________________________________________________________________
+
+const moment = require('moment');
+_____________________________________________________________________
+
+
+
+
+  (1.2) Cream Cazul 8 de Testare
+	=> "Stabileste Taxa de Inchiriere dacă Intrarea este Validă"
+	=> in 'returns.test.js'
+_____________________________________________________________________
+
+ //(CAZ 8) SETAREA  'DATEI  RETURNARII'
+    it('should set the rentalFee if input is valid', async() => {
+
+        // SETAREA 'DATEI DE IESIRE' A 'INCHIRIERI'
+        // APELAREA BIBL. 'MOMENT' 
+        // PT. OBT. 'DATEI CURENTE' & ADAUGAREA 'NR. DE ZILE'
+        // SI CONVERTIREA 'IN DATA':    
+        rental.dateOut = moment().add(-7, 'days').toDate();
+
+        // SALVAREA 'INCHIRIERI':
+        await rental.save();
+
+
+        // APELARE FUNC.'EXEC()':
+        const res = await exec();
+
+        // 'CAUTAREA IN DB' - DUPA 'ID':
+        const rentalInDb = await Rental.findById(rental._id);
+
+        // ASTEPTAM CA 'TAXA DE INCHIRIERE' SA 'FIE 14$':
+        expect(rentalInDb.rentalFee).toBe(14);
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Modificam Fisierul 'routes/returns.js'
+	=> Importam Biblioteca 'Momen'
+	=>  Setam 'Taxa de Inchiriere':
+_____________________________________________________________________
+
+// IMPORTAM:
+const moment = require('moment');
+const { Rental } = require('../models/rental');
+const auth = require('../middleware/auth');
+const express = require('express');
+const date = require('joi/lib/types/date');
+const router = express.Router();
+
+
+
+// RUTA 'POST('/')'
+router.post('/', auth, async(req, res) => {
+    // DACA ('ID CLIENT' DIN 'CORPUL RASP' NU ARE 'O VALOARE')
+    // RETURNAM 'RASP.' CU STATUS '400' CU MESAJUL:
+    if (!req.body.customerId) return res.status(400).send('customerId not provided.');
+    if (!req.body.movieId) return res.status(400).send('movieId not provided.');
+
+
+    // CAUTAM 'CUSTOMERID' & 'MOVIEID'
+    Rental.findOne({
+        'customer._id': req.body.customerId,
+        'movie._id': req.body.movieId
+    });
+
+    // DACA (NU EXISTA 'INCHIRIERE') - RETURNAM '404':
+    if (!rental) return res.status(404).send('Rental.not found.');
+
+
+    // DACA (DATA DE RETURNARE) ESTE DEJA SETATA - RETURNAM '400':
+    if (rental.dateReturned) return res.status(400).send('Return already processed.');
+
+
+    // DATA 'RETURNARII INCHIRIERI':
+    rental.dateReturned = new Date();
+
+
+    // 'NR. ZILELOR' DE 'INCHIRIERE':
+    const rentalDays = moment().diff(rental.dateOut, 'days');
+
+    // SETAM 'TAXA DE INCHIRIERE' PRIN BIBLIOTECA 'MOMENT'
+    // CALCULAM 'NR. DE ZILE' DE LA 'DATA DE IESIRE' A 'FILMULUI':
+    rental.rentalFee = rentalDays * rental.movie.dailyRentalRate;
+
+
+    // SALVAM 'INCHIRIEREA':
+    await rental.save();
+
+
+    // RETURNAM 'STATUS 200' & trimitem un 'raspuns gol'
+    return res.status(200).send();
+
+
+    // RASPUNS: 'NEAUTORIZAT'
+    // res.status(401).send('Unauthorized.');
+});
+
+
+// EXPORTAM:
+module.exports = router;
+_____________________________________________________________________
+
+
+
+
+ >> Afisare Test 8:
+_____________________________________________________________________
+
+Test Suites: 5 passed, 5 total
+Tests:       35 passed, 35 total
+Snapshots:   0 total
+Time:        16.996s, estimated 21s
+Ran all test suites.
+_____________________________________________________________________
+
+
