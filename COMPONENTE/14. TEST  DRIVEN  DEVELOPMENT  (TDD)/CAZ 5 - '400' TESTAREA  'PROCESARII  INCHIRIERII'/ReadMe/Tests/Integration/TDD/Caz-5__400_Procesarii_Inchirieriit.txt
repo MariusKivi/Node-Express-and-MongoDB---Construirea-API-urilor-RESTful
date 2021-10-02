@@ -1,0 +1,56 @@
+
+	Caz-5  - '400'  Testarea 'Procesarii Inchirieriit'
+
+
+
+
+  (1) Cream Cazul 5 de Testare
+	=> "dacă Returnarea este Deja Procesată"
+	=> in 'returns.test.js'
+_____________________________________________________________________
+
+  //(CAZ 5) RETURNARE '400' - DACA 'INCHIRIEREA' A FOST 'DEJA PROCESATA' PT. 'FILM'/'CLIENT'
+    it('should return 400 if return is already processed', async() => {
+        // SETAM 'DATA RETURNARI' CA SI 'DATA CURENTA':
+        rental.dateReturned = new Date();
+
+        // SALVAM 'INCGHIRIEREA':
+        await rental.save();
+
+
+        // APELARE FUNC.'EXEC()':
+        const res = await exec();
+
+        // ASTEPTAM CA 'STATUSUL RASP.' SA 'FIE 400':
+        expect(res.status).toBe(400);
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Modificam Fisierul 'routes/returns.js'	
+	=>  Verificam daca 'Data de Returnare' a fost Setata:
+_____________________________________________________________________
+
+    // DACA (DATA DE RETURNARE) ESTE DEJA SETATA - RETURNAM '400':
+    if (rental.dateReturned) return res.status(400).send('Return already processed.');
+_____________________________________________________________________
+
+
+
+
+ >> Afisare Test 5:
+_____________________________________________________________________
+
+Test Suites: 5 passed, 5 total
+Tests:       32 passed, 32 total
+Snapshots:   0 total
+Time:        15.021s, estimated 17s
+Ran all test suites.
+_____________________________________________________________________
+
+
