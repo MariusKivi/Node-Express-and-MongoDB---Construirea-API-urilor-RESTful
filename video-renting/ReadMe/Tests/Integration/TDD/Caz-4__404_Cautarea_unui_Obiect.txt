@@ -1,0 +1,86 @@
+
+	Caz 4 -  '404'  Cautarea unui 'Obiect'
+
+
+
+
+  (1) Cream Cazul 4 de Testare
+	=> "dacă Nu a fost Găsită nicio Inchiriere pentru Client / Film"
+	=> in 'returns.test.js'
+_____________________________________________________________________
+
+  //(CAZ 4) RETURNARE '404' - DACA 'INCHIRIEREA' NU ESTE 'POSIBILA' PT. 'FILM'/'CLIENT'
+    it('should return 404 if no rental found for the customer/movie', async() => {
+        // CURATAM COLECTIA 'RENTAL':
+        await Rental.remove({});
+
+        // APELARE FUNC.'EXEC()':
+        const res = await exec();
+
+        // ASTEPTAM CA 'STATUSUL RASP.' SA 'FIE 404':
+        expect(res.status).toBe(404);
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Modificam Fisierul 'routes/returns.js'
+	=> Importam Clasa '{Rental}'
+	=>  Cautam 'customerId' si 'movieId':
+_____________________________________________________________________
+
+// IMPORTAM:
+const { Rental } = require('../models/rental');
+const express = require('express');
+const router = express.Router();
+
+
+
+// RUTA 'POST('/')'
+router.post('/', async(req, res) => {
+    // DACA ('ID CLIENT' DIN 'CORPUL RASP' NU ARE 'O VALOARE')
+    // RETURNAM 'RASP.' CU STATUS '400'
+    // CU MESAJUL:
+    if (!req.body.customerId) return res.status(400).send('customerId not provided.');
+    if (!req.body.movieId) return res.status(400).send('movieId not provided.');
+
+
+    // CAUTAM 'CUSTOMERID' & 'MOVIEID'
+    Rental.findOne({
+        'customer._id': req.body.customerId,
+        'movie._id': req.body.movieId
+    });
+
+    // DACA (NU EXISTA 'INCHIRIERE') - RETURNAM '404':
+    if (!rental) return res.status(404).send('Rental.not found.');
+
+
+    // RASPUNS: 'NEAUTORIZAT'
+    res.status(401).send('Unauthorized.');
+});
+
+
+// EXPORTAM:
+module.exports = router;
+_____________________________________________________________________
+
+
+
+
+ >> Afisare Test 4:
+_____________________________________________________________________
+
+Test Suites: 5 passed, 5 total
+Tests:       31 passed, 31 total
+Snapshots:   0 total
+Time:        16.021s
+Ran all test suites.
+
+Watch Usage
+_____________________________________________________________________
+
+
