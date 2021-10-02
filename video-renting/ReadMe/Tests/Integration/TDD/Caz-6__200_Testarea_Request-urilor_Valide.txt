@@ -1,0 +1,93 @@
+
+	Caz 6 - '200'  Testarea 'Request'-urilor 'Valide'
+
+
+
+
+  (1) Cream Cazul 4 de Testare
+	=> "dacă avem o Cerere Validă"
+	=> in 'returns.test.js'
+_____________________________________________________________________
+
+ //(CAZ 6) RETURNARE '200' - DACA 'CEREREA' ESTE 'VALIDA'
+    it('should return 200 if we have a valid request', async() => {
+       
+        // APELARE FUNC.'EXEC()':
+        const res = await exec();
+
+        // ASTEPTAM CA 'STATUSUL RASP.' SA 'FIE 200':
+        expect(res.status).toBe(200);
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Modificam Fisierul 'routes/returns.js'	
+	=>  Setam Status '200'
+	=> si Trimitem un 'Raspuns Gol'
+
+	=> Importam 'middleware/auth.js'
+	=> il adaugam ca al 2-le Argument in Metoda 'POST()'
+	
+	=> Stergem Raspunsul 'Status 401':
+_____________________________________________________________________
+
+// IMPORTAM:
+const { Rental } = require('../models/rental');
+const auth = require('../middleware/auth');
+const express = require('express');
+const router = express.Router();
+
+
+
+// RUTA 'POST('/')'
+router.post('/', auth, async(req, res) => {
+    // DACA ('ID CLIENT' DIN 'CORPUL RASP' NU ARE 'O VALOARE')
+    // RETURNAM 'RASP.' CU STATUS '400'
+    // CU MESAJUL:
+    if (!req.body.customerId) return res.status(400).send('customerId not provided.');
+    if (!req.body.movieId) return res.status(400).send('movieId not provided.');
+
+
+    // CAUTAM 'CUSTOMERID' & 'MOVIEID'
+    Rental.findOne({
+        'customer._id': req.body.customerId,
+        'movie._id': req.body.movieId
+    });
+
+    // DACA (NU EXISTA 'INCHIRIERE') - RETURNAM '404':
+    if (!rental) return res.status(404).send('Rental.not found.');
+
+
+    // DACA (DATA DE RETURNARE) ESTE DEJA SETATA - RETURNAM '400':
+    if (rental.dateReturned) return res.status(400).send('Return already processed.');
+
+
+    // RETURNAM 'STATUS 200' & trimitem un 'raspuns gol'
+    return res.status(200).send();
+
+});
+
+
+// EXPORTAM:
+module.exports = router;
+_____________________________________________________________________
+
+
+
+
+ >> Afisare Test 6:
+_____________________________________________________________________
+
+Test Suites: 5 passed, 5 total
+Tests:       33 passed, 32 total
+Snapshots:   0 total
+Time:        15.021s, estimated 17s
+Ran all test suites.
+_____________________________________________________________________
+
+
