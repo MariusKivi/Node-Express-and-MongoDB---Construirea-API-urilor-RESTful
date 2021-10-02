@@ -1,0 +1,171 @@
+
+	Caz 1 - '401'  Testarea 'Autorizarii'
+
+
+
+
+
+  (1) Cream Testul 1 
+	=> in 'returns.test.js'
+	=> Importam Modulul  'supertest'
+_____________________________________________________________________
+// IMPORTAM:
+const request = require('supertest');
+
+
+
+//(CAZ 1) RETURNARE '401' - DACA 'CLIENTUL' NU ESTE 'AUTENTIFICAT'
+    it('should return 401 if client is not logged in', async() => {
+
+        // ADAUGAREA 'ID'-URI 'CLIENT' SI 'FILM' IN ''DB
+        : const res = await request(server)
+            .post('/api/returns')
+            .send({ customerId, movieId });
+
+        // ASTEPTAM CA 'STATUSUL RASP.' SA 'FIE 401':
+        expect(res.status).toBe(401);
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+
+(2.1) Adaugam 'await' inaintea Server-ului
+	=> in 'returns.test.js'
+	=> din Blocul 'afterEach'
+_____________________________________________________________________
+    afterEach(async() => {
+        // 'INCHIDEREA' SERVERULUI: 
+        await server.close();
+        // STERGEREA 'INCHIRIERI':
+        await Rental.remove({});
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+(2.2) Adaugam 'await' inaintea Server-ului
+	=> in 'auth.test.js'
+	=> din Blocul 'afterEach'
+_____________________________________________________________________
+
+// INAINTEA FIECARUI TEST:
+    // PORNIRE 'SERVER' DIN 'INDEX.JS':
+    beforeEach(() => { server = require('../../index'); })
+    afterEach(async() => {
+        await Genre.remove({});
+        await server.close();
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2.3) Adaugam 'await' inaintea Server-ului
+	=> in 'genres.test.js'
+	=> din Blocul 'afterEach'
+_____________________________________________________________________
+
+    // INCARCAREA 'SERVER'-ULUI 
+    beforeEach(() => { server = require('../../index'); });
+    afterEach(async() => {
+        // INCHIDEREA SERVERULUI: 
+        await server.close();
+        // STERGEREA GENULUI
+        await Genre.remove({});
+    });
+_____________________________________________________________________
+
+
+
+
+
+ 
+
+ (3.1) Cream Fisierul 'routes/returns.js
+	=> pt. a crea Ruta 'POST/':
+_____________________________________________________________________
+
+// IMPORTAM:
+const express = require('express');
+const router = express.Router();
+
+
+
+// RUTA 'POST('/')'
+router.post('/', async(req, res) => {
+
+    // RASPUNS: 'NEAUTORIZAT'
+    res.status(401).send('Unauthorized.');
+});
+
+
+// EXPORTAM:
+module.exports = router;
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+ (3.2) Adaugam  Ruta 'returns'
+	=>  in  'startup/routes.js'
+	=> Incarcarea
+	=> si Utilizarea:
+_____________________________________________________________________
+// INCARCARE:
+const returns = require('../routes/returns');
+
+
+//UTILIZARE:
+app.use('/api/returns', returns);
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ 
+
+
+
+ (4) Rulam Testul:
+_____________________________________________________________________
+
+	npm test
+_____________________________________________________________________
+
+
+
+ >> Afisare Test:
+_____________________________________________________________________
+
+Test Suites:  5 passed, 5 total
+Tests:       27 passed, 27 total
+Snapshots:   0 total
+Time:        16.798s
+Ran all test suites.
+_____________________________________________________________________
+
+
