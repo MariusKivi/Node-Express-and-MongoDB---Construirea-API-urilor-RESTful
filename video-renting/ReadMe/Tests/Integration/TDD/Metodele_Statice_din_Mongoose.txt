@@ -1,0 +1,141 @@
+
+	Metodele 'Statice' din 'Mongoose'
+
+
+
+
+   NB!
+----------------------------------------------------------------------------------------------------------------------------
+   <> In 'OOP' avem 2 Tipuri de Metode:
+
+        (1) Metode 'Statice'
+	=> este 'Disponibila' doar in 'Clase'
+
+	      Ex.:  Rental.lookup 
+	
+
+        (2) Metode 'Instanta'
+	=> este 'Disponibila' doar in 'Obiecte' 
+	=> sau o 'Instanta' a unei 'Clase'
+
+	      Ex.:  new.User().generateAuthToken() 
+   
+----------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+  (1) Adaugam  Metoda 'Rental.lookup()'
+	=> in Metoda 'post()'
+	=> din 'routes/returns.js':
+_____________________________________________________________________
+
+  const rental = await Rental.lookup(req.body.customerId, req.body.movieId);
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Din Fisierul  'models/rental.js'
+	=> din Modelul 'Rentail'
+	=> extragem Obiectul 'schema'
+	=> (pt. a ii putea adaoga o Metoda)
+	=> si Crem Separat 'rentalSchema '
+
+ 	=> Cream  Metoda 'lookup()'	
+	=> in care Plasam 'Rental.findOne()'
+	=> din 'routes/returns.js'
+	=> si ii Inlocuim 'rental' cu 'this':
+_____________________________________________________________________
+
+
+// SCHEMA 'INCHIRIERI'
+const rentalSchema = new mongoose.Schema({
+    customer: {
+        type: new mongoose.Schema({
+            name: {
+                type: String,
+                required: true,
+                minlength: 5,
+                maxlength: 50
+            },
+            isGold: {
+                type: Boolean,
+                default: false
+            },
+            phone: {
+                type: String,
+                required: true,
+                minlength: 5,
+                maxlength: 50
+            }
+        }),
+        required: true
+    },
+    movie: {
+        type: new mongoose.Schema({
+            title: {
+                type: String,
+                required: true,
+                trim: true,
+                minlength: 5,
+                maxlength: 255
+            },
+            dailyRentalRate: {
+                type: Number,
+                required: true,
+                min: 0,
+                max: 255
+            }
+        }),
+        required: true
+    },
+    dateOut: {
+        type: Date,
+        required: true,
+        default: Date.now
+    },
+    dateReturned: {
+        type: Date
+    },
+    rentalFee: {
+        type: Number,
+        min: 0
+    }
+});
+
+
+
+// METODA STATICA 'LOOKUP':
+rentalSchema.statics.lookup = function(customerId, movieId) {
+    return this.findOne({
+        'customer._id': customerId,
+        'movie._id': movieId,
+    });
+}
+
+
+
+// MODEL 'RENTAL' & 'RENTALSCHEMA':
+const Rental = mongoose.model('Rental', rentalSchema);
+
+
+_____________________________________________________________________
+
+
+
+
+ >> Afisare Teste:
+_____________________________________________________________________
+
+Test Suites: 5 passed, 5 total
+Tests:       37 passed, 37 total
+Snapshots:   0 total
+Time:        19.366s
+Ran all test suites.
+_____________________________________________________________________
+
+
