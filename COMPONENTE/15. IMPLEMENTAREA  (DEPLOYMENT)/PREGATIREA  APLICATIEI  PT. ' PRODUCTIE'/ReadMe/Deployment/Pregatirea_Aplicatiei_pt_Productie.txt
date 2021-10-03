@@ -1,0 +1,87 @@
+
+	Pregatirea 'Aplicatiei' pentru 'Productie'
+
+
+
+
+
+  (1) Instalam Pachetul 'Helmet':
+_____________________________________________________________________
+
+	npm i helmet
+_____________________________________________________________________
+         >> Ajută in securizrea Aplicațiile Express 
+	=> prin Setarea diferitelor Antete HTTP. 
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________
+
++ helmet@4.6.0
+added 1 package in 7.554s
+_____________________________________________________________________
+
+
+
+
+
+
+
+  (2) Instalam Pachetul 'Compression':
+_____________________________________________________________________
+
+	npm i compression
+_____________________________________________________________________
+         >> Permite Compresarea 'Raspunsului  HTTP'
+	=> ce este Trimis catre 'Client'.
+
+
+
+ >> Afisare in PowerShell:
+_____________________________________________________________________
+
++ compression@1.7.4
+added 9 packages in 13.811s
+_____________________________________________________________________
+
+
+
+
+
+
+ (3) Cream Fisierul 'prod.js' in Folder-ul 'startup'
+	=> in care vom adauga  Middleware-urile pt Productie:
+_____________________________________________________________________
+
+// IMPORTAM:
+const helmet = require('helmet');
+const compression = require('compression');
+
+
+
+//  FUNC. EXPORTATA 'PROD':
+module.exports = function(app) {
+    app.use(helmet());
+    app.use(compression());
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (4) Adaugam Apelarea'prod.js'
+	=> in 'index.js'
+_____________________________________________________________________
+
+require('./startup/prod')(app);
+
+_____________________________________________________________________
+
+
+
+

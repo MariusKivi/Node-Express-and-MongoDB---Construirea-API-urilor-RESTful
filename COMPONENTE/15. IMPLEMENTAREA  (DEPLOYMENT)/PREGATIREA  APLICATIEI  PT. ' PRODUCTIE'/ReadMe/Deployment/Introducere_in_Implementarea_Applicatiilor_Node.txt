@@ -1,0 +1,26 @@
+
+	Introducere in 'Implementarea Applicatiilor NodeJS'
+
+
+
+
+  Optiuni de Implementare
+--------------------------------------------------------------------------------------------------------------------------
+     (T) PaaS  - Platform as a Service:
+
+	(1) Heroku
+	(2) Google Cloud Platform 
+	(1) AWS
+	(1)  Azure
+	
+
+     (II) Docker:
+	=> Permite Implementarea pe propriul 'Web Server'
+	=> Permite Crearea cu Usurinta a 'Imaginii Aplicatiei' 
+	=>  si Implementarea 'Imaginii' pe Orice 'PC'.
+
+--------------------------------------------------------------------------------------------------------------------------
+	>> Vom utiliza Implementarea prin PaaS - 'Heroku'
+
+
+
