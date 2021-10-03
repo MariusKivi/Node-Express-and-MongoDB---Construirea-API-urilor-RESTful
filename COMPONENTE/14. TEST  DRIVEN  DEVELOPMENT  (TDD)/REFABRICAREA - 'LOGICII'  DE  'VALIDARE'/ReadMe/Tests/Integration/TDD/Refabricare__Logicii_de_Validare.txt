@@ -1,0 +1,100 @@
+
+	Refabricare - 'Logicii' de 'Validare'
+
+
+
+
+ (1)  Cream Fisierul 'validate.js' 
+	=> in Folder-ul 'middleware'	
+_____________________________________________________________________
+
+// FUNC. EXPORTATA 'VALIDATE':
+module.exports = (validator) => {
+  return (req, res, next) => {
+    const { error } = validator(req.body);  
+    if (error) return res.status(400).send(error.details[0].message);
+    next();
+  }
+}
+_____________________________________________________________________
+
+
+
+
+
+
+ (2)  Importam 'Joi'  si Fisierul 'middleware/validate.js':	
+	=> in  Fisierul 'routes/returns.js':
+_____________________________________________________________________
+
+const Joi = require('joi');
+const validate = require('../middleware/validate');
+
+_____________________________________________________________________
+
+
+
+
+  (3) Stergem Metoda 'post()'
+	=>din  Fisierul 'routes/returns.js'
+	=> Liniile:      
+_____________________________________________________________________
+
+     // DACA ('ID CLIENT' DIN 'CORPUL RASP' NU ARE 'O VALOARE')
+    // RETURNAM 'RASP.' CU STATUS '400' CU MESAJUL:
+    if (!req.body.customerId) return res.status(400).send('customerId not provided.');
+    if (!req.body.movieId) return res.status(400).send('movieId not provided.');
+_____________________________________________________________________
+
+
+
+
+
+
+  (4)   Adaugam in Metoda 'post()'
+	=> Autentificarea Utilizatorului 
+	=> si Validarea Returnarii::
+_____________________________________________________________________
+
+router.post('/', [auth, validate(validateReturn)], async (req, res) => {
+   ...
+)
+_____________________________________________________________________
+
+
+
+	
+   
+
+
+   (5)   Cream Functia 'validateReturn'
+	=> in Metoda 'post(){}'
+	=>din  Fisierul 'routes/returns.js':
+_____________________________________________________________________
+
+// FUNCTIA 'VALIDATERETURN(){}':
+function validateReturn(req) {
+    const schema = {
+        customerId: Joi.objectId().required(),
+        movieId: Joi.objectId().required()
+    };
+
+    return Joi.validate(req, schema);
+}
+_____________________________________________________________________
+
+
+
+
+  >> Afisarea Testelor:
+_____________________________________________________________________
+
+Test Suites: 5 passed, 5 total
+Tests:       37 passed, 37 total
+Snapshots:   0 total
+Time:        17.655s, estimated 18s
+Ran all test suites.
+_____________________________________________________________________
+
+
+
