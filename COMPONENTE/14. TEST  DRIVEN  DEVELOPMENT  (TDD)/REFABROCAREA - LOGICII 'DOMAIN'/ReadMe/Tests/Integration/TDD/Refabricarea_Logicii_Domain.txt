@@ -1,0 +1,90 @@
+
+	Refabricarea - Logicii 'Domain'
+
+
+
+
+  (1) Cream Metoda '.return()'
+	=> in 'routes/returns.js'
+_____________________________________________________________________
+
+   // METODA 'RETURN()':
+    rental.return();
+   
+    // SALVAM 'INCHIRIEREA':
+    await rental.save();
+
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Cream Metoda Instanta "return"
+	=> in 'models/rentals.js'
+	=> in care Mutam 'dateReturned', 'rentalDays' si 'rentalFee':
+_____________________________________________________________________
+
+// METODA INSTANTA 'RETURN':
+rentalSchema.methods.return = function() {
+    // DATA 'RETURNARII INCHIRIERI':
+    this.dateReturned = new Date();
+
+    // 'NR. ZILELOR' DE 'INCHIRIERE':
+    const rentalDays = moment().diff(this.dateOut, 'days');
+
+    // SETAM 'TAXA DE INCHIRIERE' PRIN BIBLIOTECA 'MOMENT'
+    // CALCULAM 'NR. DE ZILE' DE LA 'DATA DE IESIRE' A 'FILMULUI':
+    this.rentalFee = rentalDays * this.movie.dailyRentalRate;
+}
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (3) Mutam Importul Bibliotecii 'Moment'
+	=> din 'routes/returns.js'
+	=> in 'models/rental.js'
+_____________________________________________________________________
+
+const moment = require('moment');
+
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (4) Mutam Returnarea 'status(200)'
+	=> din 'routes/returns.js'
+_____________________________________________________________________
+
+   // RETURNAM ' STATUS 200' & TRIMITEREA IN 'RASPUNS' A 'INCHIRIERII':
+    // return res.status(200).send(rental);
+    return res.send(rental);
+_____________________________________________________________________
+
+
+
+
+
+ >> Afisarea Testelor:
+_____________________________________________________________________
+
+Test Suites: 5 passed, 5 total
+Tests:       37 passed, 37 total
+Snapshots:   0 total
+Time:        20.798s
+Ran all test suites.
+_____________________________________________________________________
+
+

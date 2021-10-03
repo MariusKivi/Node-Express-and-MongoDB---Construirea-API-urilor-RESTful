@@ -1,7 +1,7 @@
 {
-    "name": "Node-Express-and-MongoDB---Construirea-API-urilor-RESTful",
+    "name": "node-express-and-mongodb--construirea-api-urilor-restful",
     "version": "1.0.0",
-    "description": "",
+    "description": "video-renting application in node.js, express and momgodb",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
