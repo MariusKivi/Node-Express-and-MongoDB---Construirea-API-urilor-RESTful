@@ -1,0 +1,135 @@
+
+	Caz 9 - Testarea 'Stocului de Filme'
+
+
+
+
+  (1) Cazul 9 de Testare
+	=> "Cresterea Stocul Filmului dacă Intrarea este Validă"
+	=> in 'returns.test.js'
+
+        (1.1) Definim Variabila:
+	=> in 'describe()'
+_____________________________________________________________________
+
+    let movie;
+
+_____________________________________________________________________
+
+
+
+
+        (1.2)  Cream Obietul 'movie'
+	=> in Blocul 'beforeEach(){}':
+_____________________________________________________________________
+
+ // CREAM OBIECTUL 'FILM'::
+        movie = new Movie({
+            _id: movieId,
+            title: '12345',
+            // TARIFUL ZILNIC DE INCHIRIERE = '2$'
+            dailyRentalRate: 2,
+            genre: { name: '12345' },
+            numberInStock: 10
+        });
+
+        // SALVAREA 'FILMULUI' IN 'DB':
+        await movie.save();
+_____________________________________________________________________
+
+
+
+
+
+        (1.3)  AdaugamStergerea  'movie'
+	=> in Blocul 'afterEach(){}':
+_____________________________________________________________________
+
+ afterEach(async() => {
+        // 'INCHIDEREA' SERVERULUI: 
+        await server.close();
+        // STERGEREA 'INCHIRIERI':
+        await Rental.remove({});
+        // STERGEREA 'FILMELOR':
+        await Movie.remove({});
+    });
+__________________________________________
+
+
+
+
+
+        (1.4)  Importam Clasa '{Movie}':
+	=:
+_____________________________________________________________________
+
+const { Movie } = require('../../models/movie');
+
+_____________________________________________________________________
+
+
+
+
+
+        (1.5)  Cream Testul 9
+	=:
+_____________________________________________________________________
+
+ //(CAZ 9) CALCULAREA 'TAXEI' ('FEE') DE 'INCHIRIERE'
+    it('should increase the movie stock if input is valid', async() => {
+
+        // SALVAREA 'INCHIRIERI':
+        await rental.save();
+
+
+        // APELARE FUNC.'EXEC()':
+        const res = await exec();
+
+        // 'CAUTAREA IN DB' - DUPA 'ID FILM':
+        const movieInDb = await Movie.findById(movieId);
+
+        // ASTEPTAM CA 'NR. DE FILME IN STOC' SA 'FIE 11':
+        expect(movieInDb.numberInStock).toBe(movie.numberInStock + 1);
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (2) Modificam Fisierul 'routes/returns.js'
+	=> Importam Clasa '{Movie}'
+	=>  In Met. 'POST('/')' 
+	=> Cream 'Upgradarea Nr. de Filme din Stoc':
+_____________________________________________________________________
+
+// IMPORTAM:
+const {Movie} = require('../models/movie');
+
+
+
+
+ // CAUTAM 'ID-UL FILMULUI', PE CARE IL 'UPGRADAM'
+    await Movie.update({ _id: rental.movie._id }, {
+        // INCREMENTAM 'NR. DE FILME' DIN 'STOC'
+        $inc: { numberInStock: 1 }
+    });
+_____________________________________________________________________
+
+
+
+
+ >> Afisare Test 9:
+_____________________________________________________________________
+
+Test Suites: 5 passed, 5 total
+Tests:       36 passed, 36 total
+Snapshots:   0 total
+Time:        17.136s, estimated 21s
+Ran all test suites.
+_____________________________________________________________________
+
+
