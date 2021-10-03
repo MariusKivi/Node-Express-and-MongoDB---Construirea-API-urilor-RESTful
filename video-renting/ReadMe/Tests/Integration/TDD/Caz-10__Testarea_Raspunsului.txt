@@ -1,0 +1,62 @@
+
+	Caz 10 - Testarea 'Raspunsului'
+
+
+
+
+  (1) Cream Cazul 4 de Testare
+	=> "Returnarea Inchirierii dacă Intrarea este Validă"
+	=> in 'returns.test.js'
+_____________________________________________________________________
+
+ // ---------------------------------------------------------------------------------
+    //(CAZ 10) RETURNAREA 'REZUMATULUI INCHIRIERII' CLIENTULUI
+    it('should return the rental if input is valid', async() => {
+
+        // APELARE FUNC.'EXEC()':
+        const res = await exec();
+
+        // 'CAUTAREA IN DB' - DUPA 'ID INCHIRIERII':
+        const rentalInDb = await Rental.findById(rental._id);
+
+        // ASTEPTAM CA 'MATRICEA' CU 'NUMELE TUTUROR PROPS.'
+        // SA 'FIE EGAL' CU 'MATRICEA' CU 'PROPRIETATILE CAUTATE':
+        expect(Object.keys(res.body)).toEqual(
+            expect.arrayContaining([
+                'dateOut',
+                'dateReturned',
+                'rentalFee',
+                'customer',
+                'movie'
+            ]));
+    });
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Modificam Fisierul 'routes/returns.js'	
+	=>  Adaugam Returnarea Inchirieri in Rasouns
+_____________________________________________________________________
+
+ // RETURNAM ' STATUS 200' & TRIMITEREA IN 'RASPUNS' A 'INCHIRIERII':
+    return res.status(200).send(rental);
+_____________________________________________________________________
+
+
+
+
+ >> Afisare Test 4:
+_____________________________________________________________________
+
+Test Suites: 5 passed, 5 total
+Tests:       37 passed, 37 total
+Snapshots:   0 total
+Time:        18.757s
+Ran all test suites.
+_____________________________________________________________________
+
+
