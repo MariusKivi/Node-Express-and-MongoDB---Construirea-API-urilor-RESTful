@@ -1,0 +1,105 @@
+
+	Vizualizarea 'Jurnalelor' ('Logs')
+
+
+
+
+  (1) Afisarea 'Jurnalelor'/'Logs' in Terminal:
+_____________________________________________________________________
+
+	heroku logs
+_____________________________________________________________________
+
+
+
+
+
+
+
+  (2) Afisarea 'Jurnalelor'/'Logs' in Terminal:
+      
+	>> Deschidem:
+--------------------------------------------------------------------------------------------------------
+
+	https://dashboard.heroku.com/apps/video-renting
+--------------------------------------------------------------------------------------------------------
+
+
+       	>> Clic Dreapta Sus 'Open'
+	>> Clic 'View Logs'
+
+
+ >> Afisarea 'Logs':
+_____________________________________________________________________
+
+2021-10-04T07:50:34.144295+00:00 heroku[run.7067]: State changed from up to complete
+
+2021-10-04T08:42:20.248582+00:00 heroku[router]: at=info code=H81 desc="Blank app" method=GET path="/" host=video-renting.herokuapp.com request_id=385f6bea-2dc3-4622-8280-f7f4cb71fe92 fwd="79.115.225.78" dyno= connect= service= status=502 bytes= protocol=https
+
+2021-10-04T08:42:20.497433+00:00 heroku[router]: at=info code=H81 desc="Blank app" method=GET path="/favicon.ico" host=video-renting.herokuapp.com request_id=2ef52009-df27-41e0-a88e-3fc04c0fa7ae fwd="79.115.225.78" dyno= connect= service= status=502 bytes= protocol=https
+
+2021-10-04T08:43:14.875309+00:00 heroku[router]: at=info code=H81 desc="Blank app" method=GET path="/" host=video-renting.herokuapp.com request_id=c750dd22-eb84-4a2d-81f4-c841614a4c55 fwd="79.115.225.78" dyno= connect= service= status=502 bytes= protocol=https
+
+2021-10-04T08:43:15.011180+00:00 heroku[router]: at=info code=H81 desc="Blank app" method=GET path="/favicon.ico" host=video-renting.herokuapp.com request_id=a0f1cc09-ec4d-4e54-8e12-c44ee1c9a20b fwd="79.115.225.78" dyno= connect= service= status=502 bytes= protocol=https
+
+2021-10-04T08:49:16.183690+00:00 heroku[router]: at=info code=H81 desc="Blank app" method=GET path="/" host=video-renting.herokuapp.com request_id=3b742beb-749f-4d21-803f-ed1fd170adcf fwd="79.115.225.78" dyno= connect= service= status=502 bytes= protocol=https
+
+2021-10-04T08:49:16.312672+00:00 heroku[router]: at=info code=H81 desc="Blank app" method=GET path="/favicon.ico" host=video-renting.herokuapp.com request_id=559595ff-ca03-4fec-a913-faed6eada7cf fwd="79.115.225.78" dyno= connect= service= status=502 bytes= protocol=https
+_____________________________________________________________________
+
+
+
+
+
+
+
+  (3) Conectarea la 'Server' / 'Dyno':     
+ 
+	>> Deschidem:
+--------------------------------------------------------------------------------------------------------
+
+	https://dashboard.heroku.com/apps/video-renting
+--------------------------------------------------------------------------------------------------------
+
+       	>> Clic Dreapta Sus 'Open'
+	>> Clic 'Run Console':
+
+_____________________________________________________________________
+
+	heroku run bash
+_____________________________________________________________________
+
+
+
+   >> Bash:
+--------------------------------------------------------------------------------------------------------
+https://dashboard.heroku.com/apps/video-renting/logs?web-console=video-renting
+--------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+ (3.1) Listam Continutul
+_____________________________________________________________________
+
+	ls
+_____________________________________________________________________
+	=> Vedem Fisierele logs
+
+
+
+
+
+
+ (3.2) Rulam Comanda
+_____________________________________________________________________
+
+	cat uncaughtExceptions.log
+_____________________________________________________________________
+	>> Gasim ca 'jwtPrivateKey is not Defined' 
+
+
+
