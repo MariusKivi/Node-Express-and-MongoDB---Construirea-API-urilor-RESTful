@@ -1,0 +1,47 @@
+
+	Implementarea pe 'Heroku
+'
+
+
+
+
+  (1) Crearea Aplicatiei 'video-renting'  in 'Heroku'
+	=> si Crearea 'Git Remote' pe 'Mediul Local':
+_____________________________________________________________________
+
+	heroku create video-renting
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (2) Vedem 'Remote'-uri
+_____________________________________________________________________
+
+	git remote -v
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (3) Implementarea Aplicatiei:
+_____________________________________________________________________
+
+	git push heroku master
+_____________________________________________________________________
+
+       >> 'git push' = inseamna ca Impingem Schimbarile
+	=> din Depozitul 'Local' intr-un 'Depozit Diferit' ('heroku ')
+
+       >> 'master' este numele 'Branch'-ului 
+	=> la care lucram in mod curent.
+
+
+
