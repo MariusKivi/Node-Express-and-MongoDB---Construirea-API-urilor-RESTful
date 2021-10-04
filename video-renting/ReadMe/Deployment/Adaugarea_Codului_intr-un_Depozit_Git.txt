@@ -1,0 +1,119 @@
+
+	Adaugarea 'Codului' intr-un 'Depozi Git'
+
+
+
+
+  (0.1) Verifican Versiunea Git
+	=> instalata pe Pc:
+_____________________________________________________________________
+
+	git --version
+_____________________________________________________________________
+
+
+
+  >> Afisare in Terminal:
+_____________________________________________________________________
+git version 2.32.0.windows.2
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (0.2) Cream Fisierul '.gitIgnore' in Proiect
+	=> in care Adaugam Fisierele sau Folderele 
+	=> pe care trebuie sa le Excludem din 'Depozitul Git',
+	=> '/' = indica ca este un 'Folder':
+_____________________________________________________________________
+
+node_modules/
+coverage/
+_____________________________________________________________________
+
+
+
+
+
+
+
+ (1) Initializam un 'Depozit Git':
+_____________________________________________________________________
+
+	git init
+_____________________________________________________________________
+
+
+
+  >> Afisarea in Terminal:
+_____________________________________________________________________
+Initialized empty Git repository in C:/Users/mariu/OneDrive/Desktop/Node-Express-and-MongoDB---Construirea-API-urilor-RESTful/video-renting/.git/
+_____________________________________________________________________
+
+
+
+
+
+
+ (2)  Adaugarea Fisierelor & Folderelor Proiectului in 'Depozitul Git'
+	=> aceasta se mai  numeste  'Stadializarea':
+_____________________________________________________________________
+
+	git add .
+_____________________________________________________________________
+
+
+
+  >> Afisarea in Terminal:
+_____________________________________________________________________
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in tests/integration/genres.test.js.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in tests/integration/returns.test.js.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in tests/unit/middleware/auth.test.js.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in tests/unit/models/user.test.js.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in uncaughtExceptions.log.
+The file will have its original line endings in your working directory
+PS C:\Users\mariu\OneDrive\Desktop\Node-Express-and-MongoDB---Construirea-API-urilor-RESTful\video-renting>
+_____________________________________________________________________
+
+
+
+
+
+
+
+
+ (3) Comiterea  Fisierelor
+	=> 'm' = Message
+_____________________________________________________________________
+
+	git commit -m "First commit."
+_____________________________________________________________________
+
+
+
+
+  >> Afisarea in Terminal:
+_____________________________________________________________________
+...
+ create mode 100644 startup/prod.js
+ create mode 100644 startup/routes.js
+ create mode 100644 startup/validation.js
+ create mode 100644 tests/.DS_Store
+ create mode 100644 tests/integration/auth.test.js
+ create mode 100644 tests/integration/genres.test.js
+ create mode 100644 tests/integration/returns.test.js
+ create mode 100644 tests/unit/middleware/auth.test.js
+ create mode 100644 tests/unit/models/user.test.js
+ create mode 100644 uncaughtExceptions.log
+_____________________________________________________________________
+
+
+
